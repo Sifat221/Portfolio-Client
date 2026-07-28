@@ -65,6 +65,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
 
               <SplitText
                 text="Let's Build Something Awesome"
+                highlightText="Awesome"
+                highlightClass="text-blue-500 font-extrabold"
                 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight"
                 delay={50}
                 duration={1.25}

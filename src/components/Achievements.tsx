@@ -63,6 +63,8 @@ export const Achievements: React.FC<TestimonialsAchievementsProps> = ({
                 </div>
                 <SplitText
                   text="What People Say"
+                  highlightText="Say"
+                  highlightClass="text-blue-500 font-extrabold"
                   className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight"
                   delay={50}
                   duration={1.25}
@@ -187,6 +189,8 @@ export const Achievements: React.FC<TestimonialsAchievementsProps> = ({
               </div>
               <SplitText
                 text="Key Achievements"
+                highlightText="Achievements"
+                highlightClass="text-blue-500 font-extrabold"
                 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight"
                 delay={50}
                 duration={1.25}

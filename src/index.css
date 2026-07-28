@@ -273,6 +273,12 @@ html.light [class*="bg-[#1A2335]"]:hover {
 }
 
 /* Light mode text color overrides: white/light fonts become dark slate for 100% legibility */
+.text-blue-500,
+html.light .text-blue-500,
+html.dark .text-blue-500 {
+  color: #3B82F6 !important;
+}
+
 html.light .text-white {
   color: #0F172A !important;
 }

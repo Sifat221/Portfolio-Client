@@ -30,6 +30,8 @@ export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({ experien
 
           <SplitText
             text="Professional Experience"
+            highlightText="Experience"
+            highlightClass="text-blue-500 font-extrabold"
             className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight py-1"
             delay={50}
             duration={1.25}

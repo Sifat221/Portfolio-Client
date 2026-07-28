@@ -66,6 +66,8 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
 
           <SplitText
             text="Education & Certifications"
+            highlightText="Certifications"
+            highlightClass="text-blue-500 font-extrabold"
             className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight py-1"
             delay={50}
             duration={1.25}
