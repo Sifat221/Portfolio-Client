@@ -249,6 +249,22 @@ export const defaultTestimonials: ITestimonial[] = [
     text: "Exceptional Flutter engineer! Sifat transformed our mobile productivity app with GetX, smooth micro-animations, and clean modular code.",
     rating: 5,
     avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200"
+  },
+  {
+    id: "test_4",
+    client: "Elena Rostova",
+    company: "Head of Mobile, FinTech Global",
+    text: "Sifat's mastery of Clean Architecture and Flutter offline database sync transformed our mobile banking ledger app into an industry benchmark.",
+    rating: 5,
+    avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"
+  },
+  {
+    id: "test_5",
+    client: "Alexandre Dubois",
+    company: "VP Engineering, PetCare Tech",
+    text: "Top-tier developer! Sifat built our pet healthcare mobile app with live Firebase notifications, payment gateways, and crisp UI. Highly recommended!",
+    rating: 5,
+    avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200"
   }
 ];
 
