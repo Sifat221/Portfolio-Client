@@ -33,7 +33,7 @@ import {
   defaultTestimonials,
 } from './services/api';
 
-import { Smartphone, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -86,30 +86,22 @@ const PortfolioContent: React.FC = () => {
 
   if (isPersonalLoading || isProjectsLoading) {
     return (
-      <div className="min-h-screen bg-[#090D16] flex flex-col items-center justify-center text-white space-y-6 px-4">
-        <div className="relative flex items-center justify-center">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 p-[2px] animate-pulse">
-            <div className="w-full h-full bg-[#090D16] rounded-[14px] flex items-center justify-center">
-              <Smartphone className="w-8 h-8 text-cyan-400" />
-            </div>
-          </div>
-        </div>
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center text-slate-900 space-y-6 px-4">
         <div className="text-center space-y-2 max-w-sm">
-          <p className="text-sm font-mono text-cyan-400 flex items-center justify-center gap-2">
+          <span className="text-3xl font-extrabold tracking-tight">
+            Sifat Khan<span className="text-indigo-600">.</span>
+          </span>
+          <p className="text-sm font-semibold text-indigo-600 flex items-center justify-center gap-2 pt-2">
             <Loader2 className="w-4 h-4 animate-spin" />
-            Fetching Data from Backend...
+            Loading Portfolio...
           </p>
-          <div className="space-y-2 pt-2">
-            <Skeleton className="h-4 w-48 mx-auto" />
-            <Skeleton className="h-3 w-32 mx-auto" />
-          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#090D16] text-slate-100 selection:bg-cyan-500 selection:text-white">
+    <div className="min-h-screen bg-white text-slate-900 selection:bg-indigo-500 selection:text-white transition-colors duration-300">
       {/* Navigation Bar */}
       <Navbar personal={personal} />
 

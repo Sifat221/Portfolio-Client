@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Cpu, Layers, Database, Smartphone, Wrench, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Cpu, Layers, Database, Smartphone, Wrench } from 'lucide-react';
 import { ISkill } from '../types/portfolio';
 
 interface SkillsProps {
@@ -18,29 +18,29 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'Core Mobile':
-        return <Smartphone className="w-4 h-4 text-cyan-400" />;
+        return <Smartphone className="w-4 h-4 text-indigo-600" />;
       case 'State Management':
-        return <Layers className="w-4 h-4 text-indigo-400" />;
+        return <Layers className="w-4 h-4 text-blue-600" />;
       case 'Backend & Services':
-        return <Database className="w-4 h-4 text-blue-400" />;
+        return <Database className="w-4 h-4 text-emerald-600" />;
       default:
-        return <Cpu className="w-4 h-4 text-emerald-400" />;
+        return <Cpu className="w-4 h-4 text-purple-600" />;
     }
   };
 
   return (
-    <section id="skills" className="py-20 relative bg-[#0B101D]/70 border-y border-slate-800/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="skills" className="py-24 relative bg-slate-50/60 border-y border-slate-100">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-cyan-500/30 text-cyan-400 text-xs font-mono">
+        <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold">
             <Wrench className="w-3.5 h-3.5" />
             <span>Tech Stack & Capabilities</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Mobile Development <span className="text-gradient-cyan">Expertise</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Mobile Development <span className="text-indigo-600">Expertise</span>
           </h2>
-          <p className="text-slate-400 text-base">
+          <p className="text-slate-600 text-base">
             Proficiency in modern Flutter development, reactive state management, clean architecture, and cloud backends.
           </p>
         </div>
@@ -49,10 +49,10 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
         <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
           <button
             onClick={() => setActiveCategory('All')}
-            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
+            className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 ${
               activeCategory === 'All'
-                ? 'bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-lg shadow-cyan-500/25 scale-105'
-                : 'glass-card text-slate-400 hover:text-white hover:border-cyan-500/40'
+                ? 'bg-[#7C86E2] text-white shadow-md shadow-indigo-200 scale-105'
+                : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200 shadow-sm'
             }`}
           >
             All Stack ({skills.length})
@@ -61,10 +61,10 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+              className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
                 activeCategory === cat
-                  ? 'bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-lg shadow-cyan-500/25 scale-105'
-                  : 'glass-card text-slate-400 hover:text-white hover:border-cyan-500/40'
+                  ? 'bg-[#7C86E2] text-white shadow-md shadow-indigo-200 scale-105'
+                  : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200 shadow-sm'
               }`}
             >
               {getCategoryIcon(cat)}
@@ -78,28 +78,28 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
           {filteredSkills.map((skill, index) => (
             <div
               key={skill.name + index}
-              className="glass-card p-5 rounded-2xl border border-slate-800/80 hover:border-cyan-500/40 transition-all duration-300 group"
+              className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all duration-300 group"
             >
-              <div className="flex items-start justify-between mb-3">
+              <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-11 h-11 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                     {getCategoryIcon(skill.category)}
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-base group-hover:text-cyan-400 transition-colors">
+                    <h3 className="font-bold text-slate-900 text-base group-hover:text-indigo-600 transition-colors">
                       {skill.name}
                     </h3>
-                    <p className="text-xs text-slate-400 font-mono">{skill.category}</p>
+                    <p className="text-xs text-slate-500 font-medium">{skill.category}</p>
                   </div>
                 </div>
                 {skill.proficiency && (
                   <span
-                    className={`px-2.5 py-1 rounded-full text-[10px] font-bold font-mono tracking-wider ${
+                    className={`px-3 py-1 rounded-full text-[10px] font-bold font-mono tracking-wider ${
                       skill.proficiency === 'Expert'
-                        ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
+                        ? 'bg-indigo-50 text-indigo-700 border border-indigo-100'
                         : skill.proficiency === 'Advanced'
-                        ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/30'
-                        : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                        ? 'bg-blue-50 text-blue-700 border border-blue-100'
+                        : 'bg-emerald-50 text-emerald-700 border border-emerald-100'
                     }`}
                   >
                     {skill.proficiency}
@@ -108,14 +108,14 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
               </div>
 
               {/* Progress bar visual indicator */}
-              <div className="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden">
+              <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${
                     skill.proficiency === 'Expert'
-                      ? 'w-[95%] bg-gradient-to-r from-cyan-400 to-blue-500'
+                      ? 'w-[95%] bg-[#7C86E2]'
                       : skill.proficiency === 'Advanced'
-                      ? 'w-[85%] bg-gradient-to-r from-indigo-400 to-purple-500'
-                      : 'w-[75%] bg-gradient-to-r from-emerald-400 to-teal-500'
+                      ? 'w-[85%] bg-blue-500'
+                      : 'w-[75%] bg-emerald-500'
                   }`}
                 ></div>
               </div>
