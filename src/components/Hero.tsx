@@ -124,27 +124,12 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-gradient-to-tr from-[#9B8FCD]/25 via-purple-600/20 to-cyan-400/20 rounded-full blur-[140px] animate-cloud-slow-3"></div>
             <div className="absolute top-2/3 left-10 w-[600px] h-[300px] bg-gradient-to-r from-indigo-500/20 via-[#9B8FCD]/20 to-transparent rounded-full blur-[120px] animate-cloud-slow-1"></div>
 
-            {/* Multiple Floating SVG Clouds Across Banner */}
-            <div className="absolute top-12 left-[5%] text-[#9B8FCD]/35 animate-cloud-slow-1">
-              <Cloud className="w-40 h-40 blur-[1px]" />
-            </div>
-            <div className="absolute top-24 left-[28%] text-indigo-400/30 animate-cloud-slow-3">
-              <Cloud className="w-52 h-52 blur-[2px]" />
-            </div>
-            <div className="absolute top-16 right-[8%] text-cyan-400/35 animate-cloud-slow-2">
+            {/* 2. Floating Cloud Layers (Exactly 2 Soft Floating Clouds) */}
+            <div className="absolute top-12 left-[10%] text-[#9B8FCD]/25 animate-cloud-slow-1">
               <Cloud className="w-56 h-56 blur-[1.5px]" />
             </div>
-            <div className="absolute top-44 right-[25%] text-slate-300/25 animate-cloud-slow-1">
-              <Cloud className="w-44 h-44 blur-[1px]" />
-            </div>
-            <div className="absolute top-64 left-[48%] -translate-x-1/2 text-[#9B8FCD]/30 animate-cloud-slow-2">
-              <Cloud className="w-60 h-60 blur-[2px]" />
-            </div>
-            <div className="absolute top-80 left-[12%] text-cyan-300/25 animate-cloud-slow-3">
-              <Cloud className="w-48 h-48 blur-[1.5px]" />
-            </div>
-            <div className="absolute top-96 right-[15%] text-indigo-300/30 animate-cloud-slow-1">
-              <Cloud className="w-52 h-52 blur-[1px]" />
+            <div className="absolute top-20 right-[10%] text-cyan-400/25 animate-cloud-slow-2">
+              <Cloud className="w-52 h-52 blur-[1.5px]" />
             </div>
 
             {/* 3. ANIMATED RIVER / SEA OCEAN WAVES BACKDROP AT BOTTOM */}
