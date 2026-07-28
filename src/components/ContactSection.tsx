@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Sparkles, MessageCircle } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { sendContactMessage } from '../services/api';
+import SplitText from './SplitText';
 
 interface ContactSectionProps {
   personal: IPersonalProfile;
@@ -62,9 +63,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                 <span>Get In Touch</span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                Let's Build Something <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400">Awesome</span>
-              </h2>
+              <SplitText
+                text="Let's Build Something Awesome"
+                className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight"
+                delay={50}
+                duration={1.25}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.1}
+                rootMargin="-100px"
+                textAlign="left"
+              />
 
               <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
                 Whether you have a new mobile app project, an open engineering role, or a Flutter consultancy request — feel free to send a direct message!

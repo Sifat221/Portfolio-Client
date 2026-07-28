@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GraduationCap, Award, BookOpen, ExternalLink, Calendar, ChevronLeft, ChevronRight, Image as ImageIcon, Sparkles } from 'lucide-react';
 import { IEducation, ICertification } from '../types/portfolio';
+import SplitText from './SplitText';
 
 interface EducationCertificationsProps {
   education: IEducation[];
@@ -57,15 +58,25 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-12"
       >
         {/* Clean Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-mono font-bold shadow-lg shadow-[#9B8FCD]/10">
+        <div className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-mono font-bold shadow-lg shadow-[#9B8FCD]/10 mb-1">
             <GraduationCap className="w-4 h-4 text-[#9B8FCD]" />
             <span>Academic Background & Verified Credentials</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Education & <span className="text-gradient-periwinkle">Certifications</span>
-          </h2>
+          <SplitText
+            text="Education & Certifications"
+            className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight py-1"
+            delay={50}
+            duration={1.25}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="center"
+          />
 
           <p className="text-slate-300 text-sm font-normal max-w-xl mx-auto">
             Academic degrees, courseworks, professional credentials, and university memorable photo gallery.

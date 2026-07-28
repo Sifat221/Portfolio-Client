@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Star, Quote, ChevronLeft, ChevronRight, UserCheck } from 'lucide-react';
 import { IAchievement, ITestimonial } from '../types/portfolio';
+import SplitText from './SplitText';
 
 interface TestimonialsAchievementsProps {
   testimonials: ITestimonial[];
@@ -60,9 +61,19 @@ export const Achievements: React.FC<TestimonialsAchievementsProps> = ({
                   <Quote className="w-3.5 h-3.5" />
                   <span>Client & Peer Endorsements</span>
                 </div>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                  What People <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400">Say</span>
-                </h2>
+                <SplitText
+                  text="What People Say"
+                  className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight"
+                  delay={50}
+                  duration={1.25}
+                  ease="power3.out"
+                  splitType="chars"
+                  from={{ opacity: 0, y: 40 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  rootMargin="-100px"
+                  textAlign="left"
+                />
               </div>
 
               {/* Slider Arrow Controls */}
@@ -174,9 +185,19 @@ export const Achievements: React.FC<TestimonialsAchievementsProps> = ({
                 <Trophy className="w-3.5 h-3.5" />
                 <span>Milestones & Recognition</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Key <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400">Achievements</span>
-              </h2>
+              <SplitText
+                text="Key Achievements"
+                className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight"
+                delay={50}
+                duration={1.25}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.1}
+                rootMargin="-100px"
+                textAlign="left"
+              />
               <p className="text-xs sm:text-sm text-slate-300">
                 Hackathons, open-source work, and engineering milestones.
               </p>

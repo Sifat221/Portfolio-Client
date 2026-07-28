@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Smartphone, ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight, Layout, Brain, Code } from 'lucide-react';
 import { IProject } from '../types/portfolio';
 import { ProjectModal } from './ProjectModal';
+import SplitText from './SplitText';
 
 interface ProjectsProps {
   projects: IProject[];
@@ -80,9 +81,19 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               <span>Flagship Applications</span>
             </div>
             
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Featured <span className="text-gradient-periwinkle">Mobile Projects</span>
-            </h2>
+            <SplitText
+              text="Featured Mobile Projects"
+              className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight"
+              delay={50}
+              duration={1.25}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="left"
+            />
 
             <p className="text-slate-300 text-sm font-normal">
               Explore production mobile solutions built with Flutter, Clean Architecture, BLoC/GetX, and REST API backends.

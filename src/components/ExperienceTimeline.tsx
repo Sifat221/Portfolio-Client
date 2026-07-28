@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Briefcase, Calendar, CheckCircle2, MapPin } from 'lucide-react';
 import { IExperience } from '../types/portfolio';
+import SplitText from './SplitText';
 
 interface ExperienceTimelineProps {
   experience: IExperience[];
@@ -21,15 +22,25 @@ export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({ experien
         className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
       >
         {/* Clean Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-3 mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-bold font-mono shadow-lg shadow-[#9B8FCD]/10">
+        <div className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto space-y-3 mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-bold font-mono shadow-lg shadow-[#9B8FCD]/10 mb-1">
             <Briefcase className="w-4 h-4 text-[#9B8FCD]" />
             <span>Career & Engineering History</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Professional <span className="text-gradient-periwinkle">Experience</span>
-          </h2>
+          <SplitText
+            text="Professional Experience"
+            className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight py-1"
+            delay={50}
+            duration={1.25}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="center"
+          />
 
           <p className="text-slate-300 text-sm font-normal max-w-xl mx-auto">
             Proven track record of building production mobile apps, leading Flutter architecture, and delivering high quality code.
