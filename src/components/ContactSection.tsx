@@ -53,12 +53,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
           {/* Left Column: Direct Info */}
           <div className="lg:col-span-5 space-y-8">
             <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#9B8FCD]/15 border border-[#9B8FCD]/30 text-[#8B7DBE] text-xs font-bold">
                 <Mail className="w-3.5 h-3.5" />
                 <span>Get In Touch</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Let's Build Something <span className="text-indigo-600">Awesome</span>
+                Let's Build Something <span className="text-[#9B8FCD]">Awesome</span>
               </h2>
               <p className="text-slate-600 text-base leading-relaxed">
                 Whether you have a new mobile app project, an open engineering role, or a Flutter consultancy request — feel free to send a message!
@@ -69,14 +69,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
             <div className="space-y-4 pt-2">
               <a
                 href={`mailto:${personal.email}`}
-                className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all flex items-center gap-4 group"
+                className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#9B8FCD]/50 transition-all flex items-center gap-4 group"
               >
-                <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-2xl bg-[#9B8FCD]/15 border border-[#9B8FCD]/30 flex items-center justify-center text-[#8B7DBE] group-hover:scale-110 transition-transform">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
                   <p className="text-xs text-slate-500 font-medium">Email Address</p>
-                  <p className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                  <p className="text-sm font-bold text-slate-900 group-hover:text-[#9B8FCD] transition-colors">
                     {personal.email}
                   </p>
                 </div>
@@ -86,14 +86,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                 href={personal.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all flex items-center gap-4 group"
+                className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#9B8FCD]/50 transition-all flex items-center gap-4 group"
               >
-                <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-2xl bg-[#9B8FCD]/15 border border-[#9B8FCD]/30 flex items-center justify-center text-[#8B7DBE] group-hover:scale-110 transition-transform">
                   <Github className="w-5 h-5" />
                 </div>
                 <div>
                   <p className="text-xs text-slate-500 font-medium">GitHub Profile</p>
-                  <p className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                  <p className="text-sm font-bold text-slate-900 group-hover:text-[#9B8FCD] transition-colors">
                     github.com/Sifat221
                   </p>
                 </div>
@@ -115,7 +115,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
           <div className="lg:col-span-7">
             <div className="bg-white p-8 sm:p-10 rounded-3xl border border-slate-200/80 shadow-xl space-y-6">
               <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-indigo-600" />
+                <Sparkles className="w-5 h-5 text-[#9B8FCD]" />
                 Send a Direct Message
               </h3>
 
@@ -148,7 +148,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                       placeholder="e.g. John Doe"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
+                      className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-[#9B8FCD] focus:bg-white transition-colors"
                     />
                   </div>
                   <div>
@@ -161,7 +161,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                       placeholder="john@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
+                      className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-[#9B8FCD] focus:bg-white transition-colors"
                     />
                   </div>
                 </div>
@@ -175,7 +175,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                     placeholder="Project Inquiry / Mobile App Role"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
+                    className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-[#9B8FCD] focus:bg-white transition-colors"
                   />
                 </div>
 
@@ -189,14 +189,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                     placeholder="Describe your mobile app project..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-[#9B8FCD] focus:bg-white transition-colors resize-none"
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 rounded-full font-bold text-sm text-white bg-[#7C86E2] hover:bg-[#6873D9] shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-4 rounded-full font-bold text-sm text-white bg-[#9B8FCD] hover:bg-[#8B7DBE] shadow-lg shadow-[#9B8FCD]/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {loading ? (
                     <span>Sending Message...</span>

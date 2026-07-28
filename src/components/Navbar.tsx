@@ -38,37 +38,37 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo (Matching periwinkle color theme) */}
           <a href="#" className="flex items-center gap-2 group" aria-label="Sifat Khan Home">
             <span className="text-2xl font-extrabold text-slate-900 tracking-tight group-hover:scale-105 transition-transform duration-200">
-              Sifat Khan<span className="text-indigo-600 animate-pulse">.</span>
+              Sifat Khan<span className="text-[#9B8FCD] animate-pulse">.</span>
             </span>
           </a>
 
-          {/* Center Nav Links with Animated Underline & Hover Glow */}
+          {/* Center Nav Links with Periwinkle Animated Underline */}
           <nav className="hidden md:flex items-center gap-2 bg-slate-50/80 px-4 py-1.5 rounded-full border border-slate-200/60 shadow-inner" role="navigation" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="relative px-4 py-1.5 text-sm font-bold text-slate-700 hover:text-indigo-600 transition-colors duration-200 group rounded-full hover:bg-white/90"
+                className="relative px-4 py-1.5 text-sm font-bold text-slate-700 hover:text-[#9B8FCD] transition-colors duration-200 group rounded-full hover:bg-white/90"
               >
                 <span>{link.name}</span>
                 
-                {/* Animated Glowing Underline (Expands smoothly on hover) */}
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2.5px] rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 group-hover:w-3/4 transition-all duration-300 ease-out shadow-sm shadow-indigo-300/80"></span>
+                {/* Animated Periwinkle Underline */}
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2.5px] rounded-full bg-gradient-to-r from-[#9B8FCD] via-[#7C86E2] to-[#9B8FCD] group-hover:w-3/4 transition-all duration-300 ease-out shadow-sm shadow-[#9B8FCD]/60"></span>
               </a>
             ))}
           </nav>
 
-          {/* Right Action Button */}
+          {/* Right Action Button (Matching user periwinkle swatch #9B8FCD) */}
           <div className="hidden lg:flex items-center gap-3">
             <a
               href="#contact"
-              className="relative group overflow-hidden px-7 py-2.5 rounded-full font-bold text-sm text-white bg-[#7C86E2] hover:bg-[#6873D9] shadow-lg shadow-indigo-200 hover:scale-105 active:scale-95 transition-all duration-200"
+              className="relative group overflow-hidden px-7 py-2.5 rounded-full font-bold text-sm text-white bg-[#9B8FCD] hover:bg-[#8B7DBE] shadow-lg shadow-[#9B8FCD]/30 hover:scale-105 active:scale-95 transition-all duration-200"
             >
               <span className="relative z-10">Let's Talk</span>
-              <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span className="absolute inset-0 bg-gradient-to-r from-[#8B7DBE] to-[#7C86E2] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </a>
           </div>
 
@@ -76,7 +76,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
           <div className="flex items-center gap-2 md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl bg-slate-100 text-slate-700 hover:text-indigo-600 border border-slate-200"
+              className="p-2.5 rounded-xl bg-slate-100 text-slate-700 hover:text-[#9B8FCD] border border-slate-200"
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
             >
@@ -95,7 +95,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-3 text-base font-bold text-slate-800 hover:text-indigo-600 hover:bg-slate-50 rounded-xl transition-all"
+                className="px-4 py-3 text-base font-bold text-slate-800 hover:text-[#9B8FCD] hover:bg-slate-50 rounded-xl transition-all"
               >
                 {link.name}
               </a>
@@ -104,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
               <a
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full inline-flex items-center justify-center py-3 rounded-full font-bold text-sm text-white bg-[#7C86E2]"
+                className="w-full inline-flex items-center justify-center py-3 rounded-full font-bold text-sm text-white bg-[#9B8FCD]"
               >
                 Let's Talk
               </a>

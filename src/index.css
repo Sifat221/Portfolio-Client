@@ -10,6 +10,12 @@ section {
   scroll-margin-top: 5.5rem;
 }
 
+:root {
+  --color-periwinkle: #9B8FCD;
+  --color-periwinkle-hover: #8B7DBE;
+  --color-periwinkle-light: #F2EEFB;
+}
+
 @layer base {
   body {
     background-color: #FFFFFF;
@@ -18,9 +24,9 @@ section {
   }
 }
 
-/* Glassmorphic & Modern Theme Classes */
+/* Glassmorphism & Custom Theme Classes */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(226, 232, 240, 0.8);
@@ -35,19 +41,25 @@ section {
 
 .glass-card:hover {
   background: #FFFFFF;
-  border-color: rgba(99, 102, 241, 0.4);
-  box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.15);
+  border-color: rgba(155, 143, 205, 0.5);
+  box-shadow: 0 20px 40px -15px rgba(155, 143, 205, 0.2);
   transform: translateY(-4px);
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, #0F172A 0%, #475569 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.bg-periwinkle {
+  background-color: #9B8FCD;
 }
 
-.text-gradient-purple {
-  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+.bg-periwinkle-gradient {
+  background: linear-gradient(135deg, #9B8FCD 0%, #7C86E2 100%);
+}
+
+.text-periwinkle {
+  color: #9B8FCD;
+}
+
+.text-gradient-periwinkle {
+  background: linear-gradient(135deg, #9B8FCD 0%, #6366F1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -74,5 +86,5 @@ section {
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #6366F1;
+  background: #9B8FCD;
 }

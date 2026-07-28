@@ -19,9 +19,9 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'Core Mobile':
-        return <Smartphone className="w-4 h-4 text-indigo-600" />;
+        return <Smartphone className="w-4 h-4 text-[#9B8FCD]" />;
       case 'State Management':
-        return <Layers className="w-4 h-4 text-blue-600" />;
+        return <Layers className="w-4 h-4 text-[#8B7DBE]" />;
       case 'Backend & Services':
         return <Database className="w-4 h-4 text-emerald-600" />;
       default:
@@ -40,12 +40,12 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
       >
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#9B8FCD]/15 border border-[#9B8FCD]/30 text-[#8B7DBE] text-xs font-bold">
             <Wrench className="w-3.5 h-3.5" />
             <span>Tech Stack & Capabilities</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Mobile Development <span className="text-indigo-600">Expertise</span>
+            Mobile Development <span className="text-[#9B8FCD]">Expertise</span>
           </h2>
           <p className="text-slate-600 text-base">
             Proficiency in modern Flutter development, reactive state management, clean architecture, and cloud backends.
@@ -58,7 +58,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
             onClick={() => setActiveCategory('All')}
             className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 ${
               activeCategory === 'All'
-                ? 'bg-[#7C86E2] text-white shadow-md shadow-indigo-200 scale-105'
+                ? 'bg-[#9B8FCD] text-white shadow-md shadow-[#9B8FCD]/30 scale-105'
                 : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200 shadow-sm'
             }`}
           >
@@ -70,7 +70,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
                 activeCategory === cat
-                  ? 'bg-[#7C86E2] text-white shadow-md shadow-indigo-200 scale-105'
+                  ? 'bg-[#9B8FCD] text-white shadow-md shadow-[#9B8FCD]/30 scale-105'
                   : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200 shadow-sm'
               }`}
             >
@@ -89,15 +89,15 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all duration-300 group"
+              className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#9B8FCD]/50 transition-all duration-300 group"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-11 h-11 rounded-2xl bg-[#9B8FCD]/15 border border-[#9B8FCD]/30 flex items-center justify-center group-hover:scale-110 transition-transform">
                     {getCategoryIcon(skill.category)}
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base group-hover:text-indigo-600 transition-colors">
+                    <h3 className="font-bold text-slate-900 text-base group-hover:text-[#9B8FCD] transition-colors">
                       {skill.name}
                     </h3>
                     <p className="text-xs text-slate-500 font-medium">{skill.category}</p>
@@ -107,7 +107,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
                   <span
                     className={`px-3 py-1 rounded-full text-[10px] font-bold font-mono tracking-wider ${
                       skill.proficiency === 'Expert'
-                        ? 'bg-indigo-50 text-indigo-700 border border-indigo-100'
+                        ? 'bg-[#9B8FCD]/15 text-[#8B7DBE] border border-[#9B8FCD]/30'
                         : skill.proficiency === 'Advanced'
                         ? 'bg-blue-50 text-blue-700 border border-blue-100'
                         : 'bg-emerald-50 text-emerald-700 border border-emerald-100'
@@ -123,9 +123,9 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${
                     skill.proficiency === 'Expert'
-                      ? 'w-[95%] bg-[#7C86E2]'
+                      ? 'w-[95%] bg-[#9B8FCD]'
                       : skill.proficiency === 'Advanced'
-                      ? 'w-[85%] bg-blue-500'
+                      ? 'w-[85%] bg-[#7C86E2]'
                       : 'w-[75%] bg-emerald-500'
                   }`}
                 ></div>

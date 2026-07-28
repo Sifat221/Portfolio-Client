@@ -30,12 +30,12 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
       >
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#9B8FCD]/15 border border-[#9B8FCD]/30 text-[#8B7DBE] text-xs font-bold">
             <Smartphone className="w-3.5 h-3.5" />
             <span>Mobile App Showcase</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Flagship <span className="text-indigo-600">Flutter Applications</span>
+            Flagship <span className="text-[#9B8FCD]">Flutter Applications</span>
           </h2>
           <p className="text-slate-600 text-base">
             Explore real-world mobile solutions engineered with Flutter, BLoC/GetX, Clean Architecture, and REST API backends.
@@ -50,7 +50,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               onClick={() => setFilterCategory(cat)}
               className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 ${
                 filterCategory === cat
-                  ? 'bg-[#7C86E2] text-white shadow-md shadow-indigo-200 scale-105'
+                  ? 'bg-[#9B8FCD] text-white shadow-md shadow-[#9B8FCD]/30 scale-105'
                   : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200 shadow-sm'
               }`}
             >
@@ -68,7 +68,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm flex flex-col group hover:shadow-xl hover:border-indigo-300 transition-all duration-300"
+              className="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm flex flex-col group hover:shadow-xl hover:border-[#9B8FCD]/50 transition-all duration-300"
             >
               {/* Thumbnail Container */}
               <div className="relative h-56 overflow-hidden bg-slate-100">
@@ -95,10 +95,10 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               {/* Card Body */}
               <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-[#9B8FCD] transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-xs text-indigo-600 font-semibold line-clamp-1">
+                  <p className="text-xs text-[#8B7DBE] font-semibold line-clamp-1">
                     {project.tagline}
                   </p>
                   <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
@@ -124,7 +124,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                   <button
                     onClick={() => setSelectedProject(project)}
-                    className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group/btn"
+                    className="text-xs font-bold text-[#8B7DBE] hover:text-[#7C6EBE] flex items-center gap-1 group/btn"
                   >
                     <span>View App Details</span>
                     <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
@@ -136,7 +136,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 rounded-full bg-slate-100 text-slate-700 hover:text-indigo-600 hover:bg-slate-200 border border-slate-200 transition-colors"
+                        className="p-2 rounded-full bg-slate-100 text-slate-700 hover:text-[#9B8FCD] hover:bg-slate-200 border border-slate-200 transition-colors"
                         aria-label="GitHub Repo"
                       >
                         <Github className="w-4 h-4" />
@@ -147,7 +147,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                         href={project.demoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 rounded-full bg-[#7C86E2] text-white hover:bg-[#6873D9] shadow-sm transition-colors"
+                        className="p-2 rounded-full bg-[#9B8FCD] text-white hover:bg-[#8B7DBE] shadow-sm transition-colors"
                         aria-label="Live Demo"
                       >
                         <ExternalLink className="w-4 h-4" />
