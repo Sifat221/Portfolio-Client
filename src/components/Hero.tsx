@@ -146,7 +146,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
       {/* ================= IDENTICAL BANNER CONTENT FOR ALL BACKGROUNDS ================= */}
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Side: Headline, Subtitle, Pill Buttons & Social Icons & Stats */}
+          {/* Left Side: Headline, Subtitle, Pill Buttons & Social Icons */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -239,27 +239,6 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 >
                   <MessageCircle className="w-4 h-4 text-emerald-400" />
                 </a>
-              </div>
-            </motion.div>
-
-            {/* High Impact Stats Row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="pt-10 border-t border-slate-800/80 grid grid-cols-3 gap-6 max-w-lg mx-auto lg:mx-0"
-            >
-              <div className="text-center lg:text-left space-y-1">
-                <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">7+</p>
-                <p className="text-xs text-slate-400 font-medium leading-tight">flagship apps<br />deployed</p>
-              </div>
-              <div className="text-center lg:text-left space-y-1">
-                <p className="text-3xl sm:text-4xl font-extrabold text-[#9B8FCD] tracking-tight">100%</p>
-                <p className="text-xs text-slate-400 font-medium leading-tight">clean architecture<br />success</p>
-              </div>
-              <div className="text-center lg:text-left space-y-1">
-                <p className="text-3xl sm:text-4xl font-extrabold text-cyan-400 tracking-tight">99.8%</p>
-                <p className="text-xs text-slate-400 font-medium leading-tight">crash-free<br />rate</p>
               </div>
             </motion.div>
           </motion.div>
