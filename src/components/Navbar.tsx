@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, User } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
+import { StaggeredMenu } from './StaggeredMenu';
 
 interface NavbarProps {
   personal: IPersonalProfile;
@@ -75,46 +76,31 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
             </a>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <div className="flex items-center gap-2 md:hidden">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl bg-slate-800/80 text-slate-300 hover:text-white border border-slate-700/60"
-              aria-label="Toggle navigation menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+          {/* Mobile StaggeredMenu Integration */}
+          <div className="md:hidden">
+            <StaggeredMenu
+              position="right"
+              items={[
+                { label: 'About', link: '#about' },
+                { label: 'Skills', link: '#skills' },
+                { label: 'Projects', link: '#projects' },
+                { label: 'Experience', link: '#experience' },
+                { label: 'Education', link: '#education' },
+                { label: 'Contact', link: '#contact' },
+              ]}
+              socialItems={[
+                { label: 'GitHub', link: personal.github || 'https://github.com' },
+                { label: 'LinkedIn', link: personal.linkedin || 'https://linkedin.com' },
+                { label: 'Facebook', link: personal.facebook || 'https://facebook.com' },
+              ]}
+              displaySocials={true}
+              displayItemNumbering={true}
+              colors={['#9B8FCD', '#4F46E5', '#090D16']}
+              accentColor="#9B8FCD"
+            />
           </div>
         </div>
       </div>
-
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden glass-panel border-b border-slate-800 mt-2 px-6 pt-3 pb-6 shadow-2xl animate-in slide-in-from-top duration-300">
-          <div className="flex flex-col gap-2">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-3 text-base font-bold text-slate-200 hover:text-white hover:bg-slate-800/60 rounded-xl transition-all"
-              >
-                {link.name}
-              </a>
-            ))}
-            <div className="pt-3 border-t border-slate-800">
-              <a
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full inline-flex items-center justify-center py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9B8FCD] to-indigo-600"
-              >
-                Let's Talk
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 };
