@@ -20,19 +20,27 @@ export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({ experien
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
       >
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-3 mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-bold font-mono shadow-sm">
-            <Briefcase className="w-3.5 h-3.5" />
+        {/* Animated Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto space-y-3 mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-bold font-mono shadow-lg shadow-[#9B8FCD]/10 hover:scale-105 transition-transform">
+            <Briefcase className="w-4 h-4 text-[#9B8FCD] animate-bounce" />
             <span>Career & Engineering History</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Professional <span className="text-gradient-periwinkle">Experience</span>
+
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+            Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400">Experience</span>
           </h2>
-          <p className="text-slate-300 text-base font-normal">
+
+          <p className="text-slate-300 text-sm font-normal max-w-xl mx-auto">
             Proven track record of building production mobile apps, leading Flutter architecture, and delivering high quality code.
           </p>
-        </div>
+        </motion.div>
 
         {/* Timeline Container */}
         <div className="relative border-l-2 border-slate-700/80 ml-4 sm:ml-8 space-y-12 pl-6 sm:pl-10">

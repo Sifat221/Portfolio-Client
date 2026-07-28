@@ -56,23 +56,31 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-12"
       >
-        {/* Top Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/30 text-[#9B8FCD] text-xs font-mono font-bold">
-            <GraduationCap className="w-3.5 h-3.5" />
+        {/* Animated Attractive Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto space-y-3"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-mono font-bold shadow-lg shadow-[#9B8FCD]/10 hover:scale-105 transition-transform">
+            <GraduationCap className="w-4 h-4 text-[#9B8FCD] animate-bounce" />
             <span>Academic Background & Verified Credentials</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Education & <span className="text-gradient-periwinkle">Certifications</span>
+          
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+            Education & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400">Certifications</span>
           </h2>
-          <p className="text-slate-300 text-sm font-normal">
+
+          <p className="text-slate-300 text-sm font-normal max-w-xl mx-auto">
             Academic degrees, courseworks, professional credentials, and university memorable photo gallery.
           </p>
-        </div>
+        </motion.div>
 
         {/* 1. Academic Degrees & Certifications Grid with Vertical Divider */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* Left Column: Academic Degrees (With Vertical Right Border Divider Line) */}
+          {/* Left Column: Academic Degrees */}
           <div className="lg:col-span-6 space-y-6 border-b lg:border-b-0 lg:border-r border-slate-800/90 pb-8 lg:pb-0 lg:pr-8">
             <div className="flex items-center gap-2 text-[#9B8FCD] font-mono text-xs font-bold uppercase tracking-wider">
               <GraduationCap className="w-4 h-4" />
@@ -86,15 +94,15 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="glass-card p-6 sm:p-8 rounded-3xl border border-slate-800/80 hover:border-[#9B8FCD]/50 transition-all duration-300 space-y-4 shadow-xl"
+                className="glass-card p-6 sm:p-8 rounded-3xl border border-slate-800/80 hover:border-[#9B8FCD]/50 transition-all duration-300 space-y-4 shadow-xl group"
               >
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#9B8FCD]/20 border border-[#9B8FCD]/40 flex items-center justify-center text-[#9B8FCD] shrink-0">
+                    <div className="w-12 h-12 rounded-2xl bg-[#9B8FCD]/20 border border-[#9B8FCD]/40 flex items-center justify-center text-[#9B8FCD] shrink-0 group-hover:scale-110 transition-transform">
                       <GraduationCap className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-extrabold text-white">{edu.degree}</h3>
+                      <h3 className="text-lg font-extrabold text-white group-hover:text-[#9B8FCD] transition-colors">{edu.degree}</h3>
                       <p className="text-xs text-[#9B8FCD] font-mono font-semibold">{edu.institution}</p>
                     </div>
                   </div>
@@ -139,14 +147,14 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="glass-card p-6 rounded-3xl border border-slate-800/80 hover:border-indigo-500/40 transition-all duration-300 flex items-center justify-between gap-4 shadow-xl"
+                className="glass-card p-6 rounded-3xl border border-slate-800/80 hover:border-indigo-500/40 transition-all duration-300 flex items-center justify-between gap-4 shadow-xl group"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 shrink-0">
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 shrink-0 group-hover:scale-110 transition-transform">
                     <Award className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-white">{cert.title}</h3>
+                    <h3 className="text-base font-bold text-white group-hover:text-[#9B8FCD] transition-colors">{cert.title}</h3>
                     <p className="text-xs text-indigo-300 font-mono">{cert.issuer}</p>
                     {cert.issueDate && (
                       <p className="text-[11px] text-slate-400 flex items-center gap-1 mt-1 font-mono">

@@ -55,18 +55,26 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Direct Info */}
           <div className="lg:col-span-5 space-y-8">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1A2335] border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-bold font-mono">
-                <Mail className="w-3.5 h-3.5" />
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.6 }}
+              className="space-y-3"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1A2335] border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-bold font-mono shadow-lg shadow-[#9B8FCD]/10 hover:scale-105 transition-transform">
+                <Mail className="w-4 h-4 text-[#9B8FCD] animate-bounce" />
                 <span>Get In Touch</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Let's Build Something <span className="text-gradient-periwinkle">Awesome</span>
+
+              <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+                Let's Build Something <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400">Awesome</span>
               </h2>
-              <p className="text-slate-300 text-base leading-relaxed">
+
+              <p className="text-slate-300 text-sm leading-relaxed">
                 Whether you have a new mobile app project, an open engineering role, or a Flutter consultancy request — feel free to send a message!
               </p>
-            </div>
+            </motion.div>
 
             {/* Touchpoints */}
             <div className="space-y-4 pt-2">
