@@ -31,7 +31,9 @@ export const defaultPersonal: IPersonalProfile = {
   phone: "01313997323",
   resumeUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
   github: "https://github.com/Sifat221",
-  portfolio: "https://sifat221.github.io/SifatKhan-portfolio/"
+  portfolio: "https://sifat221.github.io/SifatKhan-portfolio/",
+  linkedin: "https://www.linkedin.com/in/sifat-khan-540a86351/",
+  facebook: "https://facebook.com/sifatk4an.joy"
 };
 
 export const defaultProjects: IProject[] = [

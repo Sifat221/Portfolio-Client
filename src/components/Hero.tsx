@@ -350,7 +350,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 </a>
 
                 <a
-                  href="https://linkedin.com/in/sifatkhan"
+                  href={personal.linkedin || "https://www.linkedin.com/in/sifat-khan-540a86351/"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-sky-400 hover:scale-110 transition-all shadow-md"
@@ -360,7 +360,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 </a>
 
                 <a
-                  href="https://facebook.com/sifatkhan"
+                  href={personal.facebook || "https://facebook.com/sifatk4an.joy"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-blue-500 hover:scale-110 transition-all shadow-md"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Sparkles, MessageCircle } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Sparkles, MessageCircle, Linkedin, Facebook } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { sendContactMessage } from '../services/api';
 import SplitText from './SplitText';
@@ -120,12 +120,48 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                 </div>
               </a>
 
+              {/* LinkedIn */}
+              <a
+                href={personal.linkedin || "https://www.linkedin.com/in/sifat-khan-540a86351/"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 hover:border-sky-400/60 transition-all flex items-center gap-3.5 group shadow-sm"
+              >
+                <div className="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-sky-400 shrink-0 group-hover:scale-105 transition-transform">
+                  <Linkedin className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[11px] text-slate-400 font-mono">LinkedIn Profile</p>
+                  <p className="text-xs sm:text-sm font-bold text-white group-hover:text-sky-400 transition-colors truncate">
+                    linkedin.com/in/sifat-khan-540a86351
+                  </p>
+                </div>
+              </a>
+
+              {/* Facebook */}
+              <a
+                href={personal.facebook || "https://facebook.com/sifatk4an.joy"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 hover:border-blue-500/60 transition-all flex items-center gap-3.5 group shadow-sm"
+              >
+                <div className="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-500 shrink-0 group-hover:scale-105 transition-transform">
+                  <Facebook className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[11px] text-slate-400 font-mono">Facebook Profile</p>
+                  <p className="text-xs sm:text-sm font-bold text-white group-hover:text-blue-500 transition-colors truncate">
+                    facebook.com/sifatk4an.joy
+                  </p>
+                </div>
+              </a>
+
               {/* WhatsApp */}
               <a
                 href="https://wa.me/8801313997323"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 hover:border-[#9B8FCD]/60 transition-all flex items-center gap-3.5 group shadow-sm"
+                className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/60 transition-all flex items-center gap-3.5 group shadow-sm"
               >
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 group-hover:scale-105 transition-transform">
                   <MessageCircle className="w-4 h-4" />

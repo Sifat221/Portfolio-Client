@@ -136,7 +136,7 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
 
               {/* LinkedIn */}
               <a
-                href="https://linkedin.com/in/sifatkhan"
+                href={personal.linkedin || "https://www.linkedin.com/in/sifat-khan-540a86351/"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
@@ -150,7 +150,7 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
 
               {/* Facebook */}
               <a
-                href="https://facebook.com/sifatkhan"
+                href={personal.facebook || "https://facebook.com/sifatk4an.joy"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
