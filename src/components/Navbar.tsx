@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Smartphone, Download, Menu, X } from 'lucide-react';
+import { Smartphone, Menu, X } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 
 interface NavbarProps {
@@ -67,20 +67,6 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
             ))}
           </nav>
 
-          {/* CTA & Resume Button */}
-          <div className="hidden lg:flex items-center gap-3">
-            <a
-              href={personal.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              aria-label="Download Resume PDF"
-            >
-              <Download className="w-4 h-4 group-hover:translate-y-0.5 transition-transform duration-200" />
-              <span>Resume</span>
-            </a>
-          </div>
-
           {/* Mobile Menu Toggle */}
           <div className="flex items-center gap-2 md:hidden">
             <button
@@ -109,17 +95,6 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                 {link.name}
               </a>
             ))}
-            <div className="pt-2 border-t border-slate-800 flex flex-col gap-2">
-              <a
-                href={personal.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-cyan-500 to-indigo-600 shadow-lg shadow-cyan-500/25"
-              >
-                <Download className="w-5 h-5" />
-                <span>Download Resume</span>
-              </a>
-            </div>
           </div>
         </div>
       )}

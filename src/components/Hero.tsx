@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, ArrowRight, Github, Mail, ShieldCheck, Sparkles, Code2, Layers, Cpu } from 'lucide-react';
+import { Smartphone, ArrowRight, Github, Mail, Download, Code2, Layers, Cpu } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 
 interface HeroProps {
@@ -43,7 +43,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               {personal.bio}
             </p>
 
-            {/* Action Buttons */}
+            {/* Action Buttons in Hero Banner */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
               <a
                 href="#projects"
@@ -51,6 +51,16 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               >
                 <span>Explore Mobile Apps</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+
+              <a
+                href={personal.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-7 py-3.5 rounded-xl font-bold text-sm text-white bg-cyan-500/10 border border-cyan-500/40 hover:bg-cyan-500/20 hover:border-cyan-400 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 shadow-lg shadow-cyan-500/10 group"
+              >
+                <Download className="w-4 h-4 text-cyan-400 group-hover:translate-y-0.5 transition-transform" />
+                <span>Download Resume</span>
               </a>
 
               <a
