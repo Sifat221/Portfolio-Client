@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Skills } from './components/Skills';
@@ -8,16 +9,20 @@ import { EducationCertifications } from './components/EducationCertifications';
 import { Achievements } from './components/Achievements';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
+import { Skeleton } from './components/ui/skeleton';
 
 import {
-  getPersonalProfile,
-  getProjects,
-  getSkills,
-  getExperience,
-  getEducation,
-  getCertifications,
-  getAchievements,
-  getTestimonials,
+  usePersonalProfile,
+  useProjects,
+  useSkills,
+  useExperience,
+  useEducation,
+  useCertifications,
+  useAchievements,
+  useTestimonials,
+} from './hooks/usePortfolio';
+
+import {
   defaultPersonal,
   defaultProjects,
   defaultSkills,
@@ -28,28 +33,27 @@ import {
   defaultTestimonials,
 } from './services/api';
 
-import {
-  IPersonalProfile,
-  IProject,
-  ISkill,
-  IExperience,
-  IEducation,
-  ICertification,
-  IAchievement,
-  ITestimonial,
-} from './types/portfolio';
 import { Smartphone, Loader2 } from 'lucide-react';
 
-export const App: React.FC = () => {
-  const [personal, setPersonal] = useState<IPersonalProfile>(defaultPersonal);
-  const [projects, setProjects] = useState<IProject[]>(defaultProjects);
-  const [skills, setSkills] = useState<ISkill[]>(defaultSkills);
-  const [experience, setExperience] = useState<IExperience[]>(defaultExperience);
-  const [education, setEducation] = useState<IEducation[]>(defaultEducation);
-  const [certifications, setCertifications] = useState<ICertification[]>(defaultCertifications);
-  const [achievements, setAchievements] = useState<IAchievement[]>(defaultAchievements);
-  const [testimonials, setTestimonials] = useState<ITestimonial[]>(defaultTestimonials);
-  const [loading, setLoading] = useState<boolean>(true);
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
+
+const PortfolioContent: React.FC = () => {
+  const { data: personal = defaultPersonal, isLoading: isPersonalLoading } = usePersonalProfile();
+  const { data: projects = defaultProjects, isLoading: isProjectsLoading } = useProjects();
+  const { data: skills = defaultSkills } = useSkills();
+  const { data: experience = defaultExperience } = useExperience();
+  const { data: education = defaultEducation } = useEducation();
+  const { data: certifications = defaultCertifications } = useCertifications();
+  const { data: achievements = defaultAchievements } = useAchievements();
+  const { data: testimonials = defaultTestimonials } = useTestimonials();
+
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   const toggleTheme = () => {
@@ -62,47 +66,6 @@ export const App: React.FC = () => {
       document.documentElement.classList.add('dark');
     }
   };
-
-  useEffect(() => {
-    async function loadPortfolioData() {
-      try {
-        const [
-          personalRes,
-          projectsRes,
-          skillsRes,
-          expRes,
-          eduRes,
-          certRes,
-          achRes,
-          testRes,
-        ] = await Promise.all([
-          getPersonalProfile(),
-          getProjects(),
-          getSkills(),
-          getExperience(),
-          getEducation(),
-          getCertifications(),
-          getAchievements(),
-          getTestimonials(),
-        ]);
-
-        if (personalRes) setPersonal(personalRes);
-        if (projectsRes) setProjects(projectsRes);
-        if (skillsRes) setSkills(skillsRes);
-        if (expRes) setExperience(expRes);
-        if (eduRes) setEducation(eduRes);
-        if (certRes) setCertifications(certRes);
-        if (achRes) setAchievements(achRes);
-        if (testRes) setTestimonials(testRes);
-      } catch (err) {
-        console.warn('Error loading backend data, using default data:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadPortfolioData();
-  }, []);
 
   // JSON-LD Structured Data Injection for SEO
   useEffect(() => {
@@ -134,9 +97,9 @@ export const App: React.FC = () => {
     scriptTag.textContent = JSON.stringify(schemaData);
   }, [personal]);
 
-  if (loading) {
+  if (isPersonalLoading || isProjectsLoading) {
     return (
-      <div className="min-h-screen bg-[#090D16] flex flex-col items-center justify-center text-white space-y-4">
+      <div className="min-h-screen bg-[#090D16] flex flex-col items-center justify-center text-white space-y-6 px-4">
         <div className="relative flex items-center justify-center">
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 p-[2px] animate-pulse">
             <div className="w-full h-full bg-[#090D16] rounded-[14px] flex items-center justify-center">
@@ -144,10 +107,16 @@ export const App: React.FC = () => {
             </div>
           </div>
         </div>
-        <p className="text-xs font-mono text-cyan-400 tracking-wider flex items-center gap-2">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          Connecting to Portfolio Backend Server...
-        </p>
+        <div className="text-center space-y-2 max-w-sm">
+          <p className="text-sm font-mono text-cyan-400 flex items-center justify-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Fetching Data with TanStack Query & Axios...
+          </p>
+          <div className="space-y-2 pt-2">
+            <Skeleton className="h-4 w-48 mx-auto" />
+            <Skeleton className="h-3 w-32 mx-auto" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -171,6 +140,14 @@ export const App: React.FC = () => {
       {/* Footer */}
       <Footer personal={personal} />
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <PortfolioContent />
+    </QueryClientProvider>
   );
 };
 
