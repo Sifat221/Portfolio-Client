@@ -327,8 +327,21 @@ html.light .border-slate-700\/60 {
 }
 
 html.light header {
-  background-color: rgba(255, 255, 255, 0.92) !important;
-  border-color: rgba(226, 232, 240, 0.8) !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(226, 232, 240, 0.85) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light header .text-white {
+  color: #0F172A !important;
+}
+
+html.light header a {
+  color: #0F172A !important;
+}
+
+html.light header button {
+  color: #0F172A !important;
 }
 
 html.light [role="dialog"] {

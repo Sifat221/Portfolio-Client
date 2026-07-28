@@ -234,3 +234,29 @@
     opacity: 0;
   }
 }
+
+/* ================= LIGHT MODE OVERRIDES ================= */
+html.light .gooey-nav-container nav ul {
+  color: #0F172A !important;
+  text-shadow: none !important;
+}
+
+html.light .gooey-nav-container nav ul li {
+  color: #0F172A !important;
+}
+
+html.light .gooey-nav-container nav ul li a {
+  color: #0F172A !important;
+}
+
+html.light .gooey-nav-container nav ul li.active {
+  color: #FFFFFF !important;
+}
+
+html.light .gooey-nav-container .effect.text {
+  color: #0F172A !important;
+}
+
+html.light .gooey-nav-container .effect.text.active {
+  color: #FFFFFF !important;
+}
