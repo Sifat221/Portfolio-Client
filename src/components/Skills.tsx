@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Cpu, Layers, Database, Smartphone, Wrench } from 'lucide-react';
 import { ISkill } from '../types/portfolio';
 
@@ -30,7 +31,13 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
 
   return (
     <section id="skills" className="py-24 relative bg-slate-50/60 border-y border-slate-100">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, margin: '-80px' }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+        className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
+      >
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold">
@@ -76,8 +83,12 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
         {/* Skills Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredSkills.map((skill, index) => (
-            <div
+            <motion.div
               key={skill.name + index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
               className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all duration-300 group"
             >
               <div className="flex items-start justify-between mb-4">
@@ -119,10 +130,10 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
                   }`}
                 ></div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

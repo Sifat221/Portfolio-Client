@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Sparkles } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { sendContactMessage } from '../services/api';
@@ -41,7 +42,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
 
   return (
     <section id="contact" className="py-24 relative bg-white border-t border-slate-100">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, margin: '-80px' }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+        className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Direct Info */}
           <div className="lg:col-span-5 space-y-8">
@@ -204,7 +211,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

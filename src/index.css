@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
+section {
+  scroll-margin-top: 5.5rem;
+}
+
 @layer base {
   body {
     background-color: #FFFFFF;
@@ -10,7 +18,7 @@
   }
 }
 
-/* Glassmorphism & Light Reference Theme Classes */
+/* Glassmorphic & Modern Theme Classes */
 .glass-panel {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);

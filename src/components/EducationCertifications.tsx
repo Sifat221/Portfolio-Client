@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { GraduationCap, Award, BookOpen, ExternalLink, Calendar } from 'lucide-react';
 import { IEducation, ICertification } from '../types/portfolio';
 
@@ -13,7 +14,13 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
 }) => {
   return (
     <section id="education" className="py-24 relative bg-white border-t border-slate-100">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, margin: '-80px' }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+        className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Education Column */}
           <div className="space-y-8">
@@ -29,8 +36,12 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
 
             <div className="space-y-6">
               {education.map((edu, index) => (
-                <div
+                <motion.div
                   key={edu.id || index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
                   className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all duration-300 space-y-4"
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -66,7 +77,7 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                       </div>
                     </div>
                   )}
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -85,8 +96,12 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
 
             <div className="space-y-6">
               {certifications.map((cert, index) => (
-                <div
+                <motion.div
                   key={cert.id || index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
                   className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all duration-300 flex items-center justify-between gap-4"
                 >
                   <div className="flex items-center gap-4">
@@ -116,12 +131,12 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                       <ExternalLink className="w-4 h-4" />
                     </a>
                   )}
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

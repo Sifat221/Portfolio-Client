@@ -1,5 +1,6 @@
 import React from 'react';
-import { Briefcase, Calendar, CheckCircle2, MapPin, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Briefcase, Calendar, CheckCircle2, MapPin } from 'lucide-react';
 import { IExperience } from '../types/portfolio';
 
 interface ExperienceTimelineProps {
@@ -9,7 +10,13 @@ interface ExperienceTimelineProps {
 export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({ experience }) => {
   return (
     <section id="experience" className="py-24 relative bg-slate-50/60 border-t border-slate-100">
-      <div className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, margin: '-80px' }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+        className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
+      >
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold">
@@ -27,7 +34,14 @@ export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({ experien
         {/* Timeline Container */}
         <div className="relative border-l-2 border-slate-200 ml-4 sm:ml-8 space-y-12 pl-6 sm:pl-10">
           {experience.map((exp, index) => (
-            <div key={exp.id || index} className="relative group">
+            <motion.div
+              key={exp.id || index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="relative group"
+            >
               {/* Floating Timeline Icon Dot */}
               <div className="absolute -left-[31px] sm:-left-[47px] top-1.5 w-10 h-10 rounded-2xl bg-white border-2 border-indigo-500 text-indigo-600 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
                 <Briefcase className="w-5 h-5" />
@@ -86,10 +100,10 @@ export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({ experien
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Smartphone, ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 import { IProject } from '../types/portfolio';
 import { ProjectModal } from './ProjectModal';
@@ -20,7 +21,13 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
 
   return (
     <section id="projects" className="py-24 relative bg-white">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, margin: '-80px' }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+        className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
+      >
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold">
@@ -54,9 +61,13 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
 
         {/* Projects Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
-            <div
+          {filteredProjects.map((project, index) => (
+            <motion.div
               key={project.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
               className="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm flex flex-col group hover:shadow-xl hover:border-indigo-300 transition-all duration-300"
             >
               {/* Thumbnail Container */}
@@ -145,10 +156,10 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Case Study Modal */}
       <ProjectModal
