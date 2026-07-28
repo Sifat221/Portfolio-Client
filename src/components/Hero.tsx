@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Download, Feather, Palette, Compass, Cloud } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Video, Sparkles } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 
 interface HeroProps {
@@ -8,14 +8,16 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ personal }) => {
+  const [activeBannerIdx, setActiveBannerIdx] = useState(0);
+
   // Generate 35 unique snowflakes with random positions, sizes, delays, and speeds
   const snowflakes = useMemo(() => {
     return Array.from({ length: 35 }).map((_, index) => {
-      const left = Math.random() * 100; // 0% to 100% width
-      const size = Math.random() * 4 + 2; // 2px to 6px
-      const duration = Math.random() * 8 + 6; // 6s to 14s duration
-      const delay = Math.random() * 8; // 0s to 8s delay
-      const opacity = Math.random() * 0.7 + 0.3; // 0.3 to 1.0 opacity
+      const left = Math.random() * 100;
+      const size = Math.random() * 4 + 2;
+      const duration = Math.random() * 8 + 6;
+      const delay = Math.random() * 8;
+      const opacity = Math.random() * 0.7 + 0.3;
 
       return {
         id: index,
@@ -29,85 +31,139 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
     });
   }, []);
 
+  const banners = [
+    {
+      id: 'banner_1',
+      type: 'snowfall_clouds',
+      badge: 'Flutter & Clean Architecture',
+      titleMain: "Let's Work Together to Create ",
+      titleGradient: "Mobile Wonders with Us",
+      subtitle: "A visionary Flutter & Mobile Application Developer, crafting captivating mobile experiences through art and clean code. Adept at turning imagination into extraordinary digital reality.",
+    },
+    {
+      id: 'banner_2',
+      type: 'video',
+      badge: 'Video Background & Engineering Showcase',
+      titleMain: "Architecting High-Performance ",
+      titleGradient: "Flutter Applications & Systems",
+      subtitle: "Engineered with BLoC, GetX, Clean Architecture & REST/Firebase APIs to deliver seamless 60fps cross-platform mobile app ecosystems.",
+      videoUrl: "/banner_video.mp4",
+      fallbackVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-code-running-on-a-computer-screen-23583-large.mp4",
+    },
+  ];
+
+  const handlePrevBanner = () => {
+    setActiveBannerIdx((prev) => (prev - 1 + banners.length) % banners.length);
+  };
+
+  const handleNextBanner = () => {
+    setActiveBannerIdx((prev) => (prev + 1) % banners.length);
+  };
+
+  const currentBanner = banners[activeBannerIdx];
+
   return (
     <section id="about" className="relative pt-36 pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-[#090D16]">
-      {/* ================= ANIMATED SNOWFALL & FLOATING CLOUDS BACKDROP ================= */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-        {/* 1. Animated Snowfall Particles */}
-        {snowflakes.map((flake) => (
-          <div
-            key={flake.id}
-            className="snowflake-particle"
-            style={{
-              left: flake.left,
-              width: flake.width,
-              height: flake.height,
-              animationDuration: flake.animationDuration,
-              animationDelay: flake.animationDelay,
-              opacity: flake.opacity,
-            }}
-          />
-        ))}
+      {/* ================= DUAL BANNER BACKDROP (SNOWFALL/CLOUDS vs VIDEO) ================= */}
+      <AnimatePresence mode="wait">
+        {currentBanner.type === 'snowfall_clouds' ? (
+          <motion.div
+            key="snow_backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 pointer-events-none overflow-hidden z-0"
+          >
+            {/* 1. Snowfall Particles */}
+            {snowflakes.map((flake) => (
+              <div
+                key={flake.id}
+                className="snowflake-particle"
+                style={{
+                  left: flake.left,
+                  width: flake.width,
+                  height: flake.height,
+                  animationDuration: flake.animationDuration,
+                  animationDelay: flake.animationDelay,
+                  opacity: flake.opacity,
+                }}
+              />
+            ))}
 
-        {/* 2. Animated Floating Cloud Layer 1 - Top Left */}
-        <div className="absolute -top-10 -left-20 w-[600px] h-[350px] bg-gradient-to-r from-[#9B8FCD]/30 via-indigo-600/20 to-transparent rounded-full blur-[110px] animate-cloud-slow-1"></div>
+            {/* 2. Floating Clouds (Megh) */}
+            <div className="absolute -top-10 -left-20 w-[600px] h-[350px] bg-gradient-to-r from-[#9B8FCD]/30 via-indigo-600/20 to-transparent rounded-full blur-[110px] animate-cloud-slow-1"></div>
+            <div className="absolute top-10 -right-20 w-[650px] h-[400px] bg-gradient-to-l from-cyan-500/25 via-indigo-500/20 to-transparent rounded-full blur-[120px] animate-cloud-slow-2"></div>
+            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-tr from-[#9B8FCD]/20 via-purple-600/15 to-cyan-400/15 rounded-full blur-[140px] animate-cloud-slow-3"></div>
 
-        {/* 3. Animated Floating Cloud Layer 2 - Top Right */}
-        <div className="absolute top-10 -right-20 w-[650px] h-[400px] bg-gradient-to-l from-cyan-500/25 via-indigo-500/20 to-transparent rounded-full blur-[120px] animate-cloud-slow-2"></div>
-
-        {/* 4. Animated Floating Cloud Layer 3 - Center Atmospheric Cloud */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-tr from-[#9B8FCD]/20 via-purple-600/15 to-cyan-400/15 rounded-full blur-[140px] animate-cloud-slow-3"></div>
-
-        {/* 5. Floating Cloud Graphic Orbs */}
-        <div className="absolute top-24 left-[15%] text-[#9B8FCD]/20 animate-cloud-slow-1">
-          <Cloud className="w-32 h-32 blur-[1px]" />
-        </div>
-        <div className="absolute top-36 right-[12%] text-cyan-400/20 animate-cloud-slow-2">
-          <Cloud className="w-40 h-40 blur-[2px]" />
-        </div>
-        <div className="absolute bottom-20 left-[40%] text-indigo-400/15 animate-cloud-slow-3">
-          <Cloud className="w-48 h-48 blur-[3px]" />
-        </div>
-      </div>
+            <div className="absolute top-24 left-[15%] text-[#9B8FCD]/20 animate-cloud-slow-1">
+              <Cloud className="w-32 h-32 blur-[1px]" />
+            </div>
+            <div className="absolute top-36 right-[12%] text-cyan-400/20 animate-cloud-slow-2">
+              <Cloud className="w-40 h-40 blur-[2px]" />
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="video_backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 pointer-events-none overflow-hidden z-0"
+          >
+            {/* Video Background with Dark Overlay */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover opacity-25 filter contrast-125 saturate-150"
+            >
+              <source src="/banner_video.mp4" type="video/mp4" />
+              <source src={currentBanner.fallbackVideoUrl} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#090D16]/90 via-[#090D16]/75 to-[#090D16]"></div>
+            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#9B8FCD]/20 rounded-full blur-[140px]"></div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* ========================================================================= */}
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Side: Headline, Subtitle, Pill Buttons & Stats */}
+          {/* Left Side: Dynamic Banner Content */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            key={currentBanner.id}
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
             className="lg:col-span-6 space-y-8 text-center lg:text-left"
           >
-            {/* Clean Headline */}
-            <div className="space-y-4">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="text-4xl sm:text-6xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight"
-              >
-                Let's Work Together to Create <span className="text-gradient-periwinkle">Mobile Wonders</span> with Us
-              </motion.h1>
+            {/* Banner Category Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-mono font-bold shadow-lg">
+              {currentBanner.type === 'video' ? (
+                <Video className="w-4 h-4 text-cyan-400 animate-pulse" />
+              ) : (
+                <Sparkles className="w-4 h-4 text-amber-400 animate-bounce" />
+              )}
+              <span>{currentBanner.badge}</span>
+            </div>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal"
-              >
-                A visionary Flutter & Mobile Application Developer, crafting captivating mobile experiences through art and clean code. Adept at turning imagination into extraordinary digital reality.
-              </motion.p>
+            {/* Headline */}
+            <div className="space-y-4">
+              <h1 className="text-4xl sm:text-6xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight">
+                {currentBanner.titleMain}
+                <span className="text-gradient-periwinkle">{currentBanner.titleGradient}</span>
+              </h1>
+
+              <p className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                {currentBanner.subtitle}
+              </p>
             </div>
 
             {/* Periwinkle Action Pill Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2"
-            >
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
               <a
                 href="#contact"
                 className="px-8 py-3.5 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9B8FCD] via-indigo-600 to-cyan-500 hover:from-[#8B7DBE] hover:to-cyan-400 shadow-xl shadow-[#9B8FCD]/30 hover:scale-105 active:scale-95 transition-all duration-200"
@@ -124,15 +180,10 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 <Download className="w-4 h-4 text-[#9B8FCD]" />
                 <span>Download Resume</span>
               </a>
-            </motion.div>
+            </div>
 
             {/* High Impact Stats Row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="pt-10 border-t border-slate-800/80 grid grid-cols-3 gap-6 max-w-lg mx-auto lg:mx-0"
-            >
+            <div className="pt-8 border-t border-slate-800/80 grid grid-cols-3 gap-6 max-w-lg mx-auto lg:mx-0">
               <div className="text-center lg:text-left space-y-1">
                 <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">7+</p>
                 <p className="text-xs text-slate-400 font-medium leading-tight">flagship apps<br />deployed</p>
@@ -145,7 +196,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 <p className="text-3xl sm:text-4xl font-extrabold text-cyan-400 tracking-tight">99.8%</p>
                 <p className="text-xs text-slate-400 font-medium leading-tight">crash-free<br />rate</p>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
 
           {/* Right Side: Male Developer Portrait Image with Floating Badges */}
@@ -198,6 +249,55 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             </div>
           </motion.div>
         </div>
+
+        {/* ================= BANNER SWITCHER ARROW CONTROLS (< & >) ================= */}
+        <div className="pt-6 border-t border-slate-800/80 flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-slate-400 font-bold uppercase tracking-wider">
+              Banner Theme:
+            </span>
+            <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-[#9B8FCD] border border-slate-700/80">
+              {activeBannerIdx === 0 ? '☁️ Snowfall & Cloud Animated Backdrop' : '🎥 Video Background Backdrop (public/banner_video.mp4)'}
+            </span>
+          </div>
+
+          {/* Left (<) and Right (>) Navigation Buttons */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handlePrevBanner}
+              className="p-3 rounded-full glass-card border border-slate-700 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
+              aria-label="Previous Banner"
+            >
+              <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+              <span className="text-xs font-mono font-bold pr-1">Previous Banner</span>
+            </button>
+
+            <div className="flex items-center gap-1.5 px-2">
+              {banners.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveBannerIdx(idx)}
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    activeBannerIdx === idx
+                      ? 'w-8 bg-[#9B8FCD] shadow-md shadow-[#9B8FCD]'
+                      : 'w-2.5 bg-slate-800 hover:bg-slate-700'
+                  }`}
+                  aria-label={`Go to banner ${idx + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={handleNextBanner}
+              className="p-3 rounded-full glass-card border border-slate-700 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
+              aria-label="Next Banner"
+            >
+              <span className="text-xs font-mono font-bold pl-1">Next Banner</span>
+              <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+            </button>
+          </div>
+        </div>
+        {/* ========================================================================= */}
       </div>
     </section>
   );

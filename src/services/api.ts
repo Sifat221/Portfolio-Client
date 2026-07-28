@@ -123,12 +123,44 @@ export const defaultProjects: IProject[] = [
 ];
 
 export const defaultSkills: ISkill[] = [
-  { name: "Flutter & Dart", category: "Core Mobile", proficiency: "Expert" },
-  { name: "BLoC / Cubit & GetX", category: "State Management", proficiency: "Expert" },
-  { name: "Clean Architecture", category: "Architecture", proficiency: "Expert" },
-  { name: "REST API & Firebase", category: "Backend & Cloud", proficiency: "Expert" },
-  { name: "Android Studio & Java", category: "Native Mobile", proficiency: "Advanced" },
-  { name: "Git & CI/CD", category: "Tools & DevOps", proficiency: "Advanced" }
+  // Languages
+  { name: "Dart", category: "Languages", proficiency: "Expert" },
+  { name: "Java", category: "Languages", proficiency: "Advanced" },
+  { name: "Kotlin", category: "Languages", proficiency: "Intermediate" },
+  { name: "OOP (Object-Oriented Programming)", category: "Languages", proficiency: "Expert" },
+
+  // Flutter Core
+  { name: "Flutter SDK", category: "Flutter Framework", proficiency: "Expert" },
+  { name: "Clean Architecture", category: "Flutter Framework", proficiency: "Expert" },
+  { name: "Custom Widgets & Animations", category: "Flutter Framework", proficiency: "Expert" },
+  { name: "Responsive Mobile Layouts", category: "Flutter Framework", proficiency: "Expert" },
+  { name: "Clean UI & Theme Design", category: "Flutter Framework", proficiency: "Expert" },
+
+  // State Management
+  { name: "BLoC & Cubit", category: "State Management", proficiency: "Expert" },
+  { name: "GetX", category: "State Management", proficiency: "Expert" },
+  { name: "Provider", category: "State Management", proficiency: "Advanced" },
+
+  // Backend & Cloud
+  { name: "RESTful API Integration", category: "Backend & Cloud", proficiency: "Expert" },
+  { name: "Firebase (Auth, FCM, Storage)", category: "Backend & Cloud", proficiency: "Expert" },
+
+  // Databases
+  { name: "Cloud Firestore", category: "Databases", proficiency: "Expert" },
+  { name: "Firebase Realtime DB", category: "Databases", proficiency: "Advanced" },
+  { name: "SQLite / Shared Preferences", category: "Databases", proficiency: "Expert" },
+
+  // Tools & Design
+  { name: "Git & GitHub", category: "Tools & DevOps", proficiency: "Expert" },
+  { name: "Postman API Testing", category: "Tools & DevOps", proficiency: "Expert" },
+  { name: "Android Studio & VS Code", category: "Tools & DevOps", proficiency: "Expert" },
+  { name: "Figma UI/UX Design", category: "Tools & DevOps", proficiency: "Advanced" },
+
+  // Soft Skills
+  { name: "Team Collaboration", category: "Soft Skills", proficiency: "Expert" },
+  { name: "Problem Solving & Debugging", category: "Soft Skills", proficiency: "Expert" },
+  { name: "Detail-Oriented Engineering", category: "Soft Skills", proficiency: "Expert" },
+  { name: "Project Scalability", category: "Soft Skills", proficiency: "Expert" }
 ];
 
 export const defaultExperience: IExperience[] = [
@@ -296,7 +328,11 @@ export async function getProjects(): Promise<IProject[]> {
 export async function getSkills(): Promise<ISkill[]> {
   try {
     const response = await api.get('/skills');
-    if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
+    if (
+      response.data?.success &&
+      Array.isArray(response.data?.data) &&
+      response.data.data.length >= 10
+    ) {
       return response.data.data;
     }
   } catch (err) {
