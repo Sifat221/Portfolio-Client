@@ -9,6 +9,10 @@ export interface IPersonalProfile {
   resumeUrl: string;
   github: string;
   portfolio: string;
+  profilePhoto?: string;
+  linkedin?: string;
+  facebook?: string;
+  whatsapp?: string;
 }
 
 export interface IProject {
@@ -85,3 +89,25 @@ export interface IContactForm {
   subject?: string;
   message: string;
 }
+
+// Admin types
+export type SectionName =
+  | 'personal'
+  | 'projects'
+  | 'skills'
+  | 'experience'
+  | 'education'
+  | 'certifications'
+  | 'achievements'
+  | 'testimonials';
+
+export type SectionDataMap = {
+  personal: IPersonalProfile;
+  projects: IProject;
+  skills: ISkill;
+  experience: IExperience;
+  education: IEducation;
+  certifications: ICertification;
+  achievements: IAchievement;
+  testimonials: ITestimonial;
+};

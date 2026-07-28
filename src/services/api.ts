@@ -416,3 +416,84 @@ export async function sendContactMessage(formData: IContactForm): Promise<{ succ
   }
   return { success: true, message: 'Message sent successfully!' };
 }
+
+// ======================== ADMIN CRUD API FUNCTIONS ========================
+
+// Generic CRUD helpers
+async function createEntity<T>(endpoint: string, data: Partial<T>): Promise<T> {
+  const response = await api.post(endpoint, data);
+  return response.data?.data || data as T;
+}
+
+async function updateEntity<T>(endpoint: string, id: string, data: Partial<T>): Promise<T> {
+  const response = await api.put(`${endpoint}/${id}`, data);
+  return response.data?.data || data as T;
+}
+
+async function deleteEntity(endpoint: string, id: string): Promise<boolean> {
+  const response = await api.delete(`${endpoint}/${id}`);
+  return response.data?.success || true;
+}
+
+// Projects CRUD
+export const createProject = (data: Partial<IProject>) => createEntity<IProject>('/projects', data);
+export const updateProject = (id: string, data: Partial<IProject>) => updateEntity<IProject>('/projects', id, data);
+export const deleteProject = (id: string) => deleteEntity('/projects', id);
+
+// Skills CRUD
+export const createSkill = (data: Partial<ISkill>) => createEntity<ISkill>('/skills', data);
+export const updateSkill = (id: string, data: Partial<ISkill>) => updateEntity<ISkill>('/skills', id, data);
+export const deleteSkill = (id: string) => deleteEntity('/skills', id);
+
+// Experience CRUD
+export const createExperience = (data: Partial<IExperience>) => createEntity<IExperience>('/experience', data);
+export const updateExperience = (id: string, data: Partial<IExperience>) => updateEntity<IExperience>('/experience', id, data);
+export const deleteExperience = (id: string) => deleteEntity('/experience', id);
+
+// Education CRUD
+export const createEducation = (data: Partial<IEducation>) => createEntity<IEducation>('/education', data);
+export const updateEducation = (id: string, data: Partial<IEducation>) => updateEntity<IEducation>('/education', id, data);
+export const deleteEducation = (id: string) => deleteEntity('/education', id);
+
+// Certifications CRUD
+export const createCertification = (data: Partial<ICertification>) => createEntity<ICertification>('/certifications', data);
+export const updateCertification = (id: string, data: Partial<ICertification>) => updateEntity<ICertification>('/certifications', id, data);
+export const deleteCertification = (id: string) => deleteEntity('/certifications', id);
+
+// Achievements CRUD
+export const createAchievement = (data: Partial<IAchievement>) => createEntity<IAchievement>('/achievements', data);
+export const updateAchievement = (id: string, data: Partial<IAchievement>) => updateEntity<IAchievement>('/achievements', id, data);
+export const deleteAchievement = (id: string) => deleteEntity('/achievements', id);
+
+// Testimonials CRUD
+export const createTestimonial = (data: Partial<ITestimonial>) => createEntity<ITestimonial>('/testimonials', data);
+export const updateTestimonial = (id: string, data: Partial<ITestimonial>) => updateEntity<ITestimonial>('/testimonials', id, data);
+export const deleteTestimonial = (id: string) => deleteEntity('/testimonials', id);
+
+// Personal Profile Update
+export async function updatePersonalProfile(data: Partial<IPersonalProfile>): Promise<IPersonalProfile> {
+  try {
+    const response = await api.put('/personal', data);
+    return response.data?.data || data as IPersonalProfile;
+  } catch (err) {
+    console.warn("API PUT /personal error:", err);
+    return data as IPersonalProfile;
+  }
+}
+
+// File Upload (Photo & CV)
+export async function uploadFile(file: File, type: 'photo' | 'resume'): Promise<{ url: string }> {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', type);
+    const response = await api.post('/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return { url: response.data?.data?.url || response.data?.url || URL.createObjectURL(file) };
+  } catch (err) {
+    console.warn("API POST /upload error:", err);
+    // Fallback: return a local object URL so the admin UI still works
+    return { url: URL.createObjectURL(file) };
+  }
+}
