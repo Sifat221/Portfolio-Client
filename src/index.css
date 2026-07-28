@@ -76,6 +76,49 @@ section {
   animation: floatSlow 5s ease-in-out infinite;
 }
 
+/* Animated Floating Cloud (Megh) Effects for Header */
+@keyframes cloudDriftLeft {
+  0% {
+    transform: translateX(-15%) translateY(0px) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateX(15%) translateY(-25px) scale(1.1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(-15%) translateY(0px) scale(1);
+    opacity: 0.35;
+  }
+}
+
+@keyframes cloudDriftRight {
+  0% {
+    transform: translateX(15%) translateY(0px) scale(1.05);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateX(-15%) translateY(-30px) scale(0.95);
+    opacity: 0.65;
+  }
+  100% {
+    transform: translateX(15%) translateY(0px) scale(1.05);
+    opacity: 0.4;
+  }
+}
+
+.animate-cloud-slow-1 {
+  animation: cloudDriftLeft 20s ease-in-out infinite;
+}
+
+.animate-cloud-slow-2 {
+  animation: cloudDriftRight 26s ease-in-out infinite;
+}
+
+.animate-cloud-slow-3 {
+  animation: cloudDriftLeft 32s ease-in-out 4s infinite;
+}
+
 /* Custom Dark Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

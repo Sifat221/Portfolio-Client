@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Download, Feather, Palette, Compass } from 'lucide-react';
+import { Download, Feather, Palette, Compass, Cloud } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 
 interface HeroProps {
@@ -10,9 +10,29 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ personal }) => {
   return (
     <section id="about" className="relative pt-36 pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-[#090D16]">
-      {/* Dark Periwinkle & Neon Cyan Backdrop Aura */}
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[650px] h-[650px] bg-gradient-to-tr from-[#9B8FCD]/30 via-indigo-600/20 to-cyan-500/20 rounded-full blur-[130px] pointer-events-none"></div>
-      <div className="absolute top-10 left-10 w-96 h-96 bg-[#9B8FCD]/15 rounded-full blur-[100px] pointer-events-none"></div>
+      {/* ================= ANIMATED FLOATING CLOUDS (MEGH) BACKDROP ================= */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        {/* Animated Cloud Layer 1 - Top Left Cloud */}
+        <div className="absolute -top-10 -left-20 w-[600px] h-[350px] bg-gradient-to-r from-[#9B8FCD]/30 via-indigo-600/20 to-transparent rounded-full blur-[110px] animate-cloud-slow-1"></div>
+
+        {/* Animated Cloud Layer 2 - Top Right Cloud */}
+        <div className="absolute top-10 -right-20 w-[650px] h-[400px] bg-gradient-to-l from-cyan-500/25 via-indigo-500/20 to-transparent rounded-full blur-[120px] animate-cloud-slow-2"></div>
+
+        {/* Animated Cloud Layer 3 - Center Atmospheric Cloud */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-tr from-[#9B8FCD]/20 via-purple-600/15 to-cyan-400/15 rounded-full blur-[140px] animate-cloud-slow-3"></div>
+
+        {/* Floating Cloud Graphic Orbs */}
+        <div className="absolute top-24 left-[15%] text-[#9B8FCD]/20 animate-cloud-slow-1">
+          <Cloud className="w-32 h-32 blur-[1px]" />
+        </div>
+        <div className="absolute top-36 right-[12%] text-cyan-400/20 animate-cloud-slow-2">
+          <Cloud className="w-40 h-40 blur-[2px]" />
+        </div>
+        <div className="absolute bottom-20 left-[40%] text-indigo-400/15 animate-cloud-slow-3">
+          <Cloud className="w-48 h-48 blur-[3px]" />
+        </div>
+      </div>
+      {/* ========================================================================= */}
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
