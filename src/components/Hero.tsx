@@ -12,11 +12,11 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
   const [activeBannerIdx, setActiveBannerIdx] = useState(0);
   const totalBanners = 3;
 
-  // Auto-switch background theme every 10 seconds
+  // Auto-switch background theme every 30 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveBannerIdx((prev) => (prev + 1) % totalBanners);
-    }, 10000);
+    }, 30000);
 
     return () => clearInterval(timer);
   }, [totalBanners]);
