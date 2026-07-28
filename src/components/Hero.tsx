@@ -406,27 +406,27 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               </div>
 
               {/* Floating Badge 1 */}
-              <div className="absolute top-12 -right-4 sm:-right-8 z-20 glass-panel px-5 py-2.5 rounded-full border border-[#9B8FCD]/40 shadow-2xl flex items-center gap-3 animate-float">
-                <div className="w-8 h-8 rounded-full bg-[#9B8FCD]/20 flex items-center justify-center text-[#9B8FCD]">
-                  <Feather className="w-4 h-4" />
+              <div className="absolute top-8 right-0 sm:-right-6 z-20 glass-panel px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-[#9B8FCD]/40 shadow-2xl flex items-center gap-2.5 sm:gap-3 animate-float">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#9B8FCD]/20 flex items-center justify-center text-[#9B8FCD]">
+                  <Feather className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <span className="text-xs font-extrabold text-white tracking-tight">Flutter & Dart</span>
+                <span className="text-[11px] sm:text-xs font-extrabold text-white tracking-tight">Flutter & Dart</span>
               </div>
 
               {/* Floating Badge 2 */}
-              <div className="absolute top-1/2 -right-8 sm:-right-12 z-20 glass-panel px-5 py-2.5 rounded-full border border-indigo-500/40 shadow-2xl flex items-center gap-3 animate-float [animation-delay:2s]">
-                <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-                  <Palette className="w-4 h-4" />
+              <div className="absolute top-1/2 right-2 sm:-right-10 z-20 glass-panel px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-indigo-500/40 shadow-2xl flex items-center gap-2.5 sm:gap-3 animate-float [animation-delay:2s]">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                  <Palette className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <span className="text-xs font-extrabold text-white tracking-tight">Clean Architecture</span>
+                <span className="text-[11px] sm:text-xs font-extrabold text-white tracking-tight">Clean Architecture</span>
               </div>
 
               {/* Floating Badge 3 */}
-              <div className="absolute bottom-12 -right-4 sm:-right-8 z-20 glass-panel px-5 py-2.5 rounded-full border border-cyan-500/40 shadow-2xl flex items-center gap-3 animate-float [animation-delay:4s]">
-                <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
-                  <Compass className="w-4 h-4" />
+              <div className="absolute bottom-8 right-0 sm:-right-6 z-20 glass-panel px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-cyan-500/40 shadow-2xl flex items-center gap-2.5 sm:gap-3 animate-float [animation-delay:4s]">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                  <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <span className="text-xs font-extrabold text-white tracking-tight">REST & Firebase</span>
+                <span className="text-[11px] sm:text-xs font-extrabold text-white tracking-tight">REST & Firebase</span>
               </div>
             </div>
           </motion.div>
