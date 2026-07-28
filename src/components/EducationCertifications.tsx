@@ -8,13 +8,13 @@ interface EducationCertificationsProps {
   certifications: ICertification[];
 }
 
-// Letter-by-Letter Staggered Typewriter Text Reveal Component
-const StaggeredTitle: React.FC<{ text: string; gradientText?: string }> = ({ text, gradientText }) => {
+// Letter-by-Letter Staggered Typewriter Text Reveal for the ENTIRE Title
+const StaggeredTitle: React.FC<{ fullText: string }> = ({ fullText }) => {
   const container: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.04, delayChildren: 0.1 },
+      transition: { staggerChildren: 0.035, delayChildren: 0.1 },
     },
   };
 
@@ -36,8 +36,7 @@ const StaggeredTitle: React.FC<{ text: string; gradientText?: string }> = ({ tex
     },
   };
 
-  const mainLetters = Array.from(text);
-  const gradientLetters = gradientText ? Array.from(gradientText) : [];
+  const allLetters = Array.from(fullText);
 
   return (
     <motion.h2
@@ -45,23 +44,26 @@ const StaggeredTitle: React.FC<{ text: string; gradientText?: string }> = ({ tex
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false }}
-      className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight flex flex-wrap justify-center items-center gap-[0.02em]"
+      className="text-3xl sm:text-5xl font-extrabold tracking-tight flex flex-wrap justify-center items-center gap-[0.02em]"
     >
-      {mainLetters.map((char, index) => (
-        <motion.span variants={child} key={`main-${index}`} className="inline-block">
-          {char === ' ' ? '\u00A0' : char}
-        </motion.span>
-      ))}
+      {allLetters.map((char, index) => {
+        // "Education & " (indices 0-11) is White; "Certifications" (indices 12+) is Animated Periwinkle Gradient
+        const isCertificationsPart = index >= 12;
 
-      {gradientLetters.length > 0 && (
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400 inline-flex flex-wrap">
-          {gradientLetters.map((char, index) => (
-            <motion.span variants={child} key={`grad-${index}`} className="inline-block">
-              {char === ' ' ? '\u00A0' : char}
-            </motion.span>
-          ))}
-        </span>
-      )}
+        return (
+          <motion.span
+            variants={child}
+            key={index}
+            className={`inline-block ${
+              isCertificationsPart
+                ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400'
+                : 'text-white'
+            }`}
+          >
+            {char === ' ' ? '\u00A0' : char}
+          </motion.span>
+        );
+      })}
     </motion.h2>
   );
 };
@@ -114,15 +116,15 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-12"
       >
-        {/* Animated Staggered Letter-by-Letter Header */}
+        {/* Animated Staggered Letter-by-Letter Header for the Entire Title */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-mono font-bold shadow-lg shadow-[#9B8FCD]/10 hover:scale-105 transition-transform">
             <GraduationCap className="w-4 h-4 text-[#9B8FCD] animate-bounce" />
             <span>Academic Background & Verified Credentials</span>
           </div>
 
-          {/* Letter-by-Letter Typewriter Animation for "Education & Certifications" */}
-          <StaggeredTitle text="Education & " gradientText="Certifications" />
+          {/* Letter-by-Letter Typewriter Animation for the ENTIRE phrase "Education & Certifications" */}
+          <StaggeredTitle fullText="Education & Certifications" />
 
           <p className="text-slate-300 text-sm font-normal max-w-xl mx-auto">
             Academic degrees, courseworks, professional credentials, and university memorable photo gallery.
