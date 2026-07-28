@@ -12,6 +12,7 @@ import { Achievements } from './components/Achievements';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import NotFound from './components/NotFound';
+import { playButtonClickSound } from './utils/sound';
 
 import {
   usePersonalProfile,
@@ -55,6 +56,35 @@ const PortfolioContent: React.FC = () => {
   const { data: certifications = defaultCertifications } = useCertifications();
   const { data: achievements = defaultAchievements } = useAchievements();
   const { data: testimonials = defaultTestimonials } = useTestimonials();
+
+  // Global button click sound effect listener (excluding Navbar)
+  useEffect(() => {
+    const handleGlobalClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+
+      // Exclude clicks inside Navbar / Header
+      if (
+        target.closest('header') ||
+        target.closest('nav') ||
+        target.closest('[role="banner"]') ||
+        target.closest('.navbar-container')
+      ) {
+        return;
+      }
+
+      // Play click sound for any button, link, tab, or interactive element
+      const clickable = target.closest(
+        'button, a, [role="button"], input[type="submit"], input[type="button"], [tabindex="0"]'
+      );
+      if (clickable) {
+        playButtonClickSound();
+      }
+    };
+
+    window.addEventListener('click', handleGlobalClick, true);
+    return () => window.removeEventListener('click', handleGlobalClick, true);
+  }, []);
 
   // JSON-LD Structured Data Injection for SEO
   useEffect(() => {
