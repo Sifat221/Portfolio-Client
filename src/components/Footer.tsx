@@ -21,10 +21,10 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
           {/* Brand Info & Passport Photo (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-4">
-              {/* Passport Photo Avatar Frame */}
+              {/* Male Passport Photo Avatar Frame */}
               <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border-2 border-[#9B8FCD]/60 shadow-xl shrink-0 group bg-slate-900">
                 <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200"
                   alt="Sifat Khan Passport Photo"
                   className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300"
                 />

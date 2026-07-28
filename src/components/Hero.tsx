@@ -148,7 +148,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             </motion.div>
           </motion.div>
 
-          {/* Right Side: Portrait Image with Floating Badges */}
+          {/* Right Side: Male Developer Portrait Image with Floating Badges */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -163,11 +163,11 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               <div className="absolute -inset-6 rounded-full border border-[#9B8FCD]/30 pointer-events-none"></div>
               <div className="absolute -inset-16 rounded-full border border-indigo-500/15 pointer-events-none"></div>
 
-              {/* Developer Image */}
+              {/* Professional Male Developer Portrait Image */}
               <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl glass-panel border border-slate-700/60 p-2">
                 <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800"
-                  alt="Sifat Khan - Mobile Developer"
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800"
+                  alt="Sifat Khan - Professional Flutter Developer"
                   className="w-full h-[460px] sm:h-[520px] object-cover object-top rounded-2xl hover:scale-105 transition-transform duration-700"
                 />
               </div>
