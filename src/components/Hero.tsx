@@ -47,7 +47,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
       <AnimatePresence mode="wait">
         {activeBannerIdx === 0 ? (
           <motion.div
-            key="snow_clouds_backdrop"
+            key="snow_clouds_river_backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -80,6 +80,32 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             </div>
             <div className="absolute top-36 right-[12%] text-cyan-400/20 animate-cloud-slow-2">
               <Cloud className="w-40 h-40 blur-[2px]" />
+            </div>
+
+            {/* 3. ANIMATED RIVER / SEA OCEAN WAVES BACKDROP AT BOTTOM */}
+            <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none opacity-40">
+              {/* Back Wave Layer */}
+              <svg
+                className="relative block w-[160%] h-32 sm:h-44 text-indigo-900/60 animate-wave-slow-2"
+                viewBox="0 0 1200 120"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.94,130.83,121.2,201,114.6,242.75,110.66,283.47,88.75,321.39,56.44Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+              {/* Front Wave Layer */}
+              <svg
+                className="relative block w-[160%] -mt-16 h-28 sm:h-36 text-[#9B8FCD]/25 animate-wave-slow-1"
+                viewBox="0 0 1200 120"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
             </div>
           </motion.div>
         ) : (
@@ -245,7 +271,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               Background Backdrop Theme:
             </span>
             <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-[#9B8FCD] border border-slate-700/80">
-              {activeBannerIdx === 0 ? '☁️ Snowfall & Cloud Animated Backdrop' : '🎥 Video Background Backdrop (public/BannerTwo.mp4)'}
+              {activeBannerIdx === 0 ? '🌊 River & Snowfall Cloud Landscape' : '🎥 Video Background Backdrop (public/BannerTwo.mp4)'}
             </span>
           </div>
 

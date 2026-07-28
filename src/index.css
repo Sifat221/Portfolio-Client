@@ -142,9 +142,30 @@ section {
   top: -20px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 50%;
-  pointer-events-none: none;
+  pointer-events: none;
   box-shadow: 0 0 8px rgba(155, 143, 205, 0.8);
   animation: snowfallKeyframe linear infinite;
+}
+
+/* Animated River / Sea Water Wave Keyframes for Banner Bottom */
+@keyframes oceanWaveLeft {
+  0% { transform: translateX(0%) scaleY(1); }
+  50% { transform: translateX(-20%) scaleY(1.15); }
+  100% { transform: translateX(0%) scaleY(1); }
+}
+
+@keyframes oceanWaveRight {
+  0% { transform: translateX(0%) scaleY(1.05); }
+  50% { transform: translateX(20%) scaleY(0.9); }
+  100% { transform: translateX(0%) scaleY(1.05); }
+}
+
+.animate-wave-slow-1 {
+  animation: oceanWaveLeft 12s ease-in-out infinite;
+}
+
+.animate-wave-slow-2 {
+  animation: oceanWaveRight 16s ease-in-out infinite;
 }
 
 /* Custom Dark Scrollbar */
