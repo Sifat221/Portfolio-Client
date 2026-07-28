@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, User, Sun, Moon } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { StaggeredMenu } from './StaggeredMenu';
+import { GooeyNav } from './GooeyNav';
 import { useTheme } from '../context/ThemeContext';
 
 interface NavbarProps {
@@ -51,21 +52,14 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
             </span>
           </a>
 
-          {/* Center Nav Links with Animated Underline */}
-          <nav className="hidden md:flex items-center gap-2 glass-card px-4 py-1.5 rounded-full border border-slate-800/80 shadow-inner" role="navigation" aria-label="Main Navigation">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="relative px-4 py-1.5 text-sm font-bold text-slate-300 hover:text-white transition-colors duration-200 group rounded-full hover:bg-slate-800/60"
-              >
-                <span>{link.name}</span>
-                
-                {/* Animated Glowing Underline */}
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2.5px] rounded-full bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400 group-hover:w-3/4 transition-all duration-300 ease-out shadow-sm shadow-[#9B8FCD]/80"></span>
-              </a>
-            ))}
-          </nav>
+          {/* Center GooeyNav Navigation */}
+          <div className="hidden md:block">
+            <GooeyNav
+              items={navLinks.map((link) => ({ label: link.name, href: link.href }))}
+              particleCount={12}
+              animationTime={500}
+            />
+          </div>
 
           {/* Right Action Button & Sun/Moon Theme Toggle */}
           <div className="flex items-center gap-3">
