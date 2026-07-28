@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cpu, Layers, Database, Smartphone, Wrench, Code2, Terminal, Sparkles, Layout, ExternalLink, BookOpen, Star, Zap, TrendingUp, Award } from 'lucide-react';
 import { ISkill } from '../types/portfolio';
+import SplitText from './SplitText';
 import {
   Dialog,
   DialogContent,
@@ -201,9 +202,23 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
             <span>Tech Stack & Capabilities</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Core Mobile <span className="text-gradient-periwinkle">Expertise</span>
-          </h2>
+          <SplitText
+            text="Core Mobile Expertise"
+            className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight"
+            delay={50}
+            duration={1.25}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="center"
+            onLetterAnimationComplete={() => {
+              console.log('All letters have animated!');
+            }}
+            showCallback
+          />
 
           <p className="text-slate-300 text-sm font-normal">
             Specialized in Flutter SDK, BLoC/GetX state management, Clean Architecture, REST APIs, and Firebase backend services.
