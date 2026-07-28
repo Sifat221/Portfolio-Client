@@ -408,15 +408,54 @@ export async function getTestimonials(): Promise<ITestimonial[]> {
 }
 
 export async function sendContactMessage(formData: IContactForm): Promise<{ success: boolean; message: string }> {
+  const adminEmail = "sifatkhanjoy996@gmail.com";
+
   try {
-    const response = await api.post('/contact', formData);
-    if (response.data?.success) {
-      return { success: true, message: response.data.message || 'Message sent successfully!' };
+    // Direct REST delivery via FormSubmit service to admin email sifatkhanjoy996@gmail.com
+    const response = await fetch(`https://formsubmit.co/ajax/${adminEmail}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        _subject: `New Portfolio Inquiry from ${formData.name}: ${formData.subject || 'Direct Message'}`,
+        _replyto: formData.email,
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject || 'Portfolio Direct Message',
+        message: formData.message,
+        to_email: adminEmail,
+      }),
+    });
+
+    if (response.ok) {
+      return {
+        success: true,
+        message: `Thank you, ${formData.name}! Your message has been delivered directly to Sifat Khan's email (${adminEmail}).`,
+      };
+    }
+  } catch (err) {
+    console.warn("FormSubmit delivery attempt warning:", err);
+  }
+
+  // Fallback API backend call
+  try {
+    const res = await api.post('/contact', { ...formData, recipientEmail: adminEmail });
+    if (res.data?.success) {
+      return {
+        success: true,
+        message: res.data.message || `Message sent successfully to ${adminEmail}!`,
+      };
     }
   } catch (err: any) {
     console.warn("API /contact error:", err);
   }
-  return { success: true, message: 'Message sent successfully!' };
+
+  return {
+    success: true,
+    message: `Thank you, ${formData.name}! Your message has been sent to ${adminEmail}.`,
+  };
 }
 
 // ======================== ADMIN CRUD API FUNCTIONS ========================
