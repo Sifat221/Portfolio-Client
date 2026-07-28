@@ -222,59 +222,59 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
           <div className="flex animate-marquee-scroll">
             {/* First set of logos */}
             {[
-              { src: '/Tech_Icon/01_Dart.png', name: 'Dart' },
-              { src: '/Tech_Icon/02_Java.png', name: 'Java' },
-              { src: '/Tech_Icon/03_Kotlin.png', name: 'Kotlin' },
-              { src: '/Tech_Icon/04_Flutter.png', name: 'Flutter' },
-              { src: '/Tech_Icon/05_BLoC.png', name: 'BLoC' },
-              { src: '/Tech_Icon/06_GetX.png', name: 'GetX' },
-              { src: '/Tech_Icon/07_Provider.png', name: 'Provider' },
-              { src: '/Tech_Icon/08_REST_API.png', name: 'REST API' },
-              { src: '/Tech_Icon/09_Firebase.png', name: 'Firebase' },
-              { src: '/Tech_Icon/10_Cloud_Firestore.png', name: 'Firestore' },
-              { src: '/Tech_Icon/11_Realtime_Database.png', name: 'Realtime DB' },
-              { src: '/Tech_Icon/12_SQLite.png', name: 'SQLite' },
-              { src: '/Tech_Icon/13_Git.png', name: 'Git' },
-              { src: '/Tech_Icon/14_GitHub.png', name: 'GitHub' },
-              { src: '/Tech_Icon/15_Postman.png', name: 'Postman' },
-              { src: '/Tech_Icon/16_Android_Studio.png', name: 'Android Studio' },
-              { src: '/Tech_Icon/17_VS_Code.png', name: 'VS Code' },
-              { src: '/Tech_Icon/18_Figma.png', name: 'Figma' },
+              { src: '/Tech_Icon/01_Dart.png', name: 'Dart', url: 'https://dart.dev' },
+              { src: '/Tech_Icon/02_Java.png', name: 'Java', url: 'https://www.java.com' },
+              { src: '/Tech_Icon/03_Kotlin.png', name: 'Kotlin', url: 'https://kotlinlang.org' },
+              { src: '/Tech_Icon/04_Flutter.png', name: 'Flutter', url: 'https://flutter.dev' },
+              { src: '/Tech_Icon/05_BLoC.png', name: 'BLoC', url: 'https://bloclibrary.dev' },
+              { src: '/Tech_Icon/06_GetX.png', name: 'GetX', url: 'https://pub.dev/packages/get' },
+              { src: '/Tech_Icon/07_Provider.png', name: 'Provider', url: 'https://pub.dev/packages/provider' },
+              { src: '/Tech_Icon/08_REST_API.png', name: 'REST API', url: 'https://restfulapi.net' },
+              { src: '/Tech_Icon/09_Firebase.png', name: 'Firebase', url: 'https://firebase.google.com' },
+              { src: '/Tech_Icon/10_Cloud_Firestore.png', name: 'Firestore', url: 'https://firebase.google.com/docs/firestore' },
+              { src: '/Tech_Icon/11_Realtime_Database.png', name: 'Realtime DB', url: 'https://firebase.google.com/docs/database' },
+              { src: '/Tech_Icon/12_SQLite.png', name: 'SQLite', url: 'https://www.sqlite.org' },
+              { src: '/Tech_Icon/13_Git.png', name: 'Git', url: 'https://git-scm.com' },
+              { src: '/Tech_Icon/14_GitHub.png', name: 'GitHub', url: 'https://github.com' },
+              { src: '/Tech_Icon/15_Postman.png', name: 'Postman', url: 'https://www.postman.com' },
+              { src: '/Tech_Icon/16_Android_Studio.png', name: 'Android Studio', url: 'https://developer.android.com/studio' },
+              { src: '/Tech_Icon/17_VS_Code.png', name: 'VS Code', url: 'https://code.visualstudio.com' },
+              { src: '/Tech_Icon/18_Figma.png', name: 'Figma', url: 'https://www.figma.com' },
             ].map((logo, i) => (
-              <div key={`a-${i}`} className="flex-shrink-0 mx-5 flex flex-col items-center gap-1.5 group">
+              <a key={`a-${i}`} href={logo.url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 mx-5 flex flex-col items-center gap-1.5 group no-underline">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-slate-800/60 border border-slate-700/40 flex items-center justify-center p-2 group-hover:border-[#9B8FCD]/50 group-hover:scale-110 transition-all duration-200">
                   <img src={logo.src} alt={logo.name} className="w-full h-full object-contain" loading="lazy" />
                 </div>
                 <span className="text-[10px] font-mono text-slate-500 group-hover:text-[#9B8FCD] transition-colors whitespace-nowrap">{logo.name}</span>
-              </div>
+              </a>
             ))}
             {/* Duplicate set for seamless infinite loop */}
             {[
-              { src: '/Tech_Icon/01_Dart.png', name: 'Dart' },
-              { src: '/Tech_Icon/02_Java.png', name: 'Java' },
-              { src: '/Tech_Icon/03_Kotlin.png', name: 'Kotlin' },
-              { src: '/Tech_Icon/04_Flutter.png', name: 'Flutter' },
-              { src: '/Tech_Icon/05_BLoC.png', name: 'BLoC' },
-              { src: '/Tech_Icon/06_GetX.png', name: 'GetX' },
-              { src: '/Tech_Icon/07_Provider.png', name: 'Provider' },
-              { src: '/Tech_Icon/08_REST_API.png', name: 'REST API' },
-              { src: '/Tech_Icon/09_Firebase.png', name: 'Firebase' },
-              { src: '/Tech_Icon/10_Cloud_Firestore.png', name: 'Firestore' },
-              { src: '/Tech_Icon/11_Realtime_Database.png', name: 'Realtime DB' },
-              { src: '/Tech_Icon/12_SQLite.png', name: 'SQLite' },
-              { src: '/Tech_Icon/13_Git.png', name: 'Git' },
-              { src: '/Tech_Icon/14_GitHub.png', name: 'GitHub' },
-              { src: '/Tech_Icon/15_Postman.png', name: 'Postman' },
-              { src: '/Tech_Icon/16_Android_Studio.png', name: 'Android Studio' },
-              { src: '/Tech_Icon/17_VS_Code.png', name: 'VS Code' },
-              { src: '/Tech_Icon/18_Figma.png', name: 'Figma' },
+              { src: '/Tech_Icon/01_Dart.png', name: 'Dart', url: 'https://dart.dev' },
+              { src: '/Tech_Icon/02_Java.png', name: 'Java', url: 'https://www.java.com' },
+              { src: '/Tech_Icon/03_Kotlin.png', name: 'Kotlin', url: 'https://kotlinlang.org' },
+              { src: '/Tech_Icon/04_Flutter.png', name: 'Flutter', url: 'https://flutter.dev' },
+              { src: '/Tech_Icon/05_BLoC.png', name: 'BLoC', url: 'https://bloclibrary.dev' },
+              { src: '/Tech_Icon/06_GetX.png', name: 'GetX', url: 'https://pub.dev/packages/get' },
+              { src: '/Tech_Icon/07_Provider.png', name: 'Provider', url: 'https://pub.dev/packages/provider' },
+              { src: '/Tech_Icon/08_REST_API.png', name: 'REST API', url: 'https://restfulapi.net' },
+              { src: '/Tech_Icon/09_Firebase.png', name: 'Firebase', url: 'https://firebase.google.com' },
+              { src: '/Tech_Icon/10_Cloud_Firestore.png', name: 'Firestore', url: 'https://firebase.google.com/docs/firestore' },
+              { src: '/Tech_Icon/11_Realtime_Database.png', name: 'Realtime DB', url: 'https://firebase.google.com/docs/database' },
+              { src: '/Tech_Icon/12_SQLite.png', name: 'SQLite', url: 'https://www.sqlite.org' },
+              { src: '/Tech_Icon/13_Git.png', name: 'Git', url: 'https://git-scm.com' },
+              { src: '/Tech_Icon/14_GitHub.png', name: 'GitHub', url: 'https://github.com' },
+              { src: '/Tech_Icon/15_Postman.png', name: 'Postman', url: 'https://www.postman.com' },
+              { src: '/Tech_Icon/16_Android_Studio.png', name: 'Android Studio', url: 'https://developer.android.com/studio' },
+              { src: '/Tech_Icon/17_VS_Code.png', name: 'VS Code', url: 'https://code.visualstudio.com' },
+              { src: '/Tech_Icon/18_Figma.png', name: 'Figma', url: 'https://www.figma.com' },
             ].map((logo, i) => (
-              <div key={`b-${i}`} className="flex-shrink-0 mx-5 flex flex-col items-center gap-1.5 group">
+              <a key={`b-${i}`} href={logo.url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 mx-5 flex flex-col items-center gap-1.5 group no-underline">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-slate-800/60 border border-slate-700/40 flex items-center justify-center p-2 group-hover:border-[#9B8FCD]/50 group-hover:scale-110 transition-all duration-200">
                   <img src={logo.src} alt={logo.name} className="w-full h-full object-contain" loading="lazy" />
                 </div>
                 <span className="text-[10px] font-mono text-slate-500 group-hover:text-[#9B8FCD] transition-colors whitespace-nowrap">{logo.name}</span>
-              </div>
+              </a>
             ))}
           </div>
         </div>

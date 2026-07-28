@@ -194,7 +194,7 @@ section {
 }
 
 .animate-marquee-scroll {
-  animation: marqueeScroll 30s linear infinite;
+  animation: marqueeScroll 12s linear infinite;
   will-change: transform;
 }
 
