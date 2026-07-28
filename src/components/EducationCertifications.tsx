@@ -70,10 +70,10 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
           </p>
         </div>
 
-        {/* 1. Academic Degrees & Certifications Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          {/* Academic Degrees Box */}
-          <div className="space-y-6">
+        {/* 1. Academic Degrees & Certifications Grid with Vertical Divider */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Left Column: Academic Degrees (With Vertical Right Border Divider Line) */}
+          <div className="lg:col-span-6 space-y-6 border-b lg:border-b-0 lg:border-r border-slate-800/90 pb-8 lg:pb-0 lg:pr-8">
             <div className="flex items-center gap-2 text-[#9B8FCD] font-mono text-xs font-bold uppercase tracking-wider">
               <GraduationCap className="w-4 h-4" />
               <span>Academic Degree & Coursework</span>
@@ -125,8 +125,8 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
             ))}
           </div>
 
-          {/* Verified Certifications Box */}
-          <div className="space-y-6">
+          {/* Right Column: Verified Credentials */}
+          <div className="lg:col-span-6 space-y-6 lg:pl-2">
             <div className="flex items-center gap-2 text-indigo-400 font-mono text-xs font-bold uppercase tracking-wider">
               <Award className="w-4 h-4" />
               <span>Verified Credentials & Certificates</span>
@@ -173,9 +173,9 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
           </div>
         </div>
 
-        {/* 2. Directly Underneath: University Memorable Photos Gallery Carousel */}
-        <div className="pt-6 space-y-4">
-          <div className="flex items-center justify-between flex-wrap gap-4 border-t border-slate-800/80 pt-8">
+        {/* 2. University Memorable Photos Gallery Carousel */}
+        <div className="pt-6 space-y-4 border-t border-slate-800/80">
+          <div className="flex items-center justify-between flex-wrap gap-4 pt-4">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <ImageIcon className="w-5 h-5 text-[#9B8FCD]" />
