@@ -196,15 +196,15 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
         className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-10"
       >
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-bold font-mono">
+        <div className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-bold font-mono mb-1">
             <Wrench className="w-3.5 h-3.5 text-[#9B8FCD]" />
             <span>Tech Stack & Capabilities</span>
           </div>
 
           <SplitText
             text="Core Mobile Expertise"
-            className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight"
+            className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight py-1"
             delay={50}
             duration={1.25}
             ease="power3.out"
@@ -220,7 +220,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
             showCallback
           />
 
-          <p className="text-slate-300 text-sm font-normal">
+          <p className="text-slate-300 text-sm font-normal max-w-xl">
             Specialized in Flutter SDK, BLoC/GetX state management, Clean Architecture, REST APIs, and Firebase backend services.
           </p>
         </div>

@@ -88,7 +88,7 @@ export const SplitText: React.FC<SplitTextProps> = ({
   return (
     <h2
       ref={containerRef as React.RefObject<HTMLHeadingElement>}
-      className={`inline-block overflow-hidden ${className}`}
+      className={`w-full block overflow-hidden ${className}`}
       style={{ textAlign }}
     >
       {splitType === 'chars'
