@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Smartphone, Menu, X } from 'lucide-react';
+import { Smartphone, Menu, X, ArrowRight } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 
 interface NavbarProps {
@@ -20,8 +20,8 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
 
   const navLinks = [
     { name: 'About', href: '#about' },
-    { name: 'Skills & Stack', href: '#skills' },
-    { name: 'Apps & Projects', href: '#projects' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Projects', href: '#projects' },
     { name: 'Experience', href: '#experience' },
     { name: 'Education', href: '#education' },
     { name: 'Contact', href: '#contact' },
@@ -31,41 +31,42 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'glass-panel py-3 shadow-2xl border-b border-slate-800/80'
-          : 'bg-[#090D16]/90 backdrop-blur-md py-3.5 border-b border-slate-800/40'
+          ? 'glass-panel py-3 shadow-xl border-b border-slate-800/80'
+          : 'bg-[#090D16]/90 backdrop-blur-md py-4 border-b border-slate-800/40'
       }`}
       role="banner"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group" aria-label="Sifat Khan Home">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 p-[2px] shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform duration-300">
-              <div className="w-full h-full bg-[#090D16] rounded-[10px] flex items-center justify-center">
-                <Smartphone className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform duration-300" />
-              </div>
-            </div>
-            <div>
-              <div className="font-bold text-base text-white flex items-center gap-1.5 tracking-tight">
-                <span>{personal.name}</span>
-                <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true"></span>
-              </div>
-              <p className="text-[10px] text-cyan-400 font-mono tracking-wider">Flutter Developer</p>
-            </div>
+          {/* Left: Brand Logo */}
+          <a href="#" className="flex items-center gap-2 group" aria-label="Sifat Khan Home">
+            <span className="text-2xl font-extrabold text-white tracking-tight group-hover:text-cyan-400 transition-colors">
+              Sifat Khan<span className="text-cyan-400">.</span>
+            </span>
           </a>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1 glass-card px-3 py-1 rounded-full border border-slate-800/80" role="navigation" aria-label="Main Navigation">
+          {/* Center: Clean Nav Links */}
+          <nav className="hidden md:flex items-center gap-8" role="navigation" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="px-3.5 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded-md py-1 px-2"
               >
                 {link.name}
               </a>
             ))}
           </nav>
+
+          {/* Right: Rounded Pill Action Button */}
+          <div className="hidden lg:flex items-center gap-3">
+            <a
+              href="#contact"
+              className="px-6 py-2.5 rounded-full font-semibold text-sm text-white bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 shadow-lg shadow-indigo-500/25 hover:shadow-cyan-500/30 hover:scale-105 active:scale-95 transition-all duration-200"
+            >
+              Let's Talk
+            </a>
+          </div>
 
           {/* Mobile Menu Toggle */}
           <div className="flex items-center gap-2 md:hidden">
@@ -95,6 +96,15 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                 {link.name}
               </a>
             ))}
+            <div className="pt-3 border-t border-slate-800">
+              <a
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full inline-flex items-center justify-center py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-indigo-500 to-cyan-500"
+              >
+                Let's Talk
+              </a>
+            </div>
           </div>
         </div>
       )}
