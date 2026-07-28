@@ -205,6 +205,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
           <SplitText
             text="Core Mobile Expertise"
             highlightText="Expertise"
+            highlightClass="text-blue-500"
             className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight py-1"
             delay={50}
             duration={1.25}
