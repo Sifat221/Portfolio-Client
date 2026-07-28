@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUp, Github, Linkedin, Facebook, MessageCircle, Mail, Phone, MapPin, Download, Heart, ExternalLink } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
+import { LineSidebar } from './LineSidebar';
 
 interface FooterProps {
   personal: IPersonalProfile;
@@ -59,55 +60,58 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
             </div>
           </div>
 
-          {/* Column 2: Navigation Links (2 cols) */}
-          <div className="lg:col-span-2 space-y-3">
+          {/* Column 2: Navigation Links with LineSidebar */}
+          <div className="lg:col-span-3 space-y-3">
             <h3 className="text-xs font-mono uppercase tracking-wider text-[#9B8FCD] font-bold">
               Navigation
             </h3>
-            <ul className="space-y-2 text-xs font-medium text-slate-400">
-              <li>
-                <a href="#about" className="hover:text-white transition-colors">About</a>
-              </li>
-              <li>
-                <a href="#skills" className="hover:text-white transition-colors">Skills & Stack</a>
-              </li>
-              <li>
-                <a href="#projects" className="hover:text-white transition-colors">Projects</a>
-              </li>
-              <li>
-                <a href="#experience" className="hover:text-white transition-colors">Experience</a>
-              </li>
-              <li>
-                <a href="#education" className="hover:text-white transition-colors">Education</a>
-              </li>
-              <li>
-                <a href="#contact" className="hover:text-white transition-colors">Get In Touch</a>
-              </li>
-            </ul>
+            <LineSidebar
+              items={['About', 'Skills & Stack', 'Projects', 'Experience', 'Education', 'Get In Touch']}
+              accentColor="#9B8FCD"
+              textColor="#94A3B8"
+              markerColor="#475569"
+              showIndex={true}
+              showMarker={true}
+              proximityRadius={80}
+              maxShift={18}
+              markerLength={32}
+              itemGap={10}
+              fontSize={0.8}
+              onItemClick={(index) => {
+                const links = ['#about', '#skills', '#projects', '#experience', '#education', '#contact'];
+                const target = links[index];
+                if (target) {
+                  const el = document.querySelector(target);
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+            />
           </div>
 
-          {/* Column 3: Expertise & Stack (3 cols) */}
+          {/* Column 3: Core Expertise with LineSidebar */}
           <div className="lg:col-span-3 space-y-3">
             <h3 className="text-xs font-mono uppercase tracking-wider text-[#9B8FCD] font-bold">
               Core Expertise
             </h3>
-            <ul className="space-y-2 text-xs font-mono text-slate-400">
-              <li className="flex items-center gap-1.5">
-                <span className="text-[#9B8FCD]">✓</span> Flutter & Dart Development
-              </li>
-              <li className="flex items-center gap-1.5">
-                <span className="text-[#9B8FCD]">✓</span> BLoC, Cubit & GetX
-              </li>
-              <li className="flex items-center gap-1.5">
-                <span className="text-[#9B8FCD]">✓</span> Clean Architecture
-              </li>
-              <li className="flex items-center gap-1.5">
-                <span className="text-[#9B8FCD]">✓</span> REST APIs & Firebase
-              </li>
-              <li className="flex items-center gap-1.5">
-                <span className="text-[#9B8FCD]">✓</span> Android SDK & Java
-              </li>
-            </ul>
+            <LineSidebar
+              items={[
+                'Flutter & Dart Dev',
+                'BLoC, Cubit & GetX',
+                'Clean Architecture',
+                'REST APIs & Firebase',
+                'Android SDK & Java',
+              ]}
+              accentColor="#38BDF8"
+              textColor="#94A3B8"
+              markerColor="#475569"
+              showIndex={true}
+              showMarker={true}
+              proximityRadius={80}
+              maxShift={18}
+              markerLength={32}
+              itemGap={10}
+              fontSize={0.8}
+            />
           </div>
 
           {/* Column 4: Connect & Socials (3 cols) */}
