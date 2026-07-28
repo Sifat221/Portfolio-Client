@@ -15,9 +15,11 @@ interface SplitTextProps {
   textAlign?: 'left' | 'center' | 'right' | 'justify';
   onLetterAnimationComplete?: () => void;
   showCallback?: boolean;
+  highlightText?: string;
+  highlightClass?: string;
 }
 
-export const SplitText: React.FC<SplitTextProps> = ({
+export const SplitText: React.FC<SplitTextProps> = React.memo(({
   text,
   className = '',
   delay = 50,
@@ -31,16 +33,18 @@ export const SplitText: React.FC<SplitTextProps> = ({
   textAlign = 'center',
   onLetterAnimationComplete,
   showCallback = false,
+  highlightText,
+  highlightClass = 'text-gradient-periwinkle',
 }) => {
   const containerRef = useRef<HTMLHeadingElement | HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
+  const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
-
     const el = containerRef.current;
 
-    // Check if element is already in viewport
+    // Check if element is already visible in viewport
     const rect = el.getBoundingClientRect();
     if (rect.top < window.innerHeight && rect.bottom > 0) {
       setInView(true);
@@ -64,18 +68,22 @@ export const SplitText: React.FC<SplitTextProps> = ({
     return () => observer.disconnect();
   }, [threshold, rootMargin]);
 
+  // Run GSAP Animation EXACTLY ONCE when inView becomes true
   useEffect(() => {
-    if (!inView || !containerRef.current) return;
+    if (!inView || !containerRef.current || hasAnimatedRef.current) return;
+
+    hasAnimatedRef.current = true;
 
     const elements = containerRef.current.querySelectorAll('.split-item');
-
     if (elements.length === 0) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
         elements,
-        { ...from },
+        { opacity: 0, y: 40, ...from },
         {
+          opacity: 1,
+          y: 0,
           ...to,
           duration,
           ease,
@@ -90,9 +98,18 @@ export const SplitText: React.FC<SplitTextProps> = ({
     }, containerRef);
 
     return () => ctx.revert();
-  }, [inView, delay, duration, ease, from, to, onLetterAnimationComplete, showCallback]);
+  }, [inView, delay, duration, ease, showCallback]);
 
   const words = text.split(' ');
+  const highlightWords = highlightText ? highlightText.split(' ') : [];
+
+  const isHighlighted = (word: string) => {
+    if (!highlightText) return false;
+    const cleanWord = word.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    return highlightWords.some(
+      (hw) => hw.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() === cleanWord
+    );
+  };
 
   return (
     <h2
@@ -101,37 +118,49 @@ export const SplitText: React.FC<SplitTextProps> = ({
       style={{ textAlign }}
     >
       {splitType === 'chars'
-        ? words.map((word, wordIdx) => (
-            <span key={wordIdx} className="inline-block whitespace-nowrap">
-              {word.split('').map((char, charIdx) => (
+        ? words.map((word, wordIdx) => {
+            const highlight = isHighlighted(word);
+            return (
+              <span
+                key={wordIdx}
+                className={`inline-block whitespace-nowrap ${highlight ? highlightClass : ''}`}
+              >
+                {word.split('').map((char, charIdx) => (
+                  <span
+                    key={charIdx}
+                    className="split-item inline-block"
+                    style={{ willChange: 'transform, opacity' }}
+                  >
+                    {char}
+                  </span>
+                ))}
+                {wordIdx < words.length - 1 && (
+                  <span className="inline-block">&nbsp;</span>
+                )}
+              </span>
+            );
+          })
+        : words.map((word, wordIdx) => {
+            const highlight = isHighlighted(word);
+            return (
+              <span
+                key={wordIdx}
+                className={`inline-block ${highlight ? highlightClass : ''}`}
+              >
                 <span
-                  key={charIdx}
                   className="split-item inline-block"
                   style={{ willChange: 'transform, opacity' }}
                 >
-                  {char}
+                  {word}
                 </span>
-              ))}
-              {wordIdx < words.length - 1 && (
-                <span className="inline-block">&nbsp;</span>
-              )}
-            </span>
-          ))
-        : words.map((word, wordIdx) => (
-            <span key={wordIdx} className="inline-block">
-              <span
-                className="split-item inline-block"
-                style={{ willChange: 'transform, opacity' }}
-              >
-                {word}
+                {wordIdx < words.length - 1 && (
+                  <span className="inline-block">&nbsp;</span>
+                )}
               </span>
-              {wordIdx < words.length - 1 && (
-                <span className="inline-block">&nbsp;</span>
-              )}
-            </span>
-          ))}
+            );
+          })}
     </h2>
   );
-};
+});
 
 export default SplitText;
