@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle, Sparkles, Smartphone, Code2 } from 'lucide-react';
+import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle, Sparkles, Smartphone, Code2, Play, Pause, Clock } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import SplitText from './SplitText';
 
@@ -9,17 +9,36 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ personal }) => {
-  const [activeBannerIdx, setActiveBannerIdx] = useState(0);
   const totalBanners = 3;
+  const BANNER_DURATION = 30; // 30 seconds single banner duration
+  const [activeBannerIdx, setActiveBannerIdx] = useState(0);
+  const [secondsLeft, setSecondsLeft] = useState<number>(BANNER_DURATION);
+  const [isTimerPaused, setIsTimerPaused] = useState<boolean>(false);
 
-  // Auto-switch background theme every 30 seconds
+  // Reset countdown whenever active banner index changes
   useEffect(() => {
+    setSecondsLeft(BANNER_DURATION);
+  }, [activeBannerIdx]);
+
+  // 1-second interval timer counting down 30s banner duration
+  useEffect(() => {
+    if (isTimerPaused) return;
+
     const timer = setInterval(() => {
-      setActiveBannerIdx((prev) => (prev + 1) % totalBanners);
-    }, 30000);
+      setSecondsLeft((prev) => {
+        if (prev <= 1) {
+          setActiveBannerIdx((current) => (current + 1) % totalBanners);
+          return BANNER_DURATION;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
     return () => clearInterval(timer);
-  }, [totalBanners]);
+  }, [totalBanners, isTimerPaused]);
+
+  const elapsedTime = BANNER_DURATION - secondsLeft;
+  const progressPercent = Math.min(100, Math.max(0, (elapsedTime / BANNER_DURATION) * 100));
 
   // Generate 35 unique snowflakes with random positions, sizes, delays, and speeds
   const snowflakes = useMemo(() => {
@@ -354,8 +373,36 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
           </motion.div>
         </div>
 
-        {/* ================= MINIMAL BANNER SWITCHER ARROW CONTROLS (< & >) ================= */}
-        <div className="pt-6 border-t border-slate-800/80 flex items-center justify-end">
+        {/* ================= BANNER PROGRESS TIMER & ARROW CONTROLS ================= */}
+        <div className="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* 30-Second Live Countdown Progress Button & Animated Progress Bar */}
+          <div className="flex items-center gap-3.5 w-full sm:w-auto">
+            <button
+              onClick={() => setIsTimerPaused(!isTimerPaused)}
+              className="px-4 py-2.5 rounded-full glass-card border border-[#9B8FCD]/40 hover:border-[#9B8FCD] text-white text-xs font-mono font-bold flex items-center gap-2.5 shadow-xl transition-all active:scale-95 group shrink-0"
+              title={isTimerPaused ? "Resume 30s Auto-Switch" : "Pause 30s Auto-Switch"}
+            >
+              {isTimerPaused ? (
+                <Play className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />
+              ) : (
+                <Pause className="w-3.5 h-3.5 text-[#9B8FCD]" />
+              )}
+              <span>{isTimerPaused ? "Paused" : "30s Banner Timer"}</span>
+              <span className="text-[10px] text-[#9B8FCD] bg-slate-900 px-2.5 py-0.5 rounded-full border border-slate-800 font-bold font-mono">
+                {secondsLeft}s
+              </span>
+            </button>
+
+            {/* Glowing 30s Duration Progress Bar */}
+            <div className="flex-1 sm:w-56 h-2 bg-slate-800/90 rounded-full overflow-hidden border border-slate-700/60 relative">
+              <div
+                className="h-full bg-gradient-to-r from-[#9B8FCD] via-indigo-500 to-cyan-400 rounded-full transition-all duration-1000 ease-linear shadow-sm shadow-[#9B8FCD]"
+                style={{ width: `${progressPercent}%` }}
+              ></div>
+            </div>
+          </div>
+
+          {/* Banner Navigation Switcher Buttons */}
           <div className="flex items-center gap-3">
             <button
               onClick={handlePrevBanner}
@@ -365,19 +412,30 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
             </button>
 
+            {/* Active Indicator Dots with Mini Fill Progress */}
             <div className="flex items-center gap-1.5 px-2">
-              {Array.from({ length: totalBanners }).map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveBannerIdx(idx)}
-                  className={`h-2.5 rounded-full transition-all duration-300 ${
-                    activeBannerIdx === idx
-                      ? 'w-8 bg-[#9B8FCD] shadow-md shadow-[#9B8FCD]'
-                      : 'w-2.5 bg-slate-800 hover:bg-slate-700'
-                  }`}
-                  aria-label={`Go to background theme ${idx + 1}`}
-                />
-              ))}
+              {Array.from({ length: totalBanners }).map((_, idx) => {
+                const isActive = activeBannerIdx === idx;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveBannerIdx(idx)}
+                    className={`relative h-2.5 rounded-full transition-all duration-300 overflow-hidden ${
+                      isActive
+                        ? 'w-10 bg-slate-800 border border-[#9B8FCD]/60 shadow-md shadow-[#9B8FCD]'
+                        : 'w-2.5 bg-slate-800 hover:bg-slate-700'
+                    }`}
+                    aria-label={`Go to background theme ${idx + 1}`}
+                  >
+                    {isActive && (
+                      <div
+                        className="absolute inset-0 bg-[#9B8FCD] transition-all duration-1000 ease-linear"
+                        style={{ width: `${progressPercent}%` }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             <button
