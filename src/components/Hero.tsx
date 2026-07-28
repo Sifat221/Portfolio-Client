@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle, Sparkles, Smartphone, Code2 } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
+import SplitText from './SplitText';
 
 interface HeroProps {
   personal: IPersonalProfile;
@@ -166,14 +167,19 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
 
             {/* Main Headline */}
             <div className="space-y-4">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
+              <SplitText
+                text="Let's Work Together to Create Mobile Wonders with Us"
                 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight"
-              >
-                Let's Work Together to Create <span className="text-gradient-periwinkle">Mobile Wonders</span> with Us
-              </motion.h1>
+                delay={40}
+                duration={1.25}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.1}
+                rootMargin="-100px"
+                textAlign="left"
+              />
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
