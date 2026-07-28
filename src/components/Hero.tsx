@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Video, Sparkles } from 'lucide-react';
+import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 
 interface HeroProps {
@@ -31,44 +31,23 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
     });
   }, []);
 
-  const banners = [
-    {
-      id: 'banner_1',
-      type: 'snowfall_clouds',
-      badge: 'Flutter & Clean Architecture',
-      titleMain: "Let's Work Together to Create ",
-      titleGradient: "Mobile Wonders with Us",
-      subtitle: "A visionary Flutter & Mobile Application Developer, crafting captivating mobile experiences through art and clean code. Adept at turning imagination into extraordinary digital reality.",
-    },
-    {
-      id: 'banner_2',
-      type: 'video',
-      badge: 'Video Background & Engineering Showcase',
-      titleMain: "Architecting High-Performance ",
-      titleGradient: "Flutter Applications & Systems",
-      subtitle: "Engineered with BLoC, GetX, Clean Architecture & REST/Firebase APIs to deliver seamless 60fps cross-platform mobile app ecosystems.",
-      videoUrl: "/BannerTwo.mp4",
-      fallbackVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-code-running-on-a-computer-screen-23583-large.mp4",
-    },
-  ];
+  const totalBanners = 2;
 
   const handlePrevBanner = () => {
-    setActiveBannerIdx((prev) => (prev - 1 + banners.length) % banners.length);
+    setActiveBannerIdx((prev) => (prev - 1 + totalBanners) % totalBanners);
   };
 
   const handleNextBanner = () => {
-    setActiveBannerIdx((prev) => (prev + 1) % banners.length);
+    setActiveBannerIdx((prev) => (prev + 1) % totalBanners);
   };
-
-  const currentBanner = banners[activeBannerIdx];
 
   return (
     <section id="about" className="relative pt-36 pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-[#090D16]">
-      {/* ================= DUAL BANNER BACKDROP (SNOWFALL/CLOUDS vs VIDEO) ================= */}
+      {/* ================= ONLY THE BACKDROP SWITCHES (CONTENT STAYS SAME) ================= */}
       <AnimatePresence mode="wait">
-        {currentBanner.type === 'snowfall_clouds' ? (
+        {activeBannerIdx === 0 ? (
           <motion.div
-            key="snow_backdrop"
+            key="snow_clouds_backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -121,7 +100,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               className="w-full h-full object-cover opacity-35 filter contrast-125 saturate-150"
             >
               <source src="/BannerTwo.mp4" type="video/mp4" />
-              <source src={currentBanner.fallbackVideoUrl} type="video/mp4" />
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-code-running-on-a-computer-screen-23583-large.mp4" type="video/mp4" />
             </video>
             <div className="absolute inset-0 bg-gradient-to-b from-[#090D16]/90 via-[#090D16]/75 to-[#090D16]"></div>
             <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#9B8FCD]/20 rounded-full blur-[140px]"></div>
@@ -130,40 +109,44 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
       </AnimatePresence>
       {/* ========================================================================= */}
 
+      {/* ================= IDENTICAL BANNER CONTENT FOR ALL BACKGROUNDS ================= */}
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Side: Dynamic Banner Content */}
+          {/* Left Side: Headline, Subtitle, Pill Buttons & Stats */}
           <motion.div
-            key={currentBanner.id}
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="lg:col-span-6 space-y-8 text-center lg:text-left"
           >
-            {/* Banner Category Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-mono font-bold shadow-lg">
-              {currentBanner.type === 'video' ? (
-                <Video className="w-4 h-4 text-cyan-400 animate-pulse" />
-              ) : (
-                <Sparkles className="w-4 h-4 text-amber-400 animate-bounce" />
-              )}
-              <span>{currentBanner.badge}</span>
-            </div>
-
-            {/* Headline */}
+            {/* Clean Headline */}
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-6xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight">
-                {currentBanner.titleMain}
-                <span className="text-gradient-periwinkle">{currentBanner.titleGradient}</span>
-              </h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="text-4xl sm:text-6xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight"
+              >
+                Let's Work Together to Create <span className="text-gradient-periwinkle">Mobile Wonders</span> with Us
+              </motion.h1>
 
-              <p className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-                {currentBanner.subtitle}
-              </p>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal"
+              >
+                A visionary Flutter & Mobile Application Developer, crafting captivating mobile experiences through art and clean code. Adept at turning imagination into extraordinary digital reality.
+              </motion.p>
             </div>
 
             {/* Periwinkle Action Pill Buttons */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2"
+            >
               <a
                 href="#contact"
                 className="px-8 py-3.5 rounded-full font-bold text-sm text-white bg-gradient-to-r from-[#9B8FCD] via-indigo-600 to-cyan-500 hover:from-[#8B7DBE] hover:to-cyan-400 shadow-xl shadow-[#9B8FCD]/30 hover:scale-105 active:scale-95 transition-all duration-200"
@@ -180,10 +163,15 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 <Download className="w-4 h-4 text-[#9B8FCD]" />
                 <span>Download Resume</span>
               </a>
-            </div>
+            </motion.div>
 
             {/* High Impact Stats Row */}
-            <div className="pt-8 border-t border-slate-800/80 grid grid-cols-3 gap-6 max-w-lg mx-auto lg:mx-0">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="pt-10 border-t border-slate-800/80 grid grid-cols-3 gap-6 max-w-lg mx-auto lg:mx-0"
+            >
               <div className="text-center lg:text-left space-y-1">
                 <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">7+</p>
                 <p className="text-xs text-slate-400 font-medium leading-tight">flagship apps<br />deployed</p>
@@ -196,7 +184,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 <p className="text-3xl sm:text-4xl font-extrabold text-cyan-400 tracking-tight">99.8%</p>
                 <p className="text-xs text-slate-400 font-medium leading-tight">crash-free<br />rate</p>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Right Side: Male Developer Portrait Image with Floating Badges */}
@@ -254,9 +242,9 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
         <div className="pt-6 border-t border-slate-800/80 flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono text-slate-400 font-bold uppercase tracking-wider">
-              Banner Theme:
+              Background Backdrop Theme:
             </span>
-            <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-[#9B8FCD] border border-slate-700/80">
+            <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-[#9B8FCD] border border-slate-700/80">
               {activeBannerIdx === 0 ? '☁️ Snowfall & Cloud Animated Backdrop' : '🎥 Video Background Backdrop (public/BannerTwo.mp4)'}
             </span>
           </div>
@@ -266,14 +254,14 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             <button
               onClick={handlePrevBanner}
               className="p-3 rounded-full glass-card border border-slate-700 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
-              aria-label="Previous Banner"
+              aria-label="Previous Banner Background"
             >
               <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-              <span className="text-xs font-mono font-bold pr-1">Previous Banner</span>
+              <span className="text-xs font-mono font-bold pr-1">Previous</span>
             </button>
 
             <div className="flex items-center gap-1.5 px-2">
-              {banners.map((_, idx) => (
+              {Array.from({ length: totalBanners }).map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveBannerIdx(idx)}
@@ -282,7 +270,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                       ? 'w-8 bg-[#9B8FCD] shadow-md shadow-[#9B8FCD]'
                       : 'w-2.5 bg-slate-800 hover:bg-slate-700'
                   }`}
-                  aria-label={`Go to banner ${idx + 1}`}
+                  aria-label={`Go to background theme ${idx + 1}`}
                 />
               ))}
             </div>
@@ -290,9 +278,9 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             <button
               onClick={handleNextBanner}
               className="p-3 rounded-full glass-card border border-slate-700 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
-              aria-label="Next Banner"
+              aria-label="Next Banner Background"
             >
-              <span className="text-xs font-mono font-bold pl-1">Next Banner</span>
+              <span className="text-xs font-mono font-bold pl-1">Next</span>
               <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
