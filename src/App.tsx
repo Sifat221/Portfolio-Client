@@ -109,7 +109,8 @@ const PortfolioContent: React.FC = () => {
       <Helmet>
         <title>{personal.name} | {personal.title}</title>
         <meta name="description" content={personal.bio} />
-        <link rel="icon" type="image/png" href="/favicon.png" />
+        <link rel="icon" type="image/png" href="/logo.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/logo.png" />
         
         {/* OpenGraph Metadata */}
