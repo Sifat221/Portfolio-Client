@@ -25,6 +25,10 @@
     1.001 85%,
     1
   );
+  --color-1: #9B8FCD;
+  --color-2: #38BDF8;
+  --color-3: #818CF8;
+  --color-4: #C084FC;
 }
 
 .gooey-nav-container {
@@ -39,9 +43,9 @@
 
 .gooey-nav-container nav ul {
   display: flex;
-  gap: 0.75rem;
+  gap: 1.5em;
   list-style: none;
-  padding: 0 0.5rem;
+  padding: 0 1em;
   margin: 0;
   position: relative;
   z-index: 3;
@@ -78,8 +82,8 @@
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 9999px;
-  background: linear-gradient(135deg, #9B8FCD, #4F46E5);
+  border-radius: 10px;
+  background: white;
   opacity: 0;
   transform: scale(0);
   transition: all 0.3s ease;
@@ -87,7 +91,7 @@
 }
 
 .gooey-nav-container nav ul li.active {
-  color: #FFFFFF;
+  color: black;
   text-shadow: none;
 }
 
@@ -117,7 +121,7 @@
 }
 
 .gooey-nav-container .effect.text.active {
-  color: #FFFFFF;
+  color: black;
 }
 
 .gooey-nav-container .effect.filter {
@@ -137,7 +141,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: #9B8FCD;
+  background: white;
   transform: scale(0);
   opacity: 0;
   z-index: -1;
@@ -174,7 +178,7 @@
 }
 
 .point {
-  background: var(--color, #9B8FCD);
+  background: var(--color, white);
   opacity: 1;
   animation: point calc(var(--time)) ease 1 -350ms;
 }
@@ -259,4 +263,12 @@ html.light .gooey-nav-container .effect.text {
 
 html.light .gooey-nav-container .effect.text.active {
   color: #FFFFFF !important;
+}
+
+html.light .gooey-nav-container nav ul li::after {
+  background: #0F172A !important;
+}
+
+html.light .gooey-nav-container .effect.filter::after {
+  background: #0F172A !important;
 }

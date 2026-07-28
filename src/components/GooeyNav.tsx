@@ -75,7 +75,7 @@ export const GooeyNav: React.FC<GooeyNavProps> = ({
         particle.style.setProperty('--end-y', `${p.end[1]}px`);
         particle.style.setProperty('--time', `${p.time}ms`);
         particle.style.setProperty('--scale', `${p.scale}`);
-        particle.style.setProperty('--color', `#9B8FCD`);
+        particle.style.setProperty('--color', `var(--color-${p.color}, white)`);
         particle.style.setProperty('--rotate', `${p.rotate}deg`);
 
         point.classList.add('point');
