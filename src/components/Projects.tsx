@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Smartphone, ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Smartphone, ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight, Layout, Brain, Code } from 'lucide-react';
 import { IProject } from '../types/portfolio';
 import { ProjectModal } from './ProjectModal';
 
@@ -10,21 +10,38 @@ interface ProjectsProps {
 
 export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const [selectedProject, setSelectedProject] = useState<IProject | null>(null);
-  const [filterCategory, setFilterCategory] = useState<string>('All');
+  const [activeTab, setActiveTab] = useState<string>('All');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const categories = ['All', ...Array.from(new Set(projects.map((p) => p.category || 'Mobile Apps')))];
+  // Exact Tabs requested by the user
+  const tabs = [
+    { id: 'All', label: 'All', icon: <Smartphone className="w-4 h-4" /> },
+    { id: 'Design', label: 'Design', icon: <Layout className="w-4 h-4" /> },
+    { id: 'AI & Machine Learning', label: 'AI & Machine Learning', icon: <Brain className="w-4 h-4" /> },
+    { id: 'Development', label: 'Development', icon: <Code className="w-4 h-4" /> },
+  ];
 
-  const filteredProjects =
-    filterCategory === 'All'
-      ? projects
-      : projects.filter((p) => (p.category || 'Mobile Apps') === filterCategory);
+  // Map projects based on selected Tab
+  const getFilteredProjects = () => {
+    if (activeTab === 'All') return projects;
+    if (activeTab === 'Design') {
+      return projects.filter((p) => p.category === 'Design' || p.category === 'Healthcare' || p.category === 'Mobile Development');
+    }
+    if (activeTab === 'AI & Machine Learning') {
+      return projects.filter((p) => p.category === 'AI & Machine Learning' || p.title.includes('MedBridge') || p.description.includes('health'));
+    }
+    if (activeTab === 'Development') {
+      return projects.filter((p) => p.category === 'Development' || p.category === 'E-Commerce' || p.category === 'Productivity');
+    }
+    return projects;
+  };
 
+  const filteredProjects = getFilteredProjects();
   const itemsPerPage = 3;
   const maxIndex = Math.max(0, filteredProjects.length - itemsPerPage);
 
-  const handleCategoryChange = (cat: string) => {
-    setFilterCategory(cat);
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
     setCurrentIndex(0);
   };
 
@@ -56,11 +73,11 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
       >
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
           <div className="text-center md:text-left space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-[#9B8FCD]/30 text-[#9B8FCD] text-xs font-mono font-bold">
               <Smartphone className="w-3.5 h-3.5" />
-              <span>Flagship Apps Portfolio</span>
+              <span>Flagship Applications</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
               Featured <span className="text-gradient-periwinkle">Mobile Projects</span>
@@ -82,12 +99,12 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
             </button>
             
             <span className="text-xs font-mono text-slate-400 font-bold px-1">
-              {Math.min(currentIndex + 1, filteredProjects.length)} - {Math.min(currentIndex + itemsPerPage, filteredProjects.length)} of {filteredProjects.length}
+              {filteredProjects.length > 0 ? `${Math.min(currentIndex + 1, filteredProjects.length)} - ${Math.min(currentIndex + itemsPerPage, filteredProjects.length)} of ${filteredProjects.length}` : '0 of 0'}
             </span>
 
             <button
               onClick={handleNext}
-              disabled={currentIndex >= maxIndex}
+              disabled={currentIndex >= maxIndex || filteredProjects.length <= itemsPerPage}
               className="p-3 rounded-full glass-card border border-slate-700/80 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] disabled:opacity-30 disabled:pointer-events-none transition-all shadow-lg active:scale-95"
               aria-label="Next Projects"
             >
@@ -96,32 +113,49 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           </div>
         </div>
 
-        {/* Filter Category Tabs */}
-        <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-10">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => handleCategoryChange(cat)}
-              className={`px-5 py-2 rounded-full text-xs font-bold transition-all duration-200 ${
-                filterCategory === cat
-                  ? 'bg-gradient-to-r from-[#9B8FCD] to-indigo-600 text-white shadow-lg shadow-[#9B8FCD]/30 scale-105'
-                  : 'glass-card text-slate-300 hover:text-white hover:border-[#9B8FCD]/40'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Tab Navigation Bar (All, Design, AI & Machine Learning, Development) */}
+        <div className="border-b border-slate-800/80 mb-10 overflow-x-auto">
+          <div className="flex items-center gap-8 min-w-max pb-3">
+            {tabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabChange(tab.id)}
+                  className={`relative flex items-center gap-2 font-bold text-sm transition-all duration-200 py-1 ${
+                    isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                  role="tab"
+                  aria-selected={isActive}
+                >
+                  <span className={isActive ? 'text-[#9B8FCD]' : 'text-slate-500'}>
+                    {tab.icon}
+                  </span>
+                  <span>{tab.label}</span>
+
+                  {/* Active Sliding Tab Indicator */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeProjectTab"
+                      className="absolute -bottom-3 left-0 right-0 h-0.5 bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400 rounded-full shadow-sm shadow-[#9B8FCD]"
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Interactive 3-Item Carousel Grid */}
         <div className="relative overflow-hidden min-h-[460px]">
           <AnimatePresence mode="wait">
             <motion.div
-              key={filterCategory + currentIndex}
-              initial={{ opacity: 0, x: 50 }}
+              key={activeTab + currentIndex}
+              initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.35, ease: 'easeInOut' }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
               {visibleProjects.map((project) => (
@@ -222,20 +256,22 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
         </div>
 
         {/* Carousel Pagination Dots */}
-        <div className="flex items-center justify-center gap-2 pt-8">
-          {Array.from({ length: Math.ceil(filteredProjects.length / itemsPerPage) }).map((_, dotIdx) => (
-            <button
-              key={dotIdx}
-              onClick={() => setCurrentIndex(dotIdx * itemsPerPage)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                Math.floor(currentIndex / itemsPerPage) === dotIdx
-                  ? 'w-8 bg-[#9B8FCD] shadow-sm shadow-[#9B8FCD]/50'
-                  : 'w-2 bg-slate-800 hover:bg-slate-700'
-              }`}
-              aria-label={`Go to slide page ${dotIdx + 1}`}
-            />
-          ))}
-        </div>
+        {filteredProjects.length > itemsPerPage && (
+          <div className="flex items-center justify-center gap-2 pt-8">
+            {Array.from({ length: Math.ceil(filteredProjects.length / itemsPerPage) }).map((_, dotIdx) => (
+              <button
+                key={dotIdx}
+                onClick={() => setCurrentIndex(dotIdx * itemsPerPage)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  Math.floor(currentIndex / itemsPerPage) === dotIdx
+                    ? 'w-8 bg-[#9B8FCD] shadow-sm shadow-[#9B8FCD]/50'
+                    : 'w-2 bg-slate-800 hover:bg-slate-700'
+                }`}
+                aria-label={`Go to slide page ${dotIdx + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </motion.div>
 
       {/* Case Study Modal */}
