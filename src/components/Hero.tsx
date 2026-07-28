@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 
 interface HeroProps {
@@ -146,7 +146,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
       {/* ================= IDENTICAL BANNER CONTENT FOR ALL BACKGROUNDS ================= */}
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Side: Headline, Subtitle, Pill Buttons & Stats */}
+          {/* Left Side: Headline, Subtitle, Pill Buttons & Social Icons & Stats */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -174,7 +174,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               </motion.p>
             </div>
 
-            {/* Periwinkle Action Pill Buttons */}
+            {/* Periwinkle Action Pill Buttons + Social Media Links */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -197,6 +197,49 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 <Download className="w-4 h-4 text-[#9B8FCD]" />
                 <span>Download Resume</span>
               </a>
+
+              {/* Social Media Link Buttons (GitHub, LinkedIn, Facebook, WhatsApp) */}
+              <div className="flex items-center gap-2.5 sm:pl-2 pt-2 sm:pt-0">
+                <a
+                  href={personal.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-[#9B8FCD] hover:scale-110 transition-all shadow-md"
+                  aria-label="GitHub Profile"
+                >
+                  <Github className="w-4 h-4 text-[#9B8FCD]" />
+                </a>
+
+                <a
+                  href="https://linkedin.com/in/sifatkhan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-sky-400 hover:scale-110 transition-all shadow-md"
+                  aria-label="LinkedIn Profile"
+                >
+                  <Linkedin className="w-4 h-4 text-sky-400" />
+                </a>
+
+                <a
+                  href="https://facebook.com/sifatkhan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-blue-500 hover:scale-110 transition-all shadow-md"
+                  aria-label="Facebook Profile"
+                >
+                  <Facebook className="w-4 h-4 text-blue-500" />
+                </a>
+
+                <a
+                  href="https://wa.me/8801313997323"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-emerald-400 hover:scale-110 transition-all shadow-md"
+                  aria-label="WhatsApp Direct Chat"
+                >
+                  <MessageCircle className="w-4 h-4 text-emerald-400" />
+                </a>
+              </div>
             </motion.div>
 
             {/* High Impact Stats Row */}
@@ -301,7 +344,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
 
             <button
               onClick={handleNextBanner}
-              className="p-3 rounded-full glass-card border border-slate-700 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
+              className="p-3 rounded-full glass-card border border-slate-700 text-[#9B8FCD] hover:border-[#9B8FCD] hover:text-white transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
               aria-label="Next Banner Background"
             >
               <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
