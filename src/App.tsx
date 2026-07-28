@@ -9,7 +9,6 @@ import { EducationCertifications } from './components/EducationCertifications';
 import { Achievements } from './components/Achievements';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
-import { Skeleton } from './components/ui/skeleton';
 
 import {
   usePersonalProfile,
@@ -86,14 +85,14 @@ const PortfolioContent: React.FC = () => {
 
   if (isPersonalLoading || isProjectsLoading) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center text-slate-900 space-y-6 px-4">
+      <div className="min-h-screen bg-[#090D16] flex flex-col items-center justify-center text-white space-y-6 px-4">
         <div className="text-center space-y-2 max-w-sm">
           <span className="text-3xl font-extrabold tracking-tight">
-            Sifat Khan<span className="text-indigo-600">.</span>
+            Sifat Khan<span className="text-[#9B8FCD]">.</span>
           </span>
-          <p className="text-sm font-semibold text-indigo-600 flex items-center justify-center gap-2 pt-2">
+          <p className="text-sm font-mono text-[#9B8FCD] flex items-center justify-center gap-2 pt-2">
             <Loader2 className="w-4 h-4 animate-spin" />
-            Loading Portfolio...
+            Loading Gorgeous Portfolio...
           </p>
         </div>
       </div>
@@ -101,7 +100,7 @@ const PortfolioContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 selection:bg-indigo-500 selection:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-[#090D16] text-slate-100 selection:bg-[#9B8FCD] selection:text-white transition-colors duration-300">
       {/* Navigation Bar */}
       <Navbar personal={personal} />
 
