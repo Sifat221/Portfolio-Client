@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
@@ -9,6 +9,16 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ personal }) => {
   const [activeBannerIdx, setActiveBannerIdx] = useState(0);
+  const totalBanners = 2;
+
+  // Auto-switch background theme every 10 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveBannerIdx((prev) => (prev + 1) % totalBanners);
+    }, 10000);
+
+    return () => clearInterval(timer);
+  }, [totalBanners]);
 
   // Generate 35 unique snowflakes with random positions, sizes, delays, and speeds
   const snowflakes = useMemo(() => {
@@ -30,8 +40,6 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
       };
     });
   }, []);
-
-  const totalBanners = 2;
 
   const handlePrevBanner = () => {
     setActiveBannerIdx((prev) => (prev - 1 + totalBanners) % totalBanners);
@@ -264,11 +272,11 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
           </motion.div>
         </div>
 
-        {/* ================= BANNER SWITCHER ARROW CONTROLS (< & >) ================= */}
+        {/* ================= BANNER SWITCHER ARROW CONTROLS (< & >) WITH 10s TIMER ================= */}
         <div className="pt-6 border-t border-slate-800/80 flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono text-slate-400 font-bold uppercase tracking-wider">
-              Background Backdrop Theme:
+              Background Theme (Auto 10s):
             </span>
             <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-[#9B8FCD] border border-slate-700/80">
               {activeBannerIdx === 0 ? '🌊 River & Snowfall Cloud Landscape' : '🎥 Video Background Backdrop (public/BannerTwo.mp4)'}
