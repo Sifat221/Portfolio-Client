@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Smartphone, Download, Menu, X, Sun, Moon } from 'lucide-react';
+import { Smartphone, Download, Menu, X } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 
 interface NavbarProps {
   personal: IPersonalProfile;
-  theme: 'dark' | 'light';
-  toggleTheme: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ personal, theme, toggleTheme }) => {
+export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -69,21 +67,8 @@ export const Navbar: React.FC<NavbarProps> = ({ personal, theme, toggleTheme }) 
             ))}
           </nav>
 
-          {/* CTA, Theme Toggle & Resume Button */}
+          {/* CTA & Resume Button */}
           <div className="hidden lg:flex items-center gap-3">
-            {/* Theme Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              className="p-2.5 rounded-xl glass-card text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              aria-label={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode`}
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-amber-400" />
-              ) : (
-                <Moon className="w-5 h-5 text-indigo-400" />
-              )}
-            </button>
-
             <a
               href={personal.resumeUrl}
               target="_blank"
@@ -96,15 +81,8 @@ export const Navbar: React.FC<NavbarProps> = ({ personal, theme, toggleTheme }) 
             </a>
           </div>
 
-          {/* Mobile Menu & Theme Toggle */}
+          {/* Mobile Menu Toggle */}
           <div className="flex items-center gap-2 md:hidden">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-slate-800/80 text-slate-300 hover:text-cyan-400 border border-slate-700/50"
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-indigo-400" />}
-            </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg bg-slate-800/80 text-slate-300 hover:text-cyan-400 border border-slate-700/50"

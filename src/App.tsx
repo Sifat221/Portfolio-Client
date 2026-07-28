@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -54,19 +54,6 @@ const PortfolioContent: React.FC = () => {
   const { data: achievements = defaultAchievements } = useAchievements();
   const { data: testimonials = defaultTestimonials } = useTestimonials();
 
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-
-  const toggleTheme = () => {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    document.documentElement.setAttribute('data-theme', nextTheme);
-    if (nextTheme === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-  };
-
   // JSON-LD Structured Data Injection for SEO
   useEffect(() => {
     const schemaData = {
@@ -110,7 +97,7 @@ const PortfolioContent: React.FC = () => {
         <div className="text-center space-y-2 max-w-sm">
           <p className="text-sm font-mono text-cyan-400 flex items-center justify-center gap-2">
             <Loader2 className="w-4 h-4 animate-spin" />
-            Fetching Data with TanStack Query & Axios...
+            Fetching Data from Backend...
           </p>
           <div className="space-y-2 pt-2">
             <Skeleton className="h-4 w-48 mx-auto" />
@@ -122,9 +109,9 @@ const PortfolioContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen selection:bg-cyan-500 selection:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-[#090D16] text-slate-100 selection:bg-cyan-500 selection:text-white">
       {/* Navigation Bar */}
-      <Navbar personal={personal} theme={theme} toggleTheme={toggleTheme} />
+      <Navbar personal={personal} />
 
       {/* Main Content Sections */}
       <main role="main">
