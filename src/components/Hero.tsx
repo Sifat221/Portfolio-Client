@@ -211,6 +211,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               <SplitText
                 text="Let's Work Together to Create Mobile Wonders with Us"
                 highlightText="Mobile Wonders"
+                highlightClass="text-blue-500"
                 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight"
                 delay={40}
                 duration={1.25}
