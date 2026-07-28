@@ -356,7 +356,11 @@ export async function getAchievements(): Promise<IAchievement[]> {
 export async function getTestimonials(): Promise<ITestimonial[]> {
   try {
     const response = await api.get('/testimonials');
-    if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
+    if (
+      response.data?.success &&
+      Array.isArray(response.data?.data) &&
+      response.data.data.length >= 5
+    ) {
       return response.data.data;
     }
   } catch (err) {
