@@ -299,6 +299,43 @@ html.light .text-slate-400 {
   color: #475569 !important;
 }
 
+/* Footer Light Mode Exceptions: Footer maintains dark background, so text remains light & white */
+html.light footer {
+  background-color: #060912 !important;
+  color: #CBD5E1 !important;
+}
+
+html.light footer .text-white,
+html.light footer span.text-white {
+  color: #FFFFFF !important;
+}
+
+html.light footer .text-slate-200 {
+  color: #E2E8F0 !important;
+}
+
+html.light footer .text-slate-300 {
+  color: #CBD5E1 !important;
+}
+
+html.light footer .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+html.light footer a {
+  color: #E2E8F0 !important;
+}
+
+html.light footer a:hover {
+  color: #FFFFFF !important;
+}
+
+html.light footer .bg-slate-900 {
+  background-color: #0F172A !important;
+  border-color: #1E293B !important;
+  color: #E2E8F0 !important;
+}
+
 /* Pill Chips, Badges & Dates in Light Mode */
 html.light .bg-slate-800,
 html.light .bg-slate-800\/90,
