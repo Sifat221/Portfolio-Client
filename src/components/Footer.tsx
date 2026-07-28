@@ -60,32 +60,31 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
             </div>
           </div>
 
-          {/* Column 2: Navigation Links with LineSidebar */}
-          <div className="lg:col-span-3 space-y-3">
+          {/* Column 2: Navigation Links */}
+          <div className="lg:col-span-2 space-y-3">
             <h3 className="text-xs font-mono uppercase tracking-wider text-[#9B8FCD] font-bold">
               Navigation
             </h3>
-            <LineSidebar
-              items={['About', 'Skills & Stack', 'Projects', 'Experience', 'Education', 'Get In Touch']}
-              accentColor="#9B8FCD"
-              textColor="#94A3B8"
-              markerColor="#475569"
-              showIndex={true}
-              showMarker={true}
-              proximityRadius={80}
-              maxShift={18}
-              markerLength={32}
-              itemGap={10}
-              fontSize={0.8}
-              onItemClick={(index) => {
-                const links = ['#about', '#skills', '#projects', '#experience', '#education', '#contact'];
-                const target = links[index];
-                if (target) {
-                  const el = document.querySelector(target);
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-            />
+            <ul className="space-y-2 text-xs font-medium text-slate-400">
+              <li>
+                <a href="#about" className="hover:text-white transition-colors">About</a>
+              </li>
+              <li>
+                <a href="#skills" className="hover:text-white transition-colors">Skills & Stack</a>
+              </li>
+              <li>
+                <a href="#projects" className="hover:text-white transition-colors">Projects</a>
+              </li>
+              <li>
+                <a href="#experience" className="hover:text-white transition-colors">Experience</a>
+              </li>
+              <li>
+                <a href="#education" className="hover:text-white transition-colors">Education</a>
+              </li>
+              <li>
+                <a href="#contact" className="hover:text-white transition-colors">Get In Touch</a>
+              </li>
+            </ul>
           </div>
 
           {/* Column 3: Core Expertise with LineSidebar */}
