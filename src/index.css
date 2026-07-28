@@ -232,38 +232,44 @@ section {
   animation-play-state: paused;
 }
 
-/* ================= LIGHT MODE COMPREHENSIVE STYLING ================= */
+/* ================= LIGHT MODE COMPREHENSIVE CARD & TEXT FIXES ================= */
 html.light body {
   background-color: #F8FAFC !important;
   color: #0F172A !important;
 }
 
-html.light section,
-html.light div.bg-\[\#090D16\],
-html.light div.bg-\[\#0D1322\],
-html.light div.bg-\[\#0B101D\] {
+html.light section {
   background-color: #F8FAFC !important;
   color: #0F172A !important;
 }
 
-html.light .glass-panel {
-  background: rgba(255, 255, 255, 0.92) !important;
-  border-color: rgba(203, 213, 225, 0.8) !important;
+/* Card Containers & Panels in Light Mode: Pure White Background + Soft Shadow */
+html.light .glass-panel,
+html.light .glass-card,
+html.light [class*="bg-[#1A2335]"],
+html.light [class*="bg-[#1C2538]"],
+html.light [class*="bg-[#131A29]"],
+html.light [class*="bg-[#090D16]"],
+html.light [class*="bg-[#0D1322]"],
+html.light [class*="bg-[#0B101D]"],
+html.light [class*="bg-[#111827]"],
+html.light .bg-slate-900,
+html.light .bg-slate-900\/90,
+html.light .bg-slate-900\/80,
+html.light .bg-slate-900\/60,
+html.light .bg-slate-900\/50,
+html.light .bg-slate-950 {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
   color: #0F172A !important;
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03) !important;
 }
 
-html.light .glass-card {
-  background: rgba(255, 255, 255, 0.88) !important;
-  border-color: rgba(226, 232, 240, 0.9) !important;
-  color: #0F172A !important;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
-}
-
-html.light .glass-card:hover {
-  background: #FFFFFF !important;
+html.light .glass-card:hover,
+html.light [class*="bg-[#1A2335]"]:hover {
+  background-color: #FFFFFF !important;
   border-color: #9B8FCD !important;
-  box-shadow: 0 12px 32px -6px rgba(155, 143, 205, 0.25) !important;
+  box-shadow: 0 14px 32px -6px rgba(155, 143, 205, 0.25) !important;
 }
 
 /* Light mode text color overrides: white/light fonts become dark slate for 100% legibility */
@@ -287,37 +293,35 @@ html.light .text-slate-400 {
   color: #475569 !important;
 }
 
-html.light .bg-slate-900 {
-  background-color: #F1F5F9 !important;
-  border-color: #E2E8F0 !important;
-  color: #0F172A !important;
-}
-
-html.light .bg-slate-800 {
-  background-color: #E2E8F0 !important;
-  color: #0F172A !important;
-}
-
-html.light .bg-slate-800\/80,
+/* Pill Chips, Badges & Dates in Light Mode */
+html.light .bg-slate-800,
 html.light .bg-slate-800\/90,
-html.light .bg-slate-800\/60 {
-  background-color: rgba(226, 232, 240, 0.8) !important;
+html.light .bg-slate-800\/80,
+html.light .bg-slate-800\/60,
+html.light .bg-slate-800\/50,
+html.light .bg-slate-800\/40 {
+  background-color: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+html.light .bg-slate-800 span,
+html.light .bg-slate-800\/80 span,
+html.light .bg-slate-800\/90 span {
+  color: #0F172A !important;
 }
 
 html.light .border-slate-800,
 html.light .border-slate-800\/80,
 html.light .border-slate-800\/90,
-html.light .border-slate-800\/40 {
+html.light .border-slate-800\/40,
+html.light .border-slate-700,
+html.light .border-slate-700\/60 {
   border-color: #E2E8F0 !important;
 }
 
-html.light .border-slate-700,
-html.light .border-slate-700\/60 {
-  border-color: #CBD5E1 !important;
-}
-
 html.light header {
-  background-color: rgba(255, 255, 255, 0.9) !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
   border-color: rgba(226, 232, 240, 0.8) !important;
 }
 

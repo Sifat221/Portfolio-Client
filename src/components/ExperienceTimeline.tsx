@@ -10,7 +10,7 @@ interface ExperienceTimelineProps {
 
 export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({ experience }) => {
   return (
-    <section id="experience" className="py-24 relative bg-[#131A29] text-slate-100 border-y border-slate-800/60">
+    <section id="experience" className="py-24 relative text-slate-100 border-y border-slate-800/60">
       {/* Background Soft Periwinkle Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#9B8FCD]/10 rounded-full blur-[120px] pointer-events-none"></div>
 
@@ -59,12 +59,12 @@ export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({ experien
               className="relative group"
             >
               {/* Floating Timeline Icon Dot */}
-              <div className="absolute -left-[31px] sm:-left-[47px] top-1.5 w-10 h-10 rounded-2xl bg-[#1C2538] border-2 border-[#9B8FCD] text-[#9B8FCD] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <div className="absolute -left-[31px] sm:-left-[47px] top-1.5 w-10 h-10 rounded-2xl glass-card border-2 border-[#9B8FCD] text-[#9B8FCD] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                 <Briefcase className="w-5 h-5" />
               </div>
 
-              {/* Harmonious Dark Navy Experience Card */}
-              <div className="bg-[#1A2335]/90 p-6 sm:p-8 rounded-3xl border border-slate-700/60 shadow-xl hover:shadow-2xl hover:border-[#9B8FCD]/60 transition-all duration-300 space-y-4">
+              {/* Harmonious Responsive Experience Card */}
+              <div className="glass-card p-6 sm:p-8 rounded-3xl border border-slate-700/60 shadow-xl hover:shadow-2xl hover:border-[#9B8FCD]/60 transition-all duration-300 space-y-4">
                 {/* Top Info */}
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
