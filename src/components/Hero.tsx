@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Download, Feather, Palette, Compass, Cloud } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
@@ -8,20 +8,57 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ personal }) => {
+  // Generate 35 unique snowflakes with random positions, sizes, delays, and speeds
+  const snowflakes = useMemo(() => {
+    return Array.from({ length: 35 }).map((_, index) => {
+      const left = Math.random() * 100; // 0% to 100% width
+      const size = Math.random() * 4 + 2; // 2px to 6px
+      const duration = Math.random() * 8 + 6; // 6s to 14s duration
+      const delay = Math.random() * 8; // 0s to 8s delay
+      const opacity = Math.random() * 0.7 + 0.3; // 0.3 to 1.0 opacity
+
+      return {
+        id: index,
+        left: `${left}%`,
+        width: `${size}px`,
+        height: `${size}px`,
+        animationDuration: `${duration}s`,
+        animationDelay: `${delay}s`,
+        opacity,
+      };
+    });
+  }, []);
+
   return (
     <section id="about" className="relative pt-36 pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-[#090D16]">
-      {/* ================= ANIMATED FLOATING CLOUDS (MEGH) BACKDROP ================= */}
+      {/* ================= ANIMATED SNOWFALL & FLOATING CLOUDS BACKDROP ================= */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-        {/* Animated Cloud Layer 1 - Top Left Cloud */}
+        {/* 1. Animated Snowfall Particles */}
+        {snowflakes.map((flake) => (
+          <div
+            key={flake.id}
+            className="snowflake-particle"
+            style={{
+              left: flake.left,
+              width: flake.width,
+              height: flake.height,
+              animationDuration: flake.animationDuration,
+              animationDelay: flake.animationDelay,
+              opacity: flake.opacity,
+            }}
+          />
+        ))}
+
+        {/* 2. Animated Floating Cloud Layer 1 - Top Left */}
         <div className="absolute -top-10 -left-20 w-[600px] h-[350px] bg-gradient-to-r from-[#9B8FCD]/30 via-indigo-600/20 to-transparent rounded-full blur-[110px] animate-cloud-slow-1"></div>
 
-        {/* Animated Cloud Layer 2 - Top Right Cloud */}
+        {/* 3. Animated Floating Cloud Layer 2 - Top Right */}
         <div className="absolute top-10 -right-20 w-[650px] h-[400px] bg-gradient-to-l from-cyan-500/25 via-indigo-500/20 to-transparent rounded-full blur-[120px] animate-cloud-slow-2"></div>
 
-        {/* Animated Cloud Layer 3 - Center Atmospheric Cloud */}
+        {/* 4. Animated Floating Cloud Layer 3 - Center Atmospheric Cloud */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-tr from-[#9B8FCD]/20 via-purple-600/15 to-cyan-400/15 rounded-full blur-[140px] animate-cloud-slow-3"></div>
 
-        {/* Floating Cloud Graphic Orbs */}
+        {/* 5. Floating Cloud Graphic Orbs */}
         <div className="absolute top-24 left-[15%] text-[#9B8FCD]/20 animate-cloud-slow-1">
           <Cloud className="w-32 h-32 blur-[1px]" />
         </div>
