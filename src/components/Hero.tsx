@@ -23,7 +23,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="lg:col-span-6 space-y-8 text-center lg:text-left"
           >
-            {/* Headline */}
+            {/* Clean Headline */}
             <div className="space-y-4">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
@@ -33,6 +33,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               >
                 Let's Work Together to Create <span className="text-gradient-periwinkle">Mobile Wonders</span> with Us
               </motion.h1>
+
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

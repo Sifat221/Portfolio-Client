@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { GraduationCap, Award, BookOpen, ExternalLink, Calendar, ChevronLeft, ChevronRight, Image as ImageIcon, Sparkles } from 'lucide-react';
 import { IEducation, ICertification } from '../types/portfolio';
 
@@ -7,66 +7,6 @@ interface EducationCertificationsProps {
   education: IEducation[];
   certifications: ICertification[];
 }
-
-// Letter-by-Letter Staggered Typewriter Text Reveal for the ENTIRE Title
-const StaggeredTitle: React.FC<{ fullText: string }> = ({ fullText }) => {
-  const container: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.035, delayChildren: 0.1 },
-    },
-  };
-
-  const child: Variants = {
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: 'spring',
-        damping: 12,
-        stiffness: 120,
-      },
-    },
-    hidden: {
-      opacity: 0,
-      y: 20,
-      scale: 0.8,
-    },
-  };
-
-  const allLetters = Array.from(fullText);
-
-  return (
-    <motion.h2
-      variants={container}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false }}
-      className="text-3xl sm:text-5xl font-extrabold tracking-tight flex flex-wrap justify-center items-center gap-[0.02em]"
-    >
-      {allLetters.map((char, index) => {
-        // "Education & " (indices 0-11) is White; "Certifications" (indices 12+) is Animated Periwinkle Gradient
-        const isCertificationsPart = index >= 12;
-
-        return (
-          <motion.span
-            variants={child}
-            key={index}
-            className={`inline-block ${
-              isCertificationsPart
-                ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400'
-                : 'text-white'
-            }`}
-          >
-            {char === ' ' ? '\u00A0' : char}
-          </motion.span>
-        );
-      })}
-    </motion.h2>
-  );
-};
 
 export const EducationCertifications: React.FC<EducationCertificationsProps> = ({
   education,
@@ -116,15 +56,16 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-12"
       >
-        {/* Animated Staggered Letter-by-Letter Header for the Entire Title */}
+        {/* Clean Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-mono font-bold shadow-lg shadow-[#9B8FCD]/10 hover:scale-105 transition-transform">
-            <GraduationCap className="w-4 h-4 text-[#9B8FCD] animate-bounce" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-mono font-bold shadow-lg shadow-[#9B8FCD]/10">
+            <GraduationCap className="w-4 h-4 text-[#9B8FCD]" />
             <span>Academic Background & Verified Credentials</span>
           </div>
 
-          {/* Letter-by-Letter Typewriter Animation for the ENTIRE phrase "Education & Certifications" */}
-          <StaggeredTitle fullText="Education & Certifications" />
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+            Education & <span className="text-gradient-periwinkle">Certifications</span>
+          </h2>
 
           <p className="text-slate-300 text-sm font-normal max-w-xl mx-auto">
             Academic degrees, courseworks, professional credentials, and university memorable photo gallery.

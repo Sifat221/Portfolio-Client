@@ -48,9 +48,11 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
             <Wrench className="w-3.5 h-3.5" />
             <span>Tech Stack</span>
           </div>
+
           <h2 className="text-3xl font-extrabold text-white tracking-tight">
             Core Mobile <span className="text-gradient-periwinkle">Expertise</span>
           </h2>
+
           <p className="text-slate-300 text-sm font-normal">
             Specialized in Flutter, BLoC/GetX state management, Clean Architecture, and REST/Firebase backends.
           </p>

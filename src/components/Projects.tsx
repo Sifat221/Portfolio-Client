@@ -72,16 +72,18 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
       >
-        {/* Header */}
+        {/* Clean Header */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
           <div className="text-center md:text-left space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-[#9B8FCD]/30 text-[#9B8FCD] text-xs font-mono font-bold">
               <Smartphone className="w-3.5 h-3.5" />
               <span>Flagship Applications</span>
             </div>
+            
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
               Featured <span className="text-gradient-periwinkle">Mobile Projects</span>
             </h2>
+
             <p className="text-slate-300 text-sm font-normal">
               Explore production mobile solutions built with Flutter, Clean Architecture, BLoC/GetX, and REST API backends.
             </p>
@@ -113,7 +115,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           </div>
         </div>
 
-        {/* Tab Navigation Bar (All, Design, AI & Machine Learning, Development) */}
+        {/* Tab Navigation Bar */}
         <div className="border-b border-slate-800/80 mb-10 overflow-x-auto">
           <div className="flex items-center gap-8 min-w-max pb-3">
             {tabs.map((tab) => {
