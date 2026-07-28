@@ -24,7 +24,7 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
               {/* Male Passport Photo Avatar Frame */}
               <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border-2 border-[#9B8FCD]/60 shadow-xl shrink-0 group bg-slate-900">
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200"
+                  src="/Profile.JPG"
                   alt="Sifat Khan Passport Photo"
                   className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300"
                 />

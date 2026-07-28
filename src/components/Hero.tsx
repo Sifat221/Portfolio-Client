@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle } from 'lucide-react';
+import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle, Sparkles, Smartphone, Code2 } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 
 interface HeroProps {
@@ -92,7 +92,6 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
 
             {/* 3. ANIMATED RIVER / SEA OCEAN WAVES BACKDROP AT BOTTOM */}
             <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none opacity-40">
-              {/* Back Wave Layer */}
               <svg
                 className="relative block w-[160%] h-32 sm:h-44 text-indigo-900/60 animate-wave-slow-2"
                 viewBox="0 0 1200 120"
@@ -103,7 +102,6 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                   fill="currentColor"
                 ></path>
               </svg>
-              {/* Front Wave Layer */}
               <svg
                 className="relative block w-[160%] -mt-16 h-28 sm:h-36 text-[#9B8FCD]/25 animate-wave-slow-1"
                 viewBox="0 0 1200 120"
@@ -125,7 +123,6 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             transition={{ duration: 0.5 }}
             className="absolute inset-0 pointer-events-none overflow-hidden z-0"
           >
-            {/* Video Background playing public/BannerTwo.mp4 */}
             <video
               autoPlay
               loop
@@ -143,23 +140,37 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
       </AnimatePresence>
       {/* ========================================================================= */}
 
-      {/* ================= IDENTICAL BANNER CONTENT FOR ALL BACKGROUNDS ================= */}
+      {/* ================= BALANCED & RICH LEFT SIDE CONTENT ================= */}
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Side: Headline, Subtitle, Pill Buttons & Social Icons */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-stretch">
+          {/* Left Side: Headline, Availability Pill, Core Focus Tags & Action Bar */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="lg:col-span-6 space-y-8 text-center lg:text-left"
+            className="lg:col-span-6 flex flex-col justify-between space-y-8 text-center lg:text-left py-2"
           >
-            {/* Clean Headline */}
+            {/* Top Availability Status Pill */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass-panel border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold self-center lg:self-start shadow-lg shadow-emerald-950/20"
+            >
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <span>Available for Remote & Full-time Roles</span>
+            </motion.div>
+
+            {/* Main Headline */}
             <div className="space-y-4">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className="text-4xl sm:text-6xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight"
+                className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight"
               >
                 Let's Work Together to Create <span className="text-gradient-periwinkle">Mobile Wonders</span> with Us
               </motion.h1>
@@ -174,7 +185,28 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               </motion.p>
             </div>
 
-            {/* Periwinkle Action Pill Buttons + Social Media Links */}
+            {/* Core Capability Feature Pills Row */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.25 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1"
+            >
+              <span className="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] flex items-center gap-1.5">
+                <Smartphone className="w-3.5 h-3.5 text-[#9B8FCD]" />
+                <span>Flutter & Dart</span>
+              </span>
+              <span className="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold glass-card border border-indigo-500/40 text-indigo-300 flex items-center gap-1.5">
+                <Code2 className="w-3.5 h-3.5 text-indigo-400" />
+                <span>Clean Architecture</span>
+              </span>
+              <span className="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold glass-card border border-cyan-500/40 text-cyan-300 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                <span>BLoC & GetX</span>
+              </span>
+            </motion.div>
+
+            {/* Action Pill Buttons + Social Media Links */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -198,7 +230,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 <span>Download Resume</span>
               </a>
 
-              {/* Social Media Link Buttons (GitHub, LinkedIn, Facebook, WhatsApp) */}
+              {/* Social Media Link Buttons */}
               <div className="flex items-center gap-2.5 sm:pl-2 pt-2 sm:pt-0">
                 <a
                   href={personal.github}
@@ -261,7 +293,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               {/* Professional Male Developer Portrait Image */}
               <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl glass-panel border border-slate-700/60 p-2">
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800"
+                  src="/Profile.JPG"
                   alt="Sifat Khan - Professional Flutter Developer"
                   className="w-full h-[460px] sm:h-[520px] object-cover object-top rounded-2xl hover:scale-105 transition-transform duration-700"
                 />
@@ -296,7 +328,6 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
 
         {/* ================= MINIMAL BANNER SWITCHER ARROW CONTROLS (< & >) ================= */}
         <div className="pt-6 border-t border-slate-800/80 flex items-center justify-end">
-          {/* Left (<) and Right (>) Navigation Buttons with Indicator Dots */}
           <div className="flex items-center gap-3">
             <button
               onClick={handlePrevBanner}
