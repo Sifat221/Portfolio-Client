@@ -40,14 +40,14 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
   const elapsedTime = BANNER_DURATION - secondsLeft;
   const progressPercent = Math.min(100, Math.max(0, (elapsedTime / BANNER_DURATION) * 100));
 
-  // Generate 35 unique snowflakes with random positions, sizes, delays, and speeds
+  // Generate 140 unique snowflakes with random positions, sizes, delays, and speeds
   const snowflakes = useMemo(() => {
-    return Array.from({ length: 35 }).map((_, index) => {
+    return Array.from({ length: 140 }).map((_, index) => {
       const left = Math.random() * 100;
-      const size = Math.random() * 4 + 2;
-      const duration = Math.random() * 8 + 6;
+      const size = Math.random() * 4.5 + 2;
+      const duration = Math.random() * 7 + 3.5;
       const delay = Math.random() * 8;
-      const opacity = Math.random() * 0.7 + 0.3;
+      const opacity = Math.random() * 0.55 + 0.4;
 
       return {
         id: index,
@@ -82,7 +82,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             transition={{ duration: 0.5 }}
             className="absolute inset-0 pointer-events-none overflow-hidden z-0"
           >
-            {/* 1. Snowfall Particles */}
+            {/* 1. Dense Realistic Snowfall Particles (140 Flakes) */}
             {snowflakes.map((flake) => (
               <div
                 key={flake.id}
@@ -98,16 +98,33 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               />
             ))}
 
-            {/* 2. Floating Clouds (Megh) */}
-            <div className="absolute -top-10 -left-20 w-[600px] h-[350px] bg-gradient-to-r from-[#9B8FCD]/30 via-indigo-600/20 to-transparent rounded-full blur-[110px] animate-cloud-slow-1"></div>
-            <div className="absolute top-10 -right-20 w-[650px] h-[400px] bg-gradient-to-l from-cyan-500/25 via-indigo-500/20 to-transparent rounded-full blur-[120px] animate-cloud-slow-2"></div>
-            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-tr from-[#9B8FCD]/20 via-purple-600/15 to-cyan-400/15 rounded-full blur-[140px] animate-cloud-slow-3"></div>
+            {/* 2. Rich Floating Clouds & Nebula Mist Layers */}
+            <div className="absolute -top-10 -left-20 w-[700px] h-[400px] bg-gradient-to-r from-[#9B8FCD]/35 via-indigo-600/25 to-transparent rounded-full blur-[110px] animate-cloud-slow-1"></div>
+            <div className="absolute top-10 -right-20 w-[750px] h-[450px] bg-gradient-to-l from-cyan-500/30 via-indigo-500/25 to-transparent rounded-full blur-[120px] animate-cloud-slow-2"></div>
+            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-gradient-to-tr from-[#9B8FCD]/25 via-purple-600/20 to-cyan-400/20 rounded-full blur-[140px] animate-cloud-slow-3"></div>
+            <div className="absolute top-2/3 left-10 w-[600px] h-[300px] bg-gradient-to-r from-indigo-500/20 via-[#9B8FCD]/20 to-transparent rounded-full blur-[120px] animate-cloud-slow-1"></div>
 
-            <div className="absolute top-24 left-[15%] text-[#9B8FCD]/20 animate-cloud-slow-1">
-              <Cloud className="w-32 h-32 blur-[1px]" />
+            {/* Multiple Floating SVG Clouds Across Banner */}
+            <div className="absolute top-12 left-[5%] text-[#9B8FCD]/35 animate-cloud-slow-1">
+              <Cloud className="w-40 h-40 blur-[1px]" />
             </div>
-            <div className="absolute top-36 right-[12%] text-cyan-400/20 animate-cloud-slow-2">
-              <Cloud className="w-40 h-40 blur-[2px]" />
+            <div className="absolute top-24 left-[28%] text-indigo-400/30 animate-cloud-slow-3">
+              <Cloud className="w-52 h-52 blur-[2px]" />
+            </div>
+            <div className="absolute top-16 right-[8%] text-cyan-400/35 animate-cloud-slow-2">
+              <Cloud className="w-56 h-56 blur-[1.5px]" />
+            </div>
+            <div className="absolute top-44 right-[25%] text-slate-300/25 animate-cloud-slow-1">
+              <Cloud className="w-44 h-44 blur-[1px]" />
+            </div>
+            <div className="absolute top-64 left-[48%] -translate-x-1/2 text-[#9B8FCD]/30 animate-cloud-slow-2">
+              <Cloud className="w-60 h-60 blur-[2px]" />
+            </div>
+            <div className="absolute top-80 left-[12%] text-cyan-300/25 animate-cloud-slow-3">
+              <Cloud className="w-48 h-48 blur-[1.5px]" />
+            </div>
+            <div className="absolute top-96 right-[15%] text-indigo-300/30 animate-cloud-slow-1">
+              <Cloud className="w-52 h-52 blur-[1px]" />
             </div>
 
             {/* 3. ANIMATED RIVER / SEA OCEAN WAVES BACKDROP AT BOTTOM */}
