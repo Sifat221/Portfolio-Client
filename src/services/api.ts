@@ -21,7 +21,6 @@ const api = axios.create({
   },
 });
 
-// Streamlined Minimal Data
 export const defaultPersonal: IPersonalProfile = {
   name: "Sifat Khan",
   title: "Flutter & Mobile Application Developer",
@@ -54,6 +53,23 @@ export const defaultProjects: IProject[] = [
     category: "Healthcare"
   },
   {
+    id: "shop_management",
+    title: "Shop Management App",
+    tagline: "Business Inventory & Sales App",
+    description: "Business inventory control, sales tracking, stock management, due payments ledger, real-time analytics, and team collaboration workflow.",
+    techStack: ["Flutter", "Dart", "REST API", "Firebase"],
+    features: [
+      "Manage sales, products, stock, and due payments",
+      "Real-time notifications & sales analytics",
+      "Team collaboration & role management workflow"
+    ],
+    githubUrl: "https://github.com/Sifat221",
+    demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0a670f4a4591?auto=format&fit=crop&q=80&w=800",
+    isFeatured: true,
+    category: "Development"
+  },
+  {
     id: "e_commerce",
     title: "Full-Stack E-Commerce Mobile App",
     tagline: "Mobile Shopping Experience with Provider & REST API",
@@ -68,7 +84,7 @@ export const defaultProjects: IProject[] = [
     demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
     imageUrl: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80&w=800",
     isFeatured: true,
-    category: "E-Commerce"
+    category: "Development"
   },
   {
     id: "task_manager",
@@ -150,24 +166,44 @@ export const defaultEducation: IEducation[] = [
     id: "edu_1",
     degree: "B.Sc. in Computer Science and Engineering",
     institution: "Daffodil International University",
-    timeline: "2022 – 2025",
-    relevantCourses: ["Software Engineering", "Mobile Computing", "Data Structures", "Algorithms"]
+    timeline: "01/2022 – 12/2025",
+    relevantCourses: [
+      "Object Oriented Programming (Java/Dart)",
+      "Data Structures & Algorithms",
+      "Software Engineering & Clean Architecture",
+      "Database Systems",
+      "Mobile Application Development (Flutter)"
+    ]
+  },
+  {
+    id: "edu_2",
+    degree: "Higher Secondary Certification (HSC)",
+    institution: "Ibrahim Khan Govt. College",
+    timeline: "Completed",
+    relevantCourses: ["Science Stream", "Physics", "Chemistry", "Higher Mathematics"]
   }
 ];
 
 export const defaultCertifications: ICertification[] = [
   {
     id: "cert_1",
-    title: "Flutter & Dart Development Masterclass",
-    issuer: "Ostad",
+    title: "Mobile Technology Certification",
+    issuer: "GoEdu / BIDA",
     issueDate: "2023",
     credentialUrl: "https://github.com/Sifat221"
   },
   {
     id: "cert_2",
-    title: "Google Mobile App Development Credential",
+    title: "Professional Mobile App Development",
     issuer: "Google / Coursera",
-    issueDate: "2023",
+    issueDate: "2024",
+    credentialUrl: "https://github.com/Sifat221"
+  },
+  {
+    id: "cert_3",
+    title: "Flutter & Dart Development Masterclass",
+    issuer: "Ostad",
+    issueDate: "2024",
     credentialUrl: "https://github.com/Sifat221"
   }
 ];
@@ -216,19 +252,7 @@ export async function getProjects(): Promise<IProject[]> {
   try {
     const response = await api.get('/projects');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
-      return response.data.data.slice(0, 6).map((item: any) => ({
-        id: item.id || item._id || item.name || String(Math.random()),
-        title: item.title || item.name || "Mobile App Project",
-        tagline: item.tagline || item.description?.substring(0, 50),
-        description: item.description || "Flutter mobile application.",
-        techStack: item.techStack || ["Flutter", "Dart"],
-        features: item.features || [],
-        githubUrl: item.githubUrl || item.github || "https://github.com/Sifat221",
-        demoUrl: item.demoUrl || item.demo || "https://sifat221.github.io/SifatKhan-portfolio/",
-        imageUrl: item.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800",
-        isFeatured: item.isFeatured ?? true,
-        category: item.category || "Mobile Development"
-      }));
+      return response.data.data;
     }
   } catch (err) {
     console.warn("API Call /projects fallback active:", err);
