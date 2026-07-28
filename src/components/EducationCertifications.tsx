@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { GraduationCap, Award, BookOpen, ExternalLink, Calendar, ChevronLeft, ChevronRight, Image as ImageIcon, Sparkles } from 'lucide-react';
 import { IEducation, ICertification } from '../types/portfolio';
 
@@ -7,6 +7,64 @@ interface EducationCertificationsProps {
   education: IEducation[];
   certifications: ICertification[];
 }
+
+// Letter-by-Letter Staggered Typewriter Text Reveal Component
+const StaggeredTitle: React.FC<{ text: string; gradientText?: string }> = ({ text, gradientText }) => {
+  const container: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.04, delayChildren: 0.1 },
+    },
+  };
+
+  const child: Variants = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        damping: 12,
+        stiffness: 120,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      y: 20,
+      scale: 0.8,
+    },
+  };
+
+  const mainLetters = Array.from(text);
+  const gradientLetters = gradientText ? Array.from(gradientText) : [];
+
+  return (
+    <motion.h2
+      variants={container}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false }}
+      className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight flex flex-wrap justify-center items-center gap-[0.02em]"
+    >
+      {mainLetters.map((char, index) => (
+        <motion.span variants={child} key={`main-${index}`} className="inline-block">
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
+
+      {gradientLetters.length > 0 && (
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400 inline-flex flex-wrap">
+          {gradientLetters.map((char, index) => (
+            <motion.span variants={child} key={`grad-${index}`} className="inline-block">
+              {char === ' ' ? '\u00A0' : char}
+            </motion.span>
+          ))}
+        </span>
+      )}
+    </motion.h2>
+  );
+};
 
 export const EducationCertifications: React.FC<EducationCertificationsProps> = ({
   education,
@@ -56,27 +114,20 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-12"
       >
-        {/* Animated Attractive Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto space-y-3"
-        >
+        {/* Animated Staggered Letter-by-Letter Header */}
+        <div className="text-center max-w-3xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-mono font-bold shadow-lg shadow-[#9B8FCD]/10 hover:scale-105 transition-transform">
             <GraduationCap className="w-4 h-4 text-[#9B8FCD] animate-bounce" />
             <span>Academic Background & Verified Credentials</span>
           </div>
-          
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Education & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400">Certifications</span>
-          </h2>
+
+          {/* Letter-by-Letter Typewriter Animation for "Education & Certifications" */}
+          <StaggeredTitle text="Education & " gradientText="Certifications" />
 
           <p className="text-slate-300 text-sm font-normal max-w-xl mx-auto">
             Academic degrees, courseworks, professional credentials, and university memorable photo gallery.
           </p>
-        </motion.div>
+        </div>
 
         {/* 1. Academic Degrees & Certifications Grid with Vertical Divider */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
