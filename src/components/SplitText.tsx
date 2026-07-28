@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 interface SplitTextProps {
   text: string;
   className?: string;
-  delay?: number; // in milliseconds per char or initial delay
+  delay?: number;
   duration?: number;
   ease?: string;
   splitType?: 'chars' | 'words' | 'lines';
@@ -26,8 +26,8 @@ export const SplitText: React.FC<SplitTextProps> = ({
   splitType = 'chars',
   from = { opacity: 0, y: 40 },
   to = { opacity: 1, y: 0 },
-  threshold = 0.1,
-  rootMargin = '-100px',
+  threshold = 0.05,
+  rootMargin = '0px',
   textAlign = 'center',
   onLetterAnimationComplete,
   showCallback = false,
@@ -36,21 +36,30 @@ export const SplitText: React.FC<SplitTextProps> = ({
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
+    if (!containerRef.current) return;
+
+    const el = containerRef.current;
+
+    // Check if element is already in viewport
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setInView(true);
+      return;
+    }
+
+    const effectiveRootMargin = rootMargin === '-100px' ? '0px' : rootMargin;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting || entry.intersectionRatio > 0) {
           setInView(true);
-          if (containerRef.current) {
-            observer.unobserve(containerRef.current);
-          }
+          observer.unobserve(el);
         }
       },
-      { threshold, rootMargin }
+      { threshold: Math.min(threshold, 0.01), rootMargin: effectiveRootMargin }
     );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+    observer.observe(el);
 
     return () => observer.disconnect();
   }, [threshold, rootMargin]);

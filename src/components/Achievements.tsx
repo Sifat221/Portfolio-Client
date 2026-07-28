@@ -70,8 +70,8 @@ export const Achievements: React.FC<TestimonialsAchievementsProps> = ({
                   splitType="chars"
                   from={{ opacity: 0, y: 40 }}
                   to={{ opacity: 1, y: 0 }}
-                  threshold={0.1}
-                  rootMargin="-100px"
+                  threshold={0.05}
+                  rootMargin="0px"
                   textAlign="left"
                 />
               </div>
@@ -194,8 +194,8 @@ export const Achievements: React.FC<TestimonialsAchievementsProps> = ({
                 splitType="chars"
                 from={{ opacity: 0, y: 40 }}
                 to={{ opacity: 1, y: 0 }}
-                threshold={0.1}
-                rootMargin="-100px"
+                threshold={0.05}
+                rootMargin="0px"
                 textAlign="left"
               />
               <p className="text-xs sm:text-sm text-slate-300">
