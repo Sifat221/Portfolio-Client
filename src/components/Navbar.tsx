@@ -56,8 +56,13 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
           <div className="hidden md:block">
             <GooeyNav
               items={navLinks.map((link) => ({ label: link.name, href: link.href }))}
-              particleCount={12}
-              animationTime={500}
+              particleCount={25}
+              particleDistances={[90, 10]}
+              particleR={300}
+              initialActiveIndex={0}
+              animationTime={600}
+              timeVariance={2000}
+              colors={[1, 2, 3, 1, 2, 3, 1, 4]}
             />
           </div>
 
