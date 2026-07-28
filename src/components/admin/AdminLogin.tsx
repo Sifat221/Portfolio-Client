@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, Eye, EyeOff, Shield } from 'lucide-react';
+import { Lock, Eye, EyeOff, Shield, Mail } from 'lucide-react';
 
 interface AdminLoginProps {
   onLogin: () => void;
 }
 
-const ADMIN_PASSWORD = 'sifat2024admin';
+const VALID_ADMIN_EMAILS = ['sifatkhanjoy996@gmail.com'];
+const VALID_ADMIN_PASSWORDS = ['221-15-5869@', 'sifat2024admin'];
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
+  const [email, setEmail] = useState('sifatkhanjoy996@gmail.com');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
+    const isEmailValid = VALID_ADMIN_EMAILS.includes(email.trim().toLowerCase());
+    const isPasswordValid = VALID_ADMIN_PASSWORDS.includes(password.trim());
+
+    if (isEmailValid && isPasswordValid) {
       sessionStorage.setItem('admin_auth', 'true');
+      sessionStorage.setItem('admin_email', email.trim());
       onLogin();
     } else {
-      setError('Invalid password. Please try again.');
-      setTimeout(() => setError(''), 3000);
+      setError('Invalid admin credentials. Please check email and password.');
+      setTimeout(() => setError(''), 3500);
     }
   };
 
@@ -39,13 +45,34 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
               <Shield className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl font-extrabold text-white tracking-tight">Admin Dashboard</h1>
-            <p className="text-sm text-slate-400 font-mono">Enter your admin password to continue</p>
+            <p className="text-sm text-slate-400 font-mono">Sign in with your admin credentials</p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email Field */}
             <div className="space-y-2">
-              <label className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">Password</label>
+              <label className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">
+                Admin Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="sifatkhanjoy996@gmail.com"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-sm placeholder-slate-500 focus:border-[#9B8FCD] focus:ring-1 focus:ring-[#9B8FCD] outline-none transition-all"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Password Field */}
+            <div className="space-y-2">
+              <label className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">
+                Password
+              </label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                 <input
@@ -54,6 +81,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter admin password"
                   className="w-full pl-11 pr-12 py-3.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-sm placeholder-slate-500 focus:border-[#9B8FCD] focus:ring-1 focus:ring-[#9B8FCD] outline-none transition-all"
+                  required
                   autoFocus
                 />
                 <button
@@ -70,7 +98,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
               <motion.p
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-xs text-rose-400 font-mono text-center"
+                className="text-xs text-rose-400 font-mono text-center font-bold"
               >
                 {error}
               </motion.p>
