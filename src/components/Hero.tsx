@@ -61,6 +61,26 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
     });
   }, []);
 
+  // Generate 150 heavy rain storm particles for Banner 2
+  const raindrops = useMemo(() => {
+    return Array.from({ length: 150 }).map((_, index) => {
+      const left = Math.random() * 100;
+      const duration = Math.random() * 0.7 + 0.6; // 0.6s to 1.3s fast rain fall
+      const delay = Math.random() * 4;
+      const opacity = Math.random() * 0.6 + 0.35;
+      const height = Math.random() * 20 + 20;
+
+      return {
+        id: index,
+        left: `${left}%`,
+        height: `${height}px`,
+        animationDuration: `${duration}s`,
+        animationDelay: `${delay}s`,
+        opacity,
+      };
+    });
+  }, []);
+
   const handlePrevBanner = () => {
     setActiveBannerIdx((prev) => (prev - 1 + totalBanners) % totalBanners);
   };
@@ -170,7 +190,27 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               <source src="/BANNER2.mp4" type="video/mp4" />
               <source src="https://assets.mixkit.co/videos/preview/mixkit-code-running-on-a-computer-screen-23583-large.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-b from-[#090D16]/90 via-[#090D16]/75 to-[#090D16]"></div>
+
+            {/* Heavy Rain Storm Streak Particles (150 Raindrops) */}
+            {raindrops.map((drop) => (
+              <div
+                key={drop.id}
+                className="raindrop-particle"
+                style={{
+                  left: drop.left,
+                  height: drop.height,
+                  animationDuration: drop.animationDuration,
+                  animationDelay: drop.animationDelay,
+                  opacity: drop.opacity,
+                }}
+              />
+            ))}
+
+            {/* Heavy Storm Clouds & Rain Mist Backdrop */}
+            <div className="absolute -top-10 -left-10 w-[700px] h-[350px] bg-cyan-900/25 rounded-full blur-[110px] animate-cloud-slow-1"></div>
+            <div className="absolute top-10 -right-10 w-[750px] h-[400px] bg-slate-800/40 rounded-full blur-[120px] animate-cloud-slow-2"></div>
+
+            <div className="absolute inset-0 bg-gradient-to-b from-[#090D16]/85 via-[#090D16]/70 to-[#090D16]"></div>
             <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#9B8FCD]/20 rounded-full blur-[140px]"></div>
           </motion.div>
         ) : (
