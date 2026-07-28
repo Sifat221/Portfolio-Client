@@ -329,6 +329,83 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
           </div>
         </div>
 
+        {/* Dynamic Category Skill Bar Chart */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`chart-${activeCategory}`}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3 }}
+            className="bg-[#1A2335]/90 p-6 sm:p-7 rounded-3xl border border-slate-700/60 shadow-xl space-y-5"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#9B8FCD]/20 border border-[#9B8FCD]/40 flex items-center justify-center text-[#9B8FCD]">
+                  {getCategoryIcon(activeCategory)}
+                </div>
+                <div>
+                  <h3 className="text-base font-extrabold text-white tracking-tight">
+                    {activeCategory} Skill Proficiency Chart
+                  </h3>
+                  <p className="text-xs text-slate-400 font-mono">
+                    Real-time skill matrix breakdown for {activeCategory}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-slate-300 border border-slate-700">
+                  {filteredSkills.length} Technologies Listed
+                </span>
+              </div>
+            </div>
+
+            {/* Visual Bar Chart Data Points */}
+            <div className="space-y-4 pt-1">
+              {filteredSkills.map((skill, idx) => {
+                const detail = getSkillDetail(skill);
+                return (
+                  <div
+                    key={skill.name + idx}
+                    className="space-y-1.5 group cursor-pointer"
+                    onClick={() => setSelectedSkill(skill)}
+                  >
+                    <div className="flex items-center justify-between text-xs font-mono">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: detail.color }}></span>
+                        <span className="font-bold text-white group-hover:text-[#9B8FCD] transition-colors">
+                          {skill.name}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-[11px] text-slate-400 font-semibold">{skill.proficiency || 'Advanced'}</span>
+                        <span className="font-bold text-xs" style={{ color: detail.color }}>
+                          {detail.level}%
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="w-full bg-slate-900/90 rounded-full h-3.5 p-0.5 border border-slate-800 overflow-hidden shadow-inner">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${detail.level}%` }}
+                        transition={{ duration: 0.8, delay: idx * 0.05, ease: 'easeOut' }}
+                        className="h-full rounded-full shadow-md relative"
+                        style={{
+                          background: `linear-gradient(90deg, ${detail.color}, #38BDF8)`,
+                        }}
+                      >
+                        <div className="absolute inset-0 bg-white/20 rounded-full blur-[1px]"></div>
+                      </motion.div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
         {/* Animated Skills Grid Matrix */}
         <div className="relative min-h-[300px]">
           <AnimatePresence mode="wait">
