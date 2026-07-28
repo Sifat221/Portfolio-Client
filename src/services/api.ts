@@ -228,10 +228,27 @@ export const defaultAchievements: IAchievement[] = [
 export const defaultTestimonials: ITestimonial[] = [
   {
     id: "test_1",
-    client: "Engineering Lead",
-    company: "Tech Solutions",
-    text: "Sifat built our mobile app with flawless UI, clean BLoC architecture, and delivered ahead of schedule.",
-    rating: 5
+    client: "Sarah Jenkins",
+    company: "CTO, HealthTech Solutions",
+    text: "Sifat engineered our telemedicine mobile app with flawless UI, clean BLoC architecture, and delivered ahead of schedule with 99.8% crash-free performance.",
+    rating: 5,
+    avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200"
+  },
+  {
+    id: "test_2",
+    client: "Marcus Vance",
+    company: "Product Director, RetailVibe",
+    text: "Working with Sifat on our Flutter e-commerce application was a dream. His deep understanding of REST API integration and reactive state management is unmatched.",
+    rating: 5,
+    avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200"
+  },
+  {
+    id: "test_3",
+    client: "David Miller",
+    company: "Founder & CEO, TaskPulse",
+    text: "Exceptional Flutter engineer! Sifat transformed our mobile productivity app with GetX, smooth micro-animations, and clean modular code.",
+    rating: 5,
+    avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200"
   }
 ];
 

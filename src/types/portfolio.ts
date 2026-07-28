@@ -14,13 +14,13 @@ export interface IPersonalProfile {
 export interface IProject {
   id: string;
   title: string;
-  tagline?: string | null;
+  tagline?: string;
   description: string;
-  techStack?: string[];
+  techStack: string[];
   features?: string[];
-  githubUrl?: string | null;
-  demoUrl?: string | null;
-  imageUrl?: string | null;
+  githubUrl?: string;
+  demoUrl?: string;
+  imageUrl?: string;
   isFeatured?: boolean;
   category?: string;
 }
@@ -29,26 +29,27 @@ export interface ISkill {
   id?: string;
   name: string;
   category: string;
-  iconUrl?: string | null;
-  proficiency?: string | null;
+  proficiency?: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
+  icon?: string;
 }
 
 export interface IExperience {
   id?: string;
   role: string;
   company: string;
-  location?: string | null;
+  location?: string;
   startDate: string;
-  endDate?: string | null;
-  responsibilities?: string[];
+  endDate?: string;
+  responsibilities: string[];
   technologies?: string[];
-  impact?: string | null;
+  impact?: string;
 }
 
 export interface IEducation {
   id?: string;
   degree: string;
   institution: string;
+  location?: string;
   timeline: string;
   relevantCourses?: string[];
 }
@@ -57,24 +58,25 @@ export interface ICertification {
   id?: string;
   title: string;
   issuer: string;
-  issueDate?: string | null;
-  credentialUrl?: string | null;
+  issueDate?: string;
+  credentialUrl?: string;
 }
 
 export interface IAchievement {
   id?: string;
   title: string;
-  category: string;
+  category?: string;
   description: string;
-  year?: string | null;
+  year?: string;
 }
 
 export interface ITestimonial {
   id?: string;
   client: string;
-  company?: string | null;
+  company?: string;
   text: string;
   rating?: number;
+  avatarUrl?: string;
 }
 
 export interface IContactForm {
