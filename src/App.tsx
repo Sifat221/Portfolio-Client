@@ -193,6 +193,8 @@ const PortfolioContent: React.FC = () => {
   );
 };
 
+import AdminPage from './components/admin/AdminPage';
+
 export const App: React.FC = () => {
   return (
     <HelmetProvider>
@@ -201,6 +203,7 @@ export const App: React.FC = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<PortfolioContent />} />
+              <Route path="/admin" element={<AdminPage />} />
               <Route path="/404" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
