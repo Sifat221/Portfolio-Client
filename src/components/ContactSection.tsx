@@ -138,7 +138,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
             </div>
           </div>
 
-          {/* Right Column: Balanced Contact Form (7 cols) */}
+          {/* Right Column: Balanced Contact Form with Expanded Message Description Box (7 cols) */}
           <div className="lg:col-span-7 bg-[#1A2335]/90 p-8 sm:p-10 rounded-3xl border border-slate-700/60 shadow-2xl flex flex-col justify-between space-y-6">
             <h3 className="text-xl font-bold text-white flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-[#9B8FCD]" />
@@ -211,12 +211,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                     Your Message *
                   </label>
                   <textarea
-                    rows={4}
+                    rows={6}
                     required
-                    placeholder="Describe your mobile app project..."
+                    placeholder="Describe your mobile app project in detail..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-3 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#9B8FCD] transition-colors resize-none"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#9B8FCD] transition-colors min-h-[160px] resize-y"
                   ></textarea>
                 </div>
               </div>
