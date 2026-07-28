@@ -210,6 +210,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             <div className="space-y-4">
               <SplitText
                 text="Let's Work Together to Create Mobile Wonders with Us"
+                highlightText="Mobile Wonders"
                 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight"
                 delay={40}
                 duration={1.25}
@@ -217,7 +218,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 splitType="chars"
                 from={{ opacity: 0, y: 40 }}
                 to={{ opacity: 1, y: 0 }}
-                threshold={0.05}
+                threshold={0.01}
                 rootMargin="0px"
                 textAlign="left"
               />

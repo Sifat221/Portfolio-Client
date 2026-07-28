@@ -22,13 +22,13 @@ interface SplitTextProps {
 export const SplitText: React.FC<SplitTextProps> = React.memo(({
   text,
   className = '',
-  delay = 50,
-  duration = 1.25,
+  delay = 35,
+  duration = 1.0,
   ease = 'power3.out',
   splitType = 'chars',
   from = { opacity: 0, y: 40 },
   to = { opacity: 1, y: 0 },
-  threshold = 0.05,
+  threshold = 0.01,
   rootMargin = '0px',
   textAlign = 'center',
   onLetterAnimationComplete,
@@ -44,15 +44,6 @@ export const SplitText: React.FC<SplitTextProps> = React.memo(({
     if (!containerRef.current) return;
     const el = containerRef.current;
 
-    // Check if element is already visible in viewport
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-      setInView(true);
-      return;
-    }
-
-    const effectiveRootMargin = rootMargin === '-100px' ? '0px' : rootMargin;
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting || entry.intersectionRatio > 0) {
@@ -60,15 +51,28 @@ export const SplitText: React.FC<SplitTextProps> = React.memo(({
           observer.unobserve(el);
         }
       },
-      { threshold: Math.min(threshold, 0.01), rootMargin: effectiveRootMargin }
+      { threshold, rootMargin }
     );
 
-    observer.observe(el);
+    // Initial check after short delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          setInView(true);
+        } else {
+          observer.observe(el);
+        }
+      }
+    }, 100);
 
-    return () => observer.disconnect();
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
   }, [threshold, rootMargin]);
 
-  // Run GSAP Animation EXACTLY ONCE when inView becomes true
+  // Run GSAP Animation when inView becomes true
   useEffect(() => {
     if (!inView || !containerRef.current || hasAnimatedRef.current) return;
 
@@ -129,7 +133,11 @@ export const SplitText: React.FC<SplitTextProps> = React.memo(({
                   <span
                     key={charIdx}
                     className="split-item inline-block"
-                    style={{ willChange: 'transform, opacity' }}
+                    style={{
+                      opacity: 0,
+                      transform: 'translateY(40px)',
+                      willChange: 'transform, opacity',
+                    }}
                   >
                     {char}
                   </span>
@@ -149,7 +157,11 @@ export const SplitText: React.FC<SplitTextProps> = React.memo(({
               >
                 <span
                   className="split-item inline-block"
-                  style={{ willChange: 'transform, opacity' }}
+                  style={{
+                    opacity: 0,
+                    transform: 'translateY(40px)',
+                    willChange: 'transform, opacity',
+                  }}
                 >
                   {word}
                 </span>

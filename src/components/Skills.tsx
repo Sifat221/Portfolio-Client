@@ -204,6 +204,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
 
           <SplitText
             text="Core Mobile Expertise"
+            highlightText="Expertise"
             className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight py-1"
             delay={50}
             duration={1.25}
@@ -211,13 +212,9 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
             splitType="chars"
             from={{ opacity: 0, y: 40 }}
             to={{ opacity: 1, y: 0 }}
-            threshold={0.05}
+            threshold={0.01}
             rootMargin="0px"
             textAlign="center"
-            onLetterAnimationComplete={() => {
-              console.log('All letters have animated!');
-            }}
-            showCallback
           />
 
           <p className="text-slate-300 text-sm font-normal max-w-xl">
