@@ -30,7 +30,10 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
   };
 
   return (
-    <section id="skills" className="py-24 relative bg-[#0B101D]/80 border-y border-slate-800/80">
+    <section id="skills" className="py-24 relative bg-[#141C2E] border-y border-slate-800/60">
+      {/* Background Soft Periwinkle Glow */}
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-[#9B8FCD]/10 rounded-full blur-[120px] pointer-events-none"></div>
+
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -40,7 +43,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
       >
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/30 text-[#9B8FCD] text-xs font-bold font-mono">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-bold font-mono shadow-sm">
             <Wrench className="w-3.5 h-3.5" />
             <span>Tech Stack & Capabilities</span>
           </div>
@@ -59,7 +62,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
             className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 ${
               activeCategory === 'All'
                 ? 'bg-gradient-to-r from-[#9B8FCD] to-indigo-600 text-white shadow-lg shadow-[#9B8FCD]/30 scale-105'
-                : 'glass-card text-slate-300 hover:text-white hover:border-[#9B8FCD]/40'
+                : 'bg-[#1A2335]/90 text-slate-300 hover:text-white border border-slate-700/60 shadow-sm'
             }`}
           >
             All Stack ({skills.length})
@@ -71,7 +74,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
               className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
                 activeCategory === cat
                   ? 'bg-gradient-to-r from-[#9B8FCD] to-indigo-600 text-white shadow-lg shadow-[#9B8FCD]/30 scale-105'
-                  : 'glass-card text-slate-300 hover:text-white hover:border-[#9B8FCD]/40'
+                  : 'bg-[#1A2335]/90 text-slate-300 hover:text-white border border-slate-700/60 shadow-sm'
               }`}
             >
               {getCategoryIcon(cat)}
@@ -89,7 +92,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="glass-card p-6 rounded-3xl border border-slate-800/80 hover:border-[#9B8FCD]/50 transition-all duration-300 group"
+              className="bg-[#1A2335]/90 p-6 rounded-3xl border border-slate-700/60 shadow-lg hover:shadow-2xl hover:border-[#9B8FCD]/60 transition-all duration-300 group"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
