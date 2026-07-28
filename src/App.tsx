@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Skills } from './components/Skills';
@@ -87,12 +88,15 @@ const PortfolioContent: React.FC = () => {
     return (
       <div className="min-h-screen bg-[#090D16] flex flex-col items-center justify-center text-white space-y-6 px-4">
         <div className="text-center space-y-2 max-w-sm">
+          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#9B8FCD]/60 shadow-xl mx-auto bg-black">
+            <img src="/logo.png" alt="Sifat Khan Gold S Logo" className="w-full h-full object-cover" />
+          </div>
           <span className="text-3xl font-extrabold tracking-tight">
             Sifat Khan<span className="text-[#9B8FCD]">.</span>
           </span>
           <p className="text-sm font-mono text-[#9B8FCD] flex items-center justify-center gap-2 pt-2">
             <Loader2 className="w-4 h-4 animate-spin" />
-            Loading Gorgeous Portfolio...
+            Loading Portfolio...
           </p>
         </div>
       </div>
@@ -101,6 +105,26 @@ const PortfolioContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#090D16] text-slate-100 selection:bg-[#9B8FCD] selection:text-white transition-colors duration-300">
+      {/* Dynamic SEO Helmet Metadata */}
+      <Helmet>
+        <title>{personal.name} | {personal.title}</title>
+        <meta name="description" content={personal.bio} />
+        <link rel="icon" type="image/png" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+        
+        {/* OpenGraph Metadata */}
+        <meta property="og:title" content={`${personal.name} | ${personal.title}`} />
+        <meta property="og:description" content={personal.bio} />
+        <meta property="og:image" content="/logo.png" />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Card Metadata */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${personal.name} | ${personal.title}`} />
+        <meta name="twitter:description" content={personal.bio} />
+        <meta name="twitter:image" content="/logo.png" />
+      </Helmet>
+
       {/* Navigation Bar */}
       <Navbar personal={personal} />
 
@@ -123,9 +147,11 @@ const PortfolioContent: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <PortfolioContent />
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <PortfolioContent />
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 
