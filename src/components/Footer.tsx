@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUp, Github, Mail, MapPin, Heart } from 'lucide-react';
+import { ArrowUp, Github, Mail, Phone, MapPin, Heart } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 
 interface FooterProps {
@@ -16,11 +16,27 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
       <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Minimal Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-slate-800/80 items-center justify-between">
-          {/* Brand Info (6 cols) */}
-          <div className="md:col-span-6 space-y-3">
-            <span className="text-2xl font-extrabold text-white tracking-tight">
-              Sifat Khan<span className="text-[#9B8FCD]">.</span>
-            </span>
+          {/* Brand Info with Passport Developer Photo (6 cols) */}
+          <div className="md:col-span-6 space-y-4">
+            <div className="flex items-center gap-4">
+              {/* Passport-sized Developer Photo Avatar Frame */}
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border-2 border-[#9B8FCD]/60 shadow-xl shrink-0 group bg-slate-900">
+                <img
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"
+                  alt="Sifat Khan Passport Photo"
+                  className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#060912]/40 via-transparent to-transparent pointer-events-none"></div>
+              </div>
+
+              <div>
+                <span className="text-2xl font-extrabold text-white tracking-tight">
+                  Sifat Khan<span className="text-[#9B8FCD]">.</span>
+                </span>
+                <p className="text-xs text-[#9B8FCD] font-mono font-semibold">Flutter & Mobile Developer</p>
+              </div>
+            </div>
+
             <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
               Flutter & Mobile Application Developer specializing in Clean Architecture, BLoC/GetX state management, and REST APIs.
             </p>
@@ -39,7 +55,7 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
               href={personal.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-colors"
+              className="p-2.5 rounded-full bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-colors shadow-md"
               aria-label="GitHub Profile"
             >
               <Github className="w-4 h-4 text-[#9B8FCD]" />
