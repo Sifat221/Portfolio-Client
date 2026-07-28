@@ -231,3 +231,142 @@ section {
 .animate-marquee-scroll:hover {
   animation-play-state: paused;
 }
+
+/* ================= LIGHT MODE COMPREHENSIVE STYLING ================= */
+html.light body {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+html.light section,
+html.light div.bg-\[\#090D16\],
+html.light div.bg-\[\#0D1322\],
+html.light div.bg-\[\#0B101D\] {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(203, 213, 225, 0.8) !important;
+  color: #0F172A !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+  color: #0F172A !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light .glass-card:hover {
+  background: #FFFFFF !important;
+  border-color: #9B8FCD !important;
+  box-shadow: 0 12px 32px -6px rgba(155, 143, 205, 0.25) !important;
+}
+
+/* Light mode text color overrides: white/light fonts become dark slate for 100% legibility */
+html.light .text-white {
+  color: #0F172A !important;
+}
+
+html.light .text-slate-100 {
+  color: #0F172A !important;
+}
+
+html.light .text-slate-200 {
+  color: #1E293B !important;
+}
+
+html.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400 {
+  color: #475569 !important;
+}
+
+html.light .bg-slate-900 {
+  background-color: #F1F5F9 !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+html.light .bg-slate-800 {
+  background-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+html.light .bg-slate-800\/80,
+html.light .bg-slate-800\/90,
+html.light .bg-slate-800\/60 {
+  background-color: rgba(226, 232, 240, 0.8) !important;
+}
+
+html.light .border-slate-800,
+html.light .border-slate-800\/80,
+html.light .border-slate-800\/90,
+html.light .border-slate-800\/40 {
+  border-color: #E2E8F0 !important;
+}
+
+html.light .border-slate-700,
+html.light .border-slate-700\/60 {
+  border-color: #CBD5E1 !important;
+}
+
+html.light header {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(226, 232, 240, 0.8) !important;
+}
+
+html.light [role="dialog"] {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #E2E8F0 !important;
+}
+
+/* Hero backdrop overlays in Light Mode */
+html.light .from-\[\#090D16\]\/90,
+html.light .from-\[\#090D16\]\/85 {
+  --tw-gradient-from: rgba(248, 250, 252, 0.9) !important;
+}
+
+html.light .via-\[\#090D16\]\/75,
+html.light .via-\[\#090D16\]\/70 {
+  --tw-gradient-via: rgba(248, 250, 252, 0.75) !important;
+}
+
+html.light .to-\[\#090D16\] {
+  --tw-gradient-to: #F8FAFC !important;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+}
+
+/* StaggeredMenu Light Mode Override */
+html.light .staggered-menu-panel {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border-left-color: rgba(226, 232, 240, 0.8) !important;
+}
+
+html.light .sm-panel-item {
+  color: #0F172A !important;
+}
+
+html.light .sm-socials-link {
+  color: #475569 !important;
+}
+
+html.light .sm-toggle {
+  background: rgba(241, 245, 249, 0.9) !important;
+  border-color: rgba(203, 213, 225, 0.8) !important;
+  color: #0F172A !important;
+}

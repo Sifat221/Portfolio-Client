@@ -14,6 +14,7 @@ import { Footer } from './components/Footer';
 import NotFound from './components/NotFound';
 import { playButtonClickSound } from './utils/sound';
 import SplashCursor from './components/SplashCursor';
+import { ThemeProvider } from './context/ThemeContext';
 
 import {
   usePersonalProfile,
@@ -196,13 +197,15 @@ export const App: React.FC = () => {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<PortfolioContent />} />
-            <Route path="/404" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <ThemeProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<PortfolioContent />} />
+              <Route path="/404" element={<NotFound />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
       </QueryClientProvider>
     </HelmetProvider>
   );
