@@ -152,13 +152,10 @@ const getSkillDetail = (skill: ISkill) => {
 
 export const Skills: React.FC<SkillsProps> = ({ skills }) => {
   const categories = Array.from(new Set(skills.map((s) => s.category)));
-  const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [activeCategory, setActiveCategory] = useState<string>(categories[0] || '');
   const [selectedSkill, setSelectedSkill] = useState<ISkill | null>(null);
 
-  const filteredSkills =
-    activeCategory === 'All'
-      ? skills
-      : skills.filter((s) => s.category === activeCategory);
+  const filteredSkills = skills.filter((s) => s.category === activeCategory);
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -282,27 +279,6 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
         {/* Sleek Horizontal Tab Navigation Bar */}
         <div className="border-b border-slate-800/90 overflow-x-auto pb-1">
           <div className="flex items-center gap-6 sm:gap-8 min-w-max pb-3">
-            {/* "All Stack" Tab */}
-            <button
-              onClick={() => setActiveCategory('All')}
-              className={`relative flex items-center gap-2 font-bold text-xs sm:text-sm transition-all duration-200 py-1.5 ${
-                activeCategory === 'All' ? 'text-white' : 'text-slate-400 hover:text-slate-200'
-              }`}
-              role="tab"
-              aria-selected={activeCategory === 'All'}
-            >
-              <Cpu className={activeCategory === 'All' ? 'text-[#9B8FCD] w-4 h-4' : 'text-slate-500 w-4 h-4'} />
-              <span>All Stack ({skills.length})</span>
-
-              {activeCategory === 'All' && (
-                <motion.div
-                  layoutId="activeSkillTab"
-                  className="absolute -bottom-3 left-0 right-0 h-0.5 bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400 rounded-full shadow-sm shadow-[#9B8FCD]"
-                  transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                />
-              )}
-            </button>
-
             {/* Individual Category Tabs */}
             {categories.map((cat) => {
               const isActive = activeCategory === cat;
