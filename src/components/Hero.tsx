@@ -47,7 +47,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
       titleMain: "Architecting High-Performance ",
       titleGradient: "Flutter Applications & Systems",
       subtitle: "Engineered with BLoC, GetX, Clean Architecture & REST/Firebase APIs to deliver seamless 60fps cross-platform mobile app ecosystems.",
-      videoUrl: "/banner_video.mp4",
+      videoUrl: "/BannerTwo.mp4",
       fallbackVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-code-running-on-a-computer-screen-23583-large.mp4",
     },
   ];
@@ -112,15 +112,15 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             transition={{ duration: 0.5 }}
             className="absolute inset-0 pointer-events-none overflow-hidden z-0"
           >
-            {/* Video Background with Dark Overlay */}
+            {/* Video Background playing public/BannerTwo.mp4 */}
             <video
               autoPlay
               loop
               muted
               playsInline
-              className="w-full h-full object-cover opacity-25 filter contrast-125 saturate-150"
+              className="w-full h-full object-cover opacity-35 filter contrast-125 saturate-150"
             >
-              <source src="/banner_video.mp4" type="video/mp4" />
+              <source src="/BannerTwo.mp4" type="video/mp4" />
               <source src={currentBanner.fallbackVideoUrl} type="video/mp4" />
             </video>
             <div className="absolute inset-0 bg-gradient-to-b from-[#090D16]/90 via-[#090D16]/75 to-[#090D16]"></div>
@@ -257,7 +257,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               Banner Theme:
             </span>
             <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-[#9B8FCD] border border-slate-700/80">
-              {activeBannerIdx === 0 ? '☁️ Snowfall & Cloud Animated Backdrop' : '🎥 Video Background Backdrop (public/banner_video.mp4)'}
+              {activeBannerIdx === 0 ? '☁️ Snowfall & Cloud Animated Backdrop' : '🎥 Video Background Backdrop (public/BannerTwo.mp4)'}
             </span>
           </div>
 
