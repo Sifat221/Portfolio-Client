@@ -33,7 +33,7 @@ import {
   defaultTestimonials,
 } from './services/api';
 
-import { Loader2 } from 'lucide-react';
+import { Loader2, User } from 'lucide-react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -88,8 +88,8 @@ const PortfolioContent: React.FC = () => {
     return (
       <div className="min-h-screen bg-[#090D16] flex flex-col items-center justify-center text-white space-y-6 px-4">
         <div className="text-center space-y-2 max-w-sm">
-          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#9B8FCD]/60 shadow-xl mx-auto bg-black">
-            <img src="/logo.png" alt="Sifat Khan Gold S Logo" className="w-full h-full object-cover" />
+          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#9B8FCD] via-indigo-600 to-cyan-500 border-2 border-[#9B8FCD]/60 shadow-xl flex items-center justify-center text-white mx-auto">
+            <User className="w-8 h-8 text-white" />
           </div>
           <span className="text-3xl font-extrabold tracking-tight">
             Sifat Khan<span className="text-[#9B8FCD]">.</span>
@@ -109,21 +109,20 @@ const PortfolioContent: React.FC = () => {
       <Helmet>
         <title>{personal.name} | {personal.title}</title>
         <meta name="description" content={personal.bio} />
-        <link rel="icon" type="image/png" href="/logo.png" />
-        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/logo.png" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
         
         {/* OpenGraph Metadata */}
         <meta property="og:title" content={`${personal.name} | ${personal.title}`} />
         <meta property="og:description" content={personal.bio} />
-        <meta property="og:image" content="/logo.png" />
+        <meta property="og:image" content="/favicon.svg" />
         <meta property="og:type" content="website" />
 
         {/* Twitter Card Metadata */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${personal.name} | ${personal.title}`} />
         <meta name="twitter:description" content={personal.bio} />
-        <meta name="twitter:image" content="/logo.png" />
+        <meta name="twitter:image" content="/favicon.svg" />
       </Helmet>
 
       {/* Navigation Bar */}
