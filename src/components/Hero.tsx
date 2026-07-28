@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle, Sparkles, Smartphone, Code2, Play, Pause, Clock } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import SplitText from './SplitText';
+import { LightRays } from './LightRays';
 
 interface HeroProps {
   personal: IPersonalProfile;
@@ -123,6 +124,21 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             <div className="absolute top-10 -right-20 w-[750px] h-[450px] bg-gradient-to-l from-cyan-500/30 via-indigo-500/25 to-transparent rounded-full blur-[120px] animate-cloud-slow-2"></div>
             <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-gradient-to-tr from-[#9B8FCD]/25 via-purple-600/20 to-cyan-400/20 rounded-full blur-[140px] animate-cloud-slow-3"></div>
             <div className="absolute top-2/3 left-10 w-[600px] h-[300px] bg-gradient-to-r from-indigo-500/20 via-[#9B8FCD]/20 to-transparent rounded-full blur-[120px] animate-cloud-slow-1"></div>
+
+            {/* LightRays WebGL Ray Casting Backdrop */}
+            <div className="absolute inset-0 pointer-events-none z-[1] opacity-40">
+              <LightRays
+                raysOrigin="top-center"
+                raysColor="#9B8FCD"
+                raysSpeed={1.2}
+                lightSpread={0.85}
+                rayLength={1.4}
+                followMouse={true}
+                mouseInfluence={0.15}
+                noiseAmount={0.05}
+                distortion={0.03}
+              />
+            </div>
 
             {/* 2. Floating Cloud Layers (Exactly 2 Soft Floating Clouds) */}
             <div className="absolute top-12 left-[10%] text-[#9B8FCD]/25 animate-cloud-slow-1">
