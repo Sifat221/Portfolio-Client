@@ -272,18 +272,9 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
           </motion.div>
         </div>
 
-        {/* ================= BANNER SWITCHER ARROW CONTROLS (< & >) WITH 10s TIMER ================= */}
-        <div className="pt-6 border-t border-slate-800/80 flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-slate-400 font-bold uppercase tracking-wider">
-              Background Theme (Auto 10s):
-            </span>
-            <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-[#9B8FCD] border border-slate-700/80">
-              {activeBannerIdx === 0 ? '🌊 River & Snowfall Cloud Landscape' : '🎥 Video Background Backdrop (public/BannerTwo.mp4)'}
-            </span>
-          </div>
-
-          {/* Left (<) and Right (>) Navigation Buttons */}
+        {/* ================= MINIMAL BANNER SWITCHER ARROW CONTROLS (< & >) ================= */}
+        <div className="pt-6 border-t border-slate-800/80 flex items-center justify-end">
+          {/* Left (<) and Right (>) Navigation Buttons with Indicator Dots */}
           <div className="flex items-center gap-3">
             <button
               onClick={handlePrevBanner}
@@ -291,7 +282,6 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               aria-label="Previous Banner Background"
             >
               <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-              <span className="text-xs font-mono font-bold pr-1">Previous</span>
             </button>
 
             <div className="flex items-center gap-1.5 px-2">
@@ -314,7 +304,6 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               className="p-3 rounded-full glass-card border border-slate-700 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
               aria-label="Next Banner Background"
             >
-              <span className="text-xs font-mono font-bold pl-1">Next</span>
               <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
