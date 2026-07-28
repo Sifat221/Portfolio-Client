@@ -10,7 +10,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ personal }) => {
   const [activeBannerIdx, setActiveBannerIdx] = useState(0);
-  const totalBanners = 2;
+  const totalBanners = 3;
 
   // Auto-switch background theme every 10 seconds
   useEffect(() => {
@@ -115,9 +115,31 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               </svg>
             </div>
           </motion.div>
+        ) : activeBannerIdx === 1 ? (
+          <motion.div
+            key="video_backdrop_1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 pointer-events-none overflow-hidden z-0"
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover opacity-30 filter contrast-125 saturate-150"
+            >
+              <source src="/BANNER2.mp4" type="video/mp4" />
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-code-running-on-a-computer-screen-23583-large.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#090D16]/90 via-[#090D16]/75 to-[#090D16]"></div>
+            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#9B8FCD]/20 rounded-full blur-[140px]"></div>
+          </motion.div>
         ) : (
           <motion.div
-            key="video_backdrop"
+            key="video_backdrop_2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -135,7 +157,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               <source src="https://assets.mixkit.co/videos/preview/mixkit-code-running-on-a-computer-screen-23583-large.mp4" type="video/mp4" />
             </video>
             <div className="absolute inset-0 bg-gradient-to-b from-[#090D16]/90 via-[#090D16]/75 to-[#090D16]"></div>
-            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#9B8FCD]/20 rounded-full blur-[140px]"></div>
+            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[140px]"></div>
           </motion.div>
         )}
       </AnimatePresence>
