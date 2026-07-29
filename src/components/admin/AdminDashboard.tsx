@@ -366,7 +366,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <h3 className="text-base font-bold text-white font-mono flex items-center gap-2">
                       <Mail className="w-5 h-5 text-[#9B8FCD]" /> Messages Inbox
                     </h3>
-                    <p className="text-xs text-slate-400">Direct inquiries submitted by website visitors</p>
+                    <p className="text-xs text-slate-400">
+                      Direct inquiries delivered to <span className="text-[#9B8FCD] font-mono font-bold">sifatkhanjoy996@gmail.com</span> & website inbox
+                    </p>
                   </div>
                   <span className="px-3 py-1 rounded-full text-xs font-mono bg-[#9B8FCD]/20 text-[#9B8FCD] border border-[#9B8FCD]/40 font-bold">
                     {contactMessages.length} Total Messages

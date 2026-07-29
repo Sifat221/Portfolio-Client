@@ -8,7 +8,7 @@ interface AdminLoginProps {
 }
 
 const VALID_ADMIN_EMAILS = ['sifatkhanjoy996@gmail.com'];
-const VALID_ADMIN_PASSWORDS = ['221-15-5869@', 'sifat2024admin'];
+const VALID_ADMIN_PASSWORDS = ['@221_15_5869#$#', '221-15-5869@', 'sifat2024admin'];
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('sifatkhanjoy996@gmail.com');
@@ -71,7 +71,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
 
   const handleAutoFillDemo = () => {
     setEmail('sifatkhanjoy996@gmail.com');
-    setPassword('221-15-5869@');
+    setPassword('@221_15_5869#$#');
     setError('');
   };
 
