@@ -114,7 +114,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
         <FileUploader
           accept="image/png,image/jpeg,image/webp"
           label="Banner / Hero Photo (Rectangular)"
-          currentUrl={form.bannerPhoto || '/Profile.JPG'}
+          currentUrl={form.bannerPhoto || '/banner3.webp'}
           onFileSelect={handleBannerUpload}
           previewType="image"
           shape="rectangle"
