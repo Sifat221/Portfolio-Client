@@ -12,7 +12,7 @@ const VALID_ADMIN_PASSWORDS = ['@221_15_5869#$#', '221-15-5869@', 'sifat2024admi
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('sifatkhanjoy996@gmail.com');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('@221_15_5869#$#');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
