@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Save, User, Mail, Phone, MapPin, Briefcase, Globe, FileText } from 'lucide-react';
 import { IPersonalProfile } from '../../types/portfolio';
 import { FileUploader } from './FileUploader';
@@ -13,6 +13,10 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
   const [form, setForm] = useState<IPersonalProfile>({ ...personal });
   const [isSaving, setIsSaving] = useState(false);
   const [toast, setToast] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
+
+  useEffect(() => {
+    setForm({ ...personal });
+  }, [personal]);
 
   const handleChange = (key: keyof IPersonalProfile, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));

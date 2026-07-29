@@ -46,6 +46,10 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
               <img
                 src={personal.profilePhoto || personal.bannerPhoto || "/Profile.jpg"}
                 alt={personal.name}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/Profile.jpg";
+                }}
                 className="w-full h-full object-cover"
               />
             </div>

@@ -306,27 +306,30 @@ export const defaultTestimonials: ITestimonial[] = [
 
 // API Functions with automatic fallback
 export async function getPersonalProfile(): Promise<IPersonalProfile> {
+  let localSaved: Partial<IPersonalProfile> = {};
   const saved = localStorage.getItem('portfolio_personal_profile');
-  let currentPersonal = defaultPersonal;
   if (saved) {
     try {
-      currentPersonal = { ...defaultPersonal, ...JSON.parse(saved) };
+      localSaved = JSON.parse(saved);
     } catch (e) {
       console.warn("Failed to parse stored personal profile", e);
     }
   }
 
+  let serverData: Partial<IPersonalProfile> = {};
   try {
     const response = await api.get('/personal');
     if (response.data?.success && response.data?.data) {
-      const merged = { ...currentPersonal, ...response.data.data };
-      localStorage.setItem('portfolio_personal_profile', JSON.stringify(merged));
-      return merged;
+      serverData = response.data.data;
     }
   } catch (err) {
     console.warn("API Call /personal fallback active:", err);
   }
-  return currentPersonal;
+
+  // Combine: defaultPersonal < serverData < localSaved (localSaved takes highest priority)
+  const combined = { ...defaultPersonal, ...serverData, ...localSaved };
+  localStorage.setItem('portfolio_personal_profile', JSON.stringify(combined));
+  return combined;
 }
 
 export async function getProjects(): Promise<IProject[]> {
