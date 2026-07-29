@@ -39,7 +39,7 @@ export interface ProfileCardProps {
 }
 
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
-  avatarUrl = '/Profile.JPG',
+  avatarUrl = '/Profile.jpg',
   iconUrl,
   grainUrl,
   innerGradient,
