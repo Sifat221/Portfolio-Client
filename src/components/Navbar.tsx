@@ -41,13 +41,26 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between">
-          {/* Logo with React Man User Icon Avatar */}
+          {/* Logo with Dynamic Profile Avatar (WhatsApp / Telegram style) */}
           <a href="#" className="flex items-center gap-3 group" aria-label="Sifat Khan Home">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-[#9B8FCD] via-indigo-600 to-cyan-500 border-2 border-[#9B8FCD]/60 shadow-lg flex items-center justify-center text-white shrink-0 group-hover:scale-105 transition-transform duration-200">
-              <User className="w-5 h-5 text-white" />
+            <div className="relative shrink-0 group-hover:scale-105 transition-transform duration-200">
+              {/* Glowing animated ring */}
+              <div className="absolute -inset-[2px] rounded-full bg-gradient-to-tr from-[#9B8FCD] via-indigo-500 to-cyan-400 animate-spin-slow opacity-80" />
+              {/* Avatar */}
+              <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-[#090D16] shadow-lg bg-gradient-to-tr from-[#9B8FCD] via-indigo-600 to-cyan-500 flex items-center justify-center">
+                {personal.profilePhoto ? (
+                  <img
+                    src={personal.profilePhoto}
+                    alt={personal.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User className="w-5 h-5 text-white" />
+                )}
+              </div>
             </div>
             <span className="text-2xl font-extrabold text-white tracking-tight group-hover:scale-105 transition-transform duration-200">
-              Sifat Khan<span className="text-[#9B8FCD] animate-pulse">.</span>
+              {personal.name}<span className="text-[#9B8FCD] animate-pulse">.</span>
             </span>
           </a>
 

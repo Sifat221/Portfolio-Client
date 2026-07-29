@@ -25,8 +25,8 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
               {/* Male Passport Photo Avatar Frame */}
               <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border-2 border-[#9B8FCD]/60 shadow-xl shrink-0 group bg-slate-900">
                 <img
-                  src="/Profile.JPG"
-                  alt="Sifat Khan Passport Photo"
+                  src={personal.profilePhoto || "/Profile.JPG"}
+                  alt={`${personal.name} Profile Photo`}
                   className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#060912]/40 via-transparent to-transparent pointer-events-none"></div>
@@ -34,9 +34,9 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
 
               <div>
                 <span className="text-2xl font-extrabold text-white tracking-tight">
-                  Sifat Khan<span className="text-[#9B8FCD]">.</span>
+                  {personal.name}<span className="text-[#9B8FCD]">.</span>
                 </span>
-                <p className="text-xs text-[#9B8FCD] font-mono font-semibold">Flutter & Mobile Developer</p>
+                <p className="text-xs text-[#9B8FCD] font-mono font-semibold">{personal.title}</p>
               </div>
             </div>
 

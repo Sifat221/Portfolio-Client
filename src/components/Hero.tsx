@@ -41,9 +41,9 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
   const elapsedTime = BANNER_DURATION - secondsLeft;
   const progressPercent = Math.min(100, Math.max(0, (elapsedTime / BANNER_DURATION) * 100));
 
-  // Generate 140 unique snowflakes with random positions, sizes, delays, and speeds
+  // Generate 25 subtle snowflakes for a clean, elegant winter backdrop
   const snowflakes = useMemo(() => {
-    return Array.from({ length: 140 }).map((_, index) => {
+    return Array.from({ length: 25 }).map((_, index) => {
       const left = Math.random() * 100;
       const size = Math.random() * 4.5 + 2;
       const duration = Math.random() * 7 + 3.5;
@@ -400,8 +400,8 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               {/* Professional Male Developer Portrait Image */}
               <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl glass-panel border border-slate-700/60 p-2">
                 <img
-                  src="/Profile.JPG"
-                  alt="Sifat Khan - Professional Flutter Developer"
+                  src={personal.bannerPhoto || "/Profile.JPG"}
+                  alt={`${personal.name} - Professional Flutter Developer`}
                   className="w-full h-[460px] sm:h-[520px] object-cover object-top rounded-2xl hover:scale-105 transition-transform duration-700"
                 />
               </div>

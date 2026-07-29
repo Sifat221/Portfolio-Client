@@ -10,6 +10,7 @@ export interface IPersonalProfile {
   github: string;
   portfolio: string;
   profilePhoto?: string;
+  bannerPhoto?: string;
   linkedin?: string;
   facebook?: string;
   whatsapp?: string;

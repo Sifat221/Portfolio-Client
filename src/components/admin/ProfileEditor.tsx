@@ -22,9 +22,19 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
     try {
       const result = await uploadFile(file, 'photo');
       setForm((prev) => ({ ...prev, profilePhoto: result.url }));
-      showToast('success', 'Photo uploaded successfully!');
+      showToast('success', 'Profile photo uploaded!');
     } catch {
       showToast('error', 'Photo upload failed.');
+    }
+  };
+
+  const handleBannerUpload = async (file: File) => {
+    try {
+      const result = await uploadFile(file, 'photo');
+      setForm((prev) => ({ ...prev, bannerPhoto: result.url }));
+      showToast('success', 'Banner photo uploaded!');
+    } catch {
+      showToast('error', 'Banner upload failed.');
     }
   };
 
@@ -90,15 +100,29 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
         </div>
       )}
 
-      {/* Photo & CV Upload Section */}
+      {/* Upload Section */}
+      {/* Row 1: Profile Avatar (circular) + Banner Photo (rectangular) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FileUploader
           accept="image/png,image/jpeg,image/webp"
-          label="Profile Photo"
-          currentUrl={form.profilePhoto || '/Profile.JPG'}
+          label="Profile Avatar (Navbar / Avatar)"
+          currentUrl={form.profilePhoto}
           onFileSelect={handlePhotoUpload}
           previewType="image"
+          shape="circle"
         />
+        <FileUploader
+          accept="image/png,image/jpeg,image/webp"
+          label="Banner / Hero Photo (Rectangular)"
+          currentUrl={form.bannerPhoto || '/Profile.JPG'}
+          onFileSelect={handleBannerUpload}
+          previewType="image"
+          shape="rectangle"
+        />
+      </div>
+
+      {/* Row 2: CV Upload */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FileUploader
           accept=".pdf"
           label="CV / Resume (PDF)"
