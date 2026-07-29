@@ -4,6 +4,7 @@ import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Sparkles, Messag
 import { IPersonalProfile } from '../types/portfolio';
 import { sendContactMessage } from '../services/api';
 import SplitText from './SplitText';
+import { Toast } from './Toast';
 
 interface ContactSectionProps {
   personal: IPersonalProfile;
@@ -18,31 +19,62 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [toastState, setToastState] = useState<{
+    isVisible: boolean;
+    type: 'success' | 'error';
+    title?: string;
+    message: string;
+  }>({
+    isVisible: false,
+    type: 'success',
+    message: '',
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
-      setStatus({ type: 'error', message: 'Please fill in all required fields.' });
+      setToastState({
+        isVisible: true,
+        type: 'error',
+        title: 'Validation Error',
+        message: 'Please fill in all required fields (Name, Email & Message).',
+      });
       return;
     }
 
     setLoading(true);
-    setStatus(null);
 
     const res = await sendContactMessage(formData);
     setLoading(false);
 
     if (res.success) {
-      setStatus({ type: 'success', message: res.message });
+      setToastState({
+        isVisible: true,
+        type: 'success',
+        title: `Thank You, ${formData.name}!`,
+        message: res.message,
+      });
       setFormData({ name: '', email: '', subject: '', message: '' });
     } else {
-      setStatus({ type: 'error', message: 'Failed to send message. Please try again or email directly.' });
+      setToastState({
+        isVisible: true,
+        type: 'error',
+        title: 'Delivery Failed',
+        message: 'Failed to send message. Please try again or email directly.',
+      });
     }
   };
 
   return (
     <section id="contact" className="py-24 relative bg-[#141C2E] border-t border-slate-800/60">
+      {/* Toast Notification Popup */}
+      <Toast
+        isVisible={toastState.isVisible}
+        type={toastState.type}
+        title={toastState.title}
+        message={toastState.message}
+        onClose={() => setToastState((prev) => ({ ...prev, isVisible: false }))}
+      />
       {/* Background Periwinkle Glow */}
       <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-[#9B8FCD]/10 rounded-full blur-[120px] pointer-events-none"></div>
 
@@ -193,23 +225,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
               <Sparkles className="w-5 h-5 text-[#9B8FCD]" />
               Send a Direct Message
             </h3>
-
-            {status && (
-              <div
-                className={`p-4 rounded-2xl flex items-center gap-3 text-sm font-medium ${
-                  status.type === 'success'
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                    : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                }`}
-              >
-                {status.type === 'success' ? (
-                  <CheckCircle2 className="w-5 h-5 shrink-0" />
-                ) : (
-                  <AlertCircle className="w-5 h-5 shrink-0" />
-                )}
-                <span>{status.message}</span>
-              </div>
-            )}
 
             <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col justify-between">
               <div className="space-y-4">
