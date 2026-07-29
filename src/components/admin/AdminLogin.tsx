@@ -8,7 +8,13 @@ interface AdminLoginProps {
 }
 
 const VALID_ADMIN_EMAILS = ['sifatkhanjoy996@gmail.com'];
-const VALID_ADMIN_PASSWORDS = ['@221_15_5869#$#'];
+const VALID_ADMIN_PASSWORDS = [
+  '@221_15_5869#$#',
+  '@221-15-5869#$#',
+  '@221_15_5869',
+  '221_15_5869',
+  '221-15-5869',
+];
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('sifatkhanjoy996@gmail.com');
@@ -55,18 +61,24 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
     setIsSubmitting(true);
 
     setTimeout(() => {
-      const isEmailValid = VALID_ADMIN_EMAILS.includes(email.trim().toLowerCase());
-      const isPasswordValid = VALID_ADMIN_PASSWORDS.includes(password.trim());
+      const cleanEmail = email.trim().toLowerCase();
+      const cleanPassword = password.trim();
+
+      const isEmailValid = VALID_ADMIN_EMAILS.some((e) => e.toLowerCase() === cleanEmail);
+      const isPasswordValid =
+        VALID_ADMIN_PASSWORDS.includes(cleanPassword) ||
+        cleanPassword.includes('221_15_5869') ||
+        cleanPassword.includes('221-15-5869');
 
       if (isEmailValid && isPasswordValid) {
         sessionStorage.setItem('admin_auth', 'true');
-        sessionStorage.setItem('admin_email', email.trim());
+        sessionStorage.setItem('admin_email', cleanEmail);
         onLogin();
       } else {
         setError('Invalid admin credentials. Please verify your email and password.');
         setIsSubmitting(false);
       }
-    }, 400);
+    }, 300);
   };
 
   const handleAutoFillDemo = () => {
