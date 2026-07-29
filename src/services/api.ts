@@ -545,6 +545,57 @@ export async function updatePersonalProfile(data: Partial<IPersonalProfile>): Pr
   return updated;
 }
 
+// Image compression helper for persistent offline storage without localStorage quota errors
+async function compressImageFile(file: File, maxWidth = 800, maxHeight = 800, quality = 0.85): Promise<string> {
+  return new Promise((resolve) => {
+    if (!file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve((reader.result as string) || '');
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve((e.target?.result as string) || '');
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => resolve((e.target?.result as string) || '');
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => resolve('');
+    reader.readAsDataURL(file);
+  });
+}
+
 // File Upload (Photo & CV)
 export async function uploadFile(file: File, type: 'photo' | 'resume'): Promise<{ url: string }> {
   try {
@@ -561,15 +612,7 @@ export async function uploadFile(file: File, type: 'photo' | 'resume'): Promise<
     console.warn("API POST /upload error:", err);
   }
 
-  // Fallback to Base64 Data URL for persistent offline storage
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      resolve({ url: reader.result as string });
-    };
-    reader.onerror = () => {
-      resolve({ url: URL.createObjectURL(file) });
-    };
-    reader.readAsDataURL(file);
-  });
+  // Fallback to compressed Base64 Data URL for persistent offline storage
+  const compressedUrl = await compressImageFile(file);
+  return { url: compressedUrl };
 }
