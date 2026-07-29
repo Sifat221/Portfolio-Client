@@ -304,6 +304,8 @@ export const defaultTestimonials: ITestimonial[] = [
   }
 ];
 
+let inMemoryPersonalProfile: IPersonalProfile | null = null;
+
 // API Functions with automatic fallback
 export async function getPersonalProfile(): Promise<IPersonalProfile> {
   let localSaved: Partial<IPersonalProfile> = {};
@@ -326,9 +328,20 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
     console.warn("API Call /personal fallback active:", err);
   }
 
-  // Combine: defaultPersonal < serverData < localSaved (localSaved takes highest priority)
-  const combined = { ...defaultPersonal, ...serverData, ...localSaved };
-  localStorage.setItem('portfolio_personal_profile', JSON.stringify(combined));
+  // Combine: defaultPersonal < serverData < localSaved < inMemoryPersonalProfile
+  const combined = {
+    ...defaultPersonal,
+    ...serverData,
+    ...localSaved,
+    ...(inMemoryPersonalProfile || {}),
+  };
+
+  try {
+    localStorage.setItem('portfolio_personal_profile', JSON.stringify(combined));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+
   return combined;
 }
 
@@ -532,12 +545,20 @@ export const deleteTestimonial = (id: string) => deleteEntity('/testimonials', i
 export async function updatePersonalProfile(data: Partial<IPersonalProfile>): Promise<IPersonalProfile> {
   const current = await getPersonalProfile();
   const updated = { ...current, ...data };
-  localStorage.setItem('portfolio_personal_profile', JSON.stringify(updated));
+  inMemoryPersonalProfile = updated;
+
+  try {
+    localStorage.setItem('portfolio_personal_profile', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage setItem error:", e);
+  }
 
   try {
     const response = await api.put('/personal', updated);
     if (response.data?.data) {
-      return response.data.data;
+      const serverResult = { ...updated, ...response.data.data };
+      inMemoryPersonalProfile = serverResult;
+      return serverResult;
     }
   } catch (err) {
     console.warn("API PUT /personal error:", err);
@@ -546,7 +567,7 @@ export async function updatePersonalProfile(data: Partial<IPersonalProfile>): Pr
 }
 
 // Image compression helper for persistent offline storage without localStorage quota errors
-async function compressImageFile(file: File, maxWidth = 800, maxHeight = 800, quality = 0.85): Promise<string> {
+async function compressImageFile(file: File, maxWidth = 600, maxHeight = 600, quality = 0.75): Promise<string> {
   return new Promise((resolve) => {
     if (!file.type.startsWith('image/')) {
       const reader = new FileReader();
