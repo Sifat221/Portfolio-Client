@@ -368,9 +368,22 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
 }
 
 export async function getProjects(): Promise<IProject[]> {
+  const saved = localStorage.getItem('portfolio_projects');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn("Failed to parse stored projects", e);
+    }
+  }
+
   try {
     const response = await api.get('/projects');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
+      localStorage.setItem('portfolio_projects', JSON.stringify(response.data.data));
       return response.data.data;
     }
   } catch (err) {
@@ -529,9 +542,69 @@ async function deleteEntity(endpoint: string, id: string): Promise<boolean> {
 }
 
 // Projects CRUD
-export const createProject = (data: Partial<IProject>) => createEntity<IProject>('/projects', data);
-export const updateProject = (id: string, data: Partial<IProject>) => updateEntity<IProject>('/projects', id, data);
-export const deleteProject = (id: string) => deleteEntity('/projects', id);
+export async function createProject(data: Partial<IProject>): Promise<IProject> {
+  const current = await getProjects();
+  const newProject: IProject = {
+    id: data.id || `proj_${Date.now()}`,
+    title: data.title || 'New Project',
+    tagline: data.tagline || '',
+    description: data.description || '',
+    techStack: data.techStack || ['Flutter'],
+    features: data.features || [],
+    githubUrl: data.githubUrl || '',
+    demoUrl: data.demoUrl || '',
+    imageUrl: data.imageUrl || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000',
+    category: data.category || 'Mobile App',
+    isFeatured: data.isFeatured ?? true,
+  };
+  const updated = [newProject, ...current];
+  try {
+    localStorage.setItem('portfolio_projects', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await createEntity<IProject>('/projects', data);
+    return res;
+  } catch (e) {
+    console.warn("Backend /projects error:", e);
+  }
+  return newProject;
+}
+
+export async function updateProject(id: string, data: Partial<IProject>): Promise<IProject> {
+  const current = await getProjects();
+  const updated = current.map((p) => (p.id === id ? { ...p, ...data } : p));
+  try {
+    localStorage.setItem('portfolio_projects', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await updateEntity<IProject>('/projects', id, data);
+    return res;
+  } catch (e) {
+    console.warn("Backend /projects error:", e);
+  }
+  const found = updated.find((p) => p.id === id);
+  return found || (data as IProject);
+}
+
+export async function deleteProject(id: string): Promise<boolean> {
+  const current = await getProjects();
+  const updated = current.filter((p) => p.id !== id);
+  try {
+    localStorage.setItem('portfolio_projects', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    await deleteEntity('/projects', id);
+  } catch (e) {
+    console.warn("Backend /projects delete error:", e);
+  }
+  return true;
+}
 
 // Skills CRUD
 export const createSkill = (data: Partial<ISkill>) => createEntity<ISkill>('/skills', data);

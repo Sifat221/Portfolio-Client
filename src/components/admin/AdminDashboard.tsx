@@ -154,7 +154,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             { key: 'features', label: 'Key Features (comma separated)', type: 'array' as const },
             { key: 'githubUrl', label: 'GitHub Repository URL', type: 'text' as const },
             { key: 'demoUrl', label: 'Live Demo URL', type: 'text' as const },
-            { key: 'imageUrl', label: 'Image URL', type: 'text' as const },
+            { key: 'imageUrl', label: 'Project Cover Image (Drag & Drop File or URL)', type: 'image' as const },
             { key: 'category', label: 'Category', type: 'text' as const },
           ],
         };
