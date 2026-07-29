@@ -35,7 +35,7 @@ export const AdminPage: React.FC = () => {
         {/* Back to Home Link */}
         <Link
           to="/"
-          className="absolute top-6 left-6 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold text-slate-300 bg-slate-900 border border-slate-800 hover:text-white hover:border-[#9B8FCD] transition-all shadow-md"
+          className="absolute top-6 left-6 z-30 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold text-slate-300 bg-slate-900 border border-slate-800 hover:text-white hover:border-[#9B8FCD] transition-all shadow-md"
         >
           <ArrowLeft className="w-4 h-4 text-[#9B8FCD]" />
           <span>Back to Portfolio</span>

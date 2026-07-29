@@ -32,11 +32,10 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        scrolled
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled
           ? 'glass-panel py-3 shadow-2xl border-b border-slate-800/90'
           : 'bg-[#090D16]/80 backdrop-blur-md py-4 border-b border-slate-800/40'
-      }`}
+        }`}
       role="banner"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -44,7 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
           {/* Logo */}
           <a href="#" className="flex items-center gap-3 group" aria-label="Sifat Khan Home">
             <span className="text-2xl font-extrabold text-white tracking-tight group-hover:scale-105 transition-transform duration-200">
-              {personal.name}<span className="text-[#9B8FCD] animate-pulse">.</span>
+              {personal.name}<span className="text-[#9B8FCD] animate-pulse"></span>
             </span>
           </a>
 
