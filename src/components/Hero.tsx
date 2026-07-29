@@ -400,7 +400,13 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               {/* Professional Male Developer Portrait Image */}
               <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl glass-panel border border-slate-700/60 p-2">
                 <img
-                  src={personal.bannerPhoto || personal.profilePhoto || "/Profile.jpg"}
+                  src={
+                    (personal.profilePhoto && !personal.profilePhoto.includes('banner3.webp'))
+                      ? personal.profilePhoto
+                      : (personal.bannerPhoto && !personal.bannerPhoto.includes('banner3.webp'))
+                        ? personal.bannerPhoto
+                        : "/Profile.jpg"
+                  }
                   alt={`${personal.name} - Professional Flutter Developer`}
                   className="w-full h-[460px] sm:h-[520px] object-cover object-top rounded-2xl hover:scale-105 transition-transform duration-700"
                 />
