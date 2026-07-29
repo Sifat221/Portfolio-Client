@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, Eye, EyeOff, Shield, Mail } from 'lucide-react';
+import { Lock, Eye, EyeOff, Mail } from 'lucide-react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 interface AdminLoginProps {
   onLogin: () => void;
@@ -31,7 +32,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#090D16] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#090D16] flex items-center justify-center px-4 py-10 selection:bg-[#9B8FCD] selection:text-white">
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -39,10 +40,14 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
         className="w-full max-w-md"
       >
         <div className="glass-panel rounded-3xl p-8 border border-slate-700/60 shadow-2xl space-y-6">
-          {/* Header */}
-          <div className="text-center space-y-3">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-[#9B8FCD] via-indigo-600 to-cyan-500 flex items-center justify-center shadow-xl">
-              <Shield className="w-8 h-8 text-white" />
+          {/* Header with Admin Lottie Animation */}
+          <div className="text-center space-y-2">
+            <div className="w-36 h-36 sm:w-44 sm:h-44 mx-auto flex items-center justify-center -my-2">
+              <DotLottieReact
+                src="https://lottie.host/332fef7f-6095-4e1d-bb17-1f94579e60b5/p41zrIREf4.lottie"
+                loop
+                autoplay
+              />
             </div>
             <h1 className="text-2xl font-extrabold text-white tracking-tight">Admin Dashboard</h1>
             <p className="text-sm text-slate-400 font-mono">Sign in with your admin credentials</p>
@@ -120,3 +125,5 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
     </div>
   );
 };
+
+export default AdminLogin;
