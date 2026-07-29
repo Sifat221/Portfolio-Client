@@ -8,13 +8,7 @@ interface AdminLoginProps {
 }
 
 const VALID_ADMIN_EMAILS = ['sifatkhanjoy996@gmail.com'];
-const VALID_ADMIN_PASSWORDS = [
-  '@221_15_5869#$#',
-  '@221-15-5869#$#',
-  '@221_15_5869',
-  '221_15_5869',
-  '221-15-5869',
-];
+const EXACT_ADMIN_PASSWORD = '@221_15_5869#$#';
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('sifatkhanjoy996@gmail.com');
@@ -65,10 +59,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
       const cleanPassword = password.trim();
 
       const isEmailValid = VALID_ADMIN_EMAILS.some((e) => e.toLowerCase() === cleanEmail);
-      const isPasswordValid =
-        VALID_ADMIN_PASSWORDS.includes(cleanPassword) ||
-        cleanPassword.includes('221_15_5869') ||
-        cleanPassword.includes('221-15-5869');
+      const isPasswordValid = cleanPassword === EXACT_ADMIN_PASSWORD;
 
       if (isEmailValid && isPasswordValid) {
         sessionStorage.setItem('admin_auth', 'true');
