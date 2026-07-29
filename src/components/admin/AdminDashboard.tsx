@@ -17,7 +17,7 @@ import {
   Sparkles,
   ShieldCheck,
 } from 'lucide-react';
-import { IPersonalProfile, IProject, ISkill, IExperience, IEducation, ICertification, IAchievement } from '../../types/portfolio';
+import { IPersonalProfile, IProject, ISkill, IExperience, IEducation, ICertification, IAchievement, IGalleryPhoto } from '../../types/portfolio';
 import { ProfileEditor } from './ProfileEditor';
 import { AdminFormModal } from './AdminFormModal';
 import {
@@ -27,7 +27,9 @@ import {
   createEducation, updateEducation, deleteEducation,
   createCertification, updateCertification, deleteCertification,
   createAchievement, updateAchievement, deleteAchievement,
+  createGalleryPhoto, updateGalleryPhoto, deleteGalleryPhoto,
 } from '../../services/api';
+import { Image as ImageIcon } from 'lucide-react';
 
 interface AdminDashboardProps {
   personal: IPersonalProfile;
@@ -37,6 +39,7 @@ interface AdminDashboardProps {
   education: IEducation[];
   certifications: ICertification[];
   achievements: IAchievement[];
+  galleryPhotos?: IGalleryPhoto[];
   onClose: () => void;
   onLogout: () => void;
   onRefreshData?: () => void;
@@ -50,18 +53,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   education,
   certifications,
   achievements,
+  galleryPhotos = [],
   onClose,
   onLogout,
   onRefreshData,
 }) => {
   const [activeTab, setActiveTab] = useState<
-    'profile' | 'projects' | 'skills' | 'experience' | 'education' | 'certifications' | 'achievements'
+    'profile' | 'projects' | 'skills' | 'experience' | 'education' | 'certifications' | 'achievements' | 'gallery'
   >('profile');
 
   // Modal State for Add/Edit
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
-    section: 'projects' | 'skills' | 'experience' | 'education' | 'certifications' | 'achievements';
+    section: 'projects' | 'skills' | 'experience' | 'education' | 'certifications' | 'achievements' | 'gallery';
     item?: any;
   }>({
     isOpen: false,
@@ -92,6 +96,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       else if (section === 'education') await deleteEducation(id);
       else if (section === 'certifications') await deleteCertification(id);
       else if (section === 'achievements') await deleteAchievement(id);
+      else if (section === 'gallery') await deleteGalleryPhoto(id);
 
       showToast('Item deleted successfully!');
       onRefreshData?.();
@@ -123,6 +128,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       } else if (section === 'achievements') {
         if (isEdit) await updateAchievement(modalState.item.id, data);
         else await createAchievement(data);
+      } else if (section === 'gallery') {
+        if (isEdit) await updateGalleryPhoto(modalState.item.id, data);
+        else await createGalleryPhoto(data);
       }
 
       showToast(`Item ${isEdit ? 'updated' : 'created'} successfully!`);
@@ -211,6 +219,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             { key: 'credentialUrl', label: 'Credential Link', type: 'text' as const },
           ],
         };
+      case 'gallery':
+        return {
+          title: modalState.item ? 'Edit Gallery Photo' : 'Add New Gallery Photo',
+          fields: [
+            { key: 'title', label: 'Photo Title / Milestone Name', type: 'text' as const, required: true },
+            { key: 'caption', label: 'Caption / Description', type: 'textarea' as const },
+            { key: 'url', label: 'Upload Photo or Paste URL', type: 'image' as const, required: true },
+          ],
+        };
       case 'achievements':
       default:
         return {
@@ -286,6 +303,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <div className="w-full md:w-64 bg-slate-900/60 border-r border-slate-800 p-4 space-y-2 shrink-0 overflow-y-auto">
             {[
               { id: 'profile', label: 'Profile & Photos', icon: <User className="w-4 h-4" /> },
+              { id: 'gallery', label: 'Memorable Gallery', icon: <ImageIcon className="w-4 h-4" />, count: galleryPhotos.length },
               { id: 'projects', label: 'Projects', icon: <FolderPlus className="w-4 h-4" />, count: projects.length },
               { id: 'skills', label: 'Skills', icon: <Wrench className="w-4 h-4" />, count: skills.length },
               { id: 'experience', label: 'Experience', icon: <Briefcase className="w-4 h-4" />, count: experience.length },
@@ -339,20 +357,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <div className="space-y-5">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-white font-mono capitalize">
-                    Manage {activeTab}
+                    Manage {activeTab === 'gallery' ? 'Memorable Photos Gallery' : activeTab}
                   </h3>
                   <button
                     onClick={() => handleOpenAdd(activeTab)}
                     className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#9B8FCD] to-indigo-600 shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5"
                   >
                     <Plus className="w-4 h-4" />
-                    <span>Add New {activeTab.slice(0, -1)}</span>
+                    <span>Add New {activeTab === 'gallery' ? 'Photo' : activeTab.slice(0, -1)}</span>
                   </button>
                 </div>
 
                 {/* Section Table View */}
                 <div className="space-y-3">
-                  {(activeTab === 'projects' ? projects :
+                  {(activeTab === 'gallery' ? galleryPhotos :
+                    activeTab === 'projects' ? projects :
                     activeTab === 'skills' ? skills :
                     activeTab === 'experience' ? experience :
                     activeTab === 'education' ? education :

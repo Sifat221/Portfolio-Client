@@ -1,39 +1,22 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GraduationCap, Award, BookOpen, ExternalLink, Calendar, ChevronLeft, ChevronRight, Image as ImageIcon, Sparkles } from 'lucide-react';
-import { IEducation, ICertification } from '../types/portfolio';
+import { IEducation, ICertification, IGalleryPhoto } from '../types/portfolio';
+import { defaultGalleryPhotos } from '../services/api';
 import SplitText from './SplitText';
 
 interface EducationCertificationsProps {
   education: IEducation[];
   certifications: ICertification[];
+  galleryPhotos?: IGalleryPhoto[];
 }
 
 export const EducationCertifications: React.FC<EducationCertificationsProps> = ({
   education,
   certifications,
+  galleryPhotos,
 }) => {
-  // Personal University & Campus Memorable Photos List
-  const universityPhotos = [
-    {
-      id: 'photo_1',
-      title: 'Daffodil International University - Software & App Showcase',
-      caption: 'Presenting Flutter mobile apps & Clean Architecture at DIU CS Department',
-      url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200'
-    },
-    {
-      id: 'photo_2',
-      title: 'University Hackathon & Team Engineering',
-      caption: 'Collaborating with peers on real-time mobile app hackathon projects',
-      url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1200'
-    },
-    {
-      id: 'photo_3',
-      title: 'Campus Life & Graduation Milestones',
-      caption: 'B.Sc. in Computer Science & Engineering graduation memories (2022 - 2025)',
-      url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1200'
-    }
-  ];
+  const universityPhotos = (galleryPhotos && galleryPhotos.length > 0) ? galleryPhotos : defaultGalleryPhotos;
 
   const [currentPhotoIdx, setCurrentPhotoIdx] = useState(0);
 

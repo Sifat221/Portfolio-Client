@@ -84,6 +84,13 @@ export interface ITestimonial {
   avatarUrl?: string;
 }
 
+export interface IGalleryPhoto {
+  id?: string;
+  title: string;
+  caption?: string;
+  url: string;
+}
+
 export interface IContactForm {
   name: string;
   email: string;
@@ -100,7 +107,8 @@ export type SectionName =
   | 'education'
   | 'certifications'
   | 'achievements'
-  | 'testimonials';
+  | 'testimonials'
+  | 'gallery';
 
 export type SectionDataMap = {
   personal: IPersonalProfile;
@@ -111,4 +119,5 @@ export type SectionDataMap = {
   certifications: ICertification;
   achievements: IAchievement;
   testimonials: ITestimonial;
+  gallery: IGalleryPhoto;
 };

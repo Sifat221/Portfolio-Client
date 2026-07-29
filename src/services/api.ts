@@ -8,6 +8,7 @@ import {
   ICertification,
   IAchievement,
   ITestimonial,
+  IGalleryPhoto,
   IContactForm
 } from '../types/portfolio';
 
@@ -304,6 +305,27 @@ export const defaultTestimonials: ITestimonial[] = [
   }
 ];
 
+export const defaultGalleryPhotos: IGalleryPhoto[] = [
+  {
+    id: 'photo_1',
+    title: 'Daffodil International University - Software & App Showcase',
+    caption: 'Presenting Flutter mobile apps & Clean Architecture at DIU CS Department',
+    url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200'
+  },
+  {
+    id: 'photo_2',
+    title: 'University Hackathon & Team Engineering',
+    caption: 'Collaborating with peers on real-time mobile app hackathon projects',
+    url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1200'
+  },
+  {
+    id: 'photo_3',
+    title: 'Campus Life & Graduation Milestones',
+    caption: 'B.Sc. in Computer Science & Engineering graduation memories (2022 - 2025)',
+    url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1200'
+  }
+];
+
 let inMemoryPersonalProfile: IPersonalProfile | null = null;
 
 // API Functions with automatic fallback
@@ -540,6 +562,73 @@ export const deleteAchievement = (id: string) => deleteEntity('/achievements', i
 export const createTestimonial = (data: Partial<ITestimonial>) => createEntity<ITestimonial>('/testimonials', data);
 export const updateTestimonial = (id: string, data: Partial<ITestimonial>) => updateEntity<ITestimonial>('/testimonials', id, data);
 export const deleteTestimonial = (id: string) => deleteEntity('/testimonials', id);
+
+// Gallery Photos CRUD
+export async function getGalleryPhotos(): Promise<IGalleryPhoto[]> {
+  const saved = localStorage.getItem('portfolio_gallery_photos');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn("Failed to parse stored gallery photos", e);
+    }
+  }
+
+  try {
+    const response = await api.get('/gallery');
+    if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
+      localStorage.setItem('portfolio_gallery_photos', JSON.stringify(response.data.data));
+      return response.data.data;
+    }
+  } catch (err) {
+    console.warn("API Call /gallery fallback active:", err);
+  }
+
+  return defaultGalleryPhotos;
+}
+
+export async function createGalleryPhoto(data: Partial<IGalleryPhoto>): Promise<IGalleryPhoto> {
+  const current = await getGalleryPhotos();
+  const newPhoto: IGalleryPhoto = {
+    id: `photo_${Date.now()}`,
+    title: data.title || 'University Memory',
+    caption: data.caption || '',
+    url: data.url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200',
+  };
+  const updated = [newPhoto, ...current];
+  try {
+    localStorage.setItem('portfolio_gallery_photos', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  return newPhoto;
+}
+
+export async function updateGalleryPhoto(id: string, data: Partial<IGalleryPhoto>): Promise<IGalleryPhoto> {
+  const current = await getGalleryPhotos();
+  const updated = current.map((p) => (p.id === id ? { ...p, ...data } : p));
+  try {
+    localStorage.setItem('portfolio_gallery_photos', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  const found = updated.find((p) => p.id === id);
+  return found || (data as IGalleryPhoto);
+}
+
+export async function deleteGalleryPhoto(id: string): Promise<boolean> {
+  const current = await getGalleryPhotos();
+  const updated = current.filter((p) => p.id !== id);
+  try {
+    localStorage.setItem('portfolio_gallery_photos', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  return true;
+}
 
 // Personal Profile Update
 export async function updatePersonalProfile(data: Partial<IPersonalProfile>): Promise<IPersonalProfile> {

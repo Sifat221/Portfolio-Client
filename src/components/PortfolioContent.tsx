@@ -23,6 +23,7 @@ import {
   useCertifications,
   useAchievements,
   useTestimonials,
+  useGalleryPhotos,
 } from '../hooks/usePortfolio';
 
 import {
@@ -34,6 +35,7 @@ import {
   defaultCertifications,
   defaultAchievements,
   defaultTestimonials,
+  defaultGalleryPhotos,
 } from '../services/api';
 
 export const PortfolioContent: React.FC = () => {
@@ -45,6 +47,7 @@ export const PortfolioContent: React.FC = () => {
   const { data: certifications = defaultCertifications } = useCertifications();
   const { data: achievements = defaultAchievements } = useAchievements();
   const { data: testimonials = defaultTestimonials } = useTestimonials();
+  const { data: galleryPhotos = defaultGalleryPhotos } = useGalleryPhotos();
 
   // Attach side effects
   useGlobalSound();
@@ -81,7 +84,7 @@ export const PortfolioContent: React.FC = () => {
         <Skills skills={skills} />
         <Projects projects={projects} />
         <ExperienceTimeline experience={experience} />
-        <EducationCertifications education={education} certifications={certifications} />
+        <EducationCertifications education={education} certifications={certifications} galleryPhotos={galleryPhotos} />
         <Achievements testimonials={testimonials} achievements={achievements} />
         <ContactSection personal={personal} />
       </main>

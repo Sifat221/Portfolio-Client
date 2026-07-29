@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Save } from 'lucide-react';
+import { FileUploader } from './FileUploader';
+import { uploadFile } from '../../services/api';
 
 interface AdminFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (data: Record<string, any>) => void;
   title: string;
-  fields: { key: string; label: string; type: 'text' | 'textarea' | 'select' | 'array'; options?: string[]; required?: boolean }[];
+  fields: { key: string; label: string; type: 'text' | 'textarea' | 'select' | 'array' | 'image'; options?: string[]; required?: boolean }[];
   initialData?: Record<string, any>;
 }
 
@@ -88,7 +90,28 @@ export const AdminFormModal: React.FC<AdminFormModalProps> = ({
                   {field.label} {field.required && <span className="text-rose-400">*</span>}
                 </label>
 
-                {field.type === 'textarea' ? (
+                {field.type === 'image' ? (
+                  <div className="space-y-2">
+                    <FileUploader
+                      accept="image/png,image/jpeg,image/webp"
+                      label={field.label}
+                      currentUrl={formData[field.key]}
+                      onFileSelect={async (file) => {
+                        const result = await uploadFile(file, 'photo');
+                        handleChange(field.key, result.url);
+                      }}
+                      previewType="image"
+                      shape="rectangle"
+                    />
+                    <input
+                      type="text"
+                      value={formData[field.key] || ''}
+                      onChange={(e) => handleChange(field.key, e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-xs placeholder-slate-500 focus:border-[#9B8FCD] focus:ring-1 focus:ring-[#9B8FCD] outline-none transition-all"
+                      placeholder="Or paste image URL (e.g. https://...)"
+                    />
+                  </div>
+                ) : field.type === 'textarea' ? (
                   <textarea
                     value={formData[field.key] || ''}
                     onChange={(e) => handleChange(field.key, e.target.value)}

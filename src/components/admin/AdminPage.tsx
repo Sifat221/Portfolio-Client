@@ -11,6 +11,7 @@ import {
   useEducation,
   useCertifications,
   useAchievements,
+  useGalleryPhotos,
 } from '../../hooks/usePortfolio';
 import {
   defaultPersonal,
@@ -20,6 +21,7 @@ import {
   defaultEducation,
   defaultCertifications,
   defaultAchievements,
+  defaultGalleryPhotos,
 } from '../../services/api';
 import { ArrowLeft } from 'lucide-react';
 
@@ -37,6 +39,7 @@ export const AdminPage: React.FC = () => {
   const { data: education = defaultEducation } = useEducation();
   const { data: certifications = defaultCertifications } = useCertifications();
   const { data: achievements = defaultAchievements } = useAchievements();
+  const { data: galleryPhotos = defaultGalleryPhotos } = useGalleryPhotos();
 
   const handleRefreshData = () => {
     queryClient.invalidateQueries();
@@ -79,6 +82,7 @@ export const AdminPage: React.FC = () => {
         education={education}
         certifications={certifications}
         achievements={achievements}
+        galleryPhotos={galleryPhotos}
         onClose={() => navigate('/')}
         onLogout={handleLogout}
         onRefreshData={handleRefreshData}
