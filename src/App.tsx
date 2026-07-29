@@ -8,6 +8,8 @@ import { PortfolioContent } from './components/PortfolioContent';
 import AdminPage from './components/admin/AdminPage';
 import NotFound from './components/NotFound';
 
+import { useGlobalSound } from './hooks/useGlobalSound';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -18,6 +20,8 @@ const queryClient = new QueryClient({
 });
 
 export const App: React.FC = () => {
+  useGlobalSound();
+
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>

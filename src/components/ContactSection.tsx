@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Sparkles, MessageCircle, Linkedin, Facebook } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { sendContactMessage } from '../services/api';
+import { playSuccessSound } from '../utils/sound';
 import SplitText from './SplitText';
 import { Toast } from './Toast';
 
@@ -48,6 +49,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
     setLoading(false);
 
     if (res.success) {
+      playSuccessSound();
       setToastState({
         isVisible: true,
         type: 'success',
