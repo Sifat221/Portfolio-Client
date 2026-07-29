@@ -21,8 +21,11 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
   const handlePhotoUpload = async (file: File) => {
     try {
       const result = await uploadFile(file, 'photo');
-      setForm((prev) => ({ ...prev, profilePhoto: result.url }));
-      showToast('success', 'Profile photo uploaded!');
+      const updatedForm = { ...form, profilePhoto: result.url };
+      setForm(updatedForm);
+      await updatePersonalProfile(updatedForm);
+      onSave(updatedForm);
+      showToast('success', 'Profile avatar photo updated live!');
     } catch {
       showToast('error', 'Photo upload failed.');
     }
@@ -31,8 +34,11 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
   const handleBannerUpload = async (file: File) => {
     try {
       const result = await uploadFile(file, 'photo');
-      setForm((prev) => ({ ...prev, bannerPhoto: result.url }));
-      showToast('success', 'Banner photo uploaded!');
+      const updatedForm = { ...form, bannerPhoto: result.url };
+      setForm(updatedForm);
+      await updatePersonalProfile(updatedForm);
+      onSave(updatedForm);
+      showToast('success', 'Banner hero photo updated live!');
     } catch {
       showToast('error', 'Banner upload failed.');
     }
@@ -41,7 +47,10 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
   const handleResumeUpload = async (file: File) => {
     try {
       const result = await uploadFile(file, 'resume');
-      setForm((prev) => ({ ...prev, resumeUrl: result.url }));
+      const updatedForm = { ...form, resumeUrl: result.url };
+      setForm(updatedForm);
+      await updatePersonalProfile(updatedForm);
+      onSave(updatedForm);
       showToast('success', 'CV uploaded successfully!');
     } catch {
       showToast('error', 'CV upload failed.');

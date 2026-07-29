@@ -40,10 +40,17 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group" aria-label="Sifat Khan Home">
-            <span className="text-2xl font-extrabold text-white tracking-tight group-hover:scale-105 transition-transform duration-200">
-              {personal.name}<span className="text-[#9B8FCD] animate-pulse"></span>
+          {/* Logo with Profile Avatar */}
+          <a href="#" className="flex items-center gap-3 group" aria-label={`${personal.name} Home`}>
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-[#9B8FCD]/60 shadow-md group-hover:scale-105 transition-transform duration-200 shrink-0 bg-slate-900">
+              <img
+                src={personal.profilePhoto || personal.bannerPhoto || "/Profile.jpg"}
+                alt={personal.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <span className="text-xl sm:text-2xl font-extrabold text-white tracking-tight group-hover:scale-105 transition-transform duration-200">
+              {personal.name}<span className="text-[#9B8FCD] animate-pulse">.</span>
             </span>
           </a>
 

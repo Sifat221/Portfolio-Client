@@ -1,7 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { AdminLogin } from './AdminLogin';
 import { AdminDashboard } from './AdminDashboard';
+import {
+  usePersonalProfile,
+  useProjects,
+  useSkills,
+  useExperience,
+  useEducation,
+  useCertifications,
+  useAchievements,
+} from '../../hooks/usePortfolio';
 import {
   defaultPersonal,
   defaultProjects,
@@ -11,13 +21,26 @@ import {
   defaultCertifications,
   defaultAchievements,
 } from '../../services/api';
-import { ArrowLeft, Shield } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export const AdminPage: React.FC = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isAdminAuth, setIsAdminAuth] = useState<boolean>(() => {
     return sessionStorage.getItem('admin_auth') === 'true';
   });
+
+  const { data: personal = defaultPersonal } = usePersonalProfile();
+  const { data: projects = defaultProjects } = useProjects();
+  const { data: skills = defaultSkills } = useSkills();
+  const { data: experience = defaultExperience } = useExperience();
+  const { data: education = defaultEducation } = useEducation();
+  const { data: certifications = defaultCertifications } = useCertifications();
+  const { data: achievements = defaultAchievements } = useAchievements();
+
+  const handleRefreshData = () => {
+    queryClient.invalidateQueries();
+  };
 
   const handleLoginSuccess = () => {
     sessionStorage.setItem('admin_auth', 'true');
@@ -49,15 +72,16 @@ export const AdminPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#090D16] text-white">
       <AdminDashboard
-        personal={defaultPersonal}
-        projects={defaultProjects}
-        skills={defaultSkills}
-        experience={defaultExperience}
-        education={defaultEducation}
-        certifications={defaultCertifications}
-        achievements={defaultAchievements}
+        personal={personal}
+        projects={projects}
+        skills={skills}
+        experience={experience}
+        education={education}
+        certifications={certifications}
+        achievements={achievements}
         onClose={() => navigate('/')}
         onLogout={handleLogout}
+        onRefreshData={handleRefreshData}
       />
     </div>
   );

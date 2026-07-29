@@ -306,15 +306,27 @@ export const defaultTestimonials: ITestimonial[] = [
 
 // API Functions with automatic fallback
 export async function getPersonalProfile(): Promise<IPersonalProfile> {
+  const saved = localStorage.getItem('portfolio_personal_profile');
+  let currentPersonal = defaultPersonal;
+  if (saved) {
+    try {
+      currentPersonal = { ...defaultPersonal, ...JSON.parse(saved) };
+    } catch (e) {
+      console.warn("Failed to parse stored personal profile", e);
+    }
+  }
+
   try {
     const response = await api.get('/personal');
     if (response.data?.success && response.data?.data) {
-      return response.data.data;
+      const merged = { ...currentPersonal, ...response.data.data };
+      localStorage.setItem('portfolio_personal_profile', JSON.stringify(merged));
+      return merged;
     }
   } catch (err) {
     console.warn("API Call /personal fallback active:", err);
   }
-  return defaultPersonal;
+  return currentPersonal;
 }
 
 export async function getProjects(): Promise<IProject[]> {
@@ -515,13 +527,19 @@ export const deleteTestimonial = (id: string) => deleteEntity('/testimonials', i
 
 // Personal Profile Update
 export async function updatePersonalProfile(data: Partial<IPersonalProfile>): Promise<IPersonalProfile> {
+  const current = await getPersonalProfile();
+  const updated = { ...current, ...data };
+  localStorage.setItem('portfolio_personal_profile', JSON.stringify(updated));
+
   try {
-    const response = await api.put('/personal', data);
-    return response.data?.data || data as IPersonalProfile;
+    const response = await api.put('/personal', updated);
+    if (response.data?.data) {
+      return response.data.data;
+    }
   } catch (err) {
     console.warn("API PUT /personal error:", err);
-    return data as IPersonalProfile;
   }
+  return updated;
 }
 
 // File Upload (Photo & CV)
@@ -533,10 +551,22 @@ export async function uploadFile(file: File, type: 'photo' | 'resume'): Promise<
     const response = await api.post('/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-    return { url: response.data?.data?.url || response.data?.url || URL.createObjectURL(file) };
+    if (response.data?.data?.url || response.data?.url) {
+      return { url: response.data?.data?.url || response.data?.url };
+    }
   } catch (err) {
     console.warn("API POST /upload error:", err);
-    // Fallback: return a local object URL so the admin UI still works
-    return { url: URL.createObjectURL(file) };
   }
+
+  // Fallback to Base64 Data URL for persistent offline storage
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      resolve({ url: reader.result as string });
+    };
+    reader.onerror = () => {
+      resolve({ url: URL.createObjectURL(file) });
+    };
+    reader.readAsDataURL(file);
+  });
 }
