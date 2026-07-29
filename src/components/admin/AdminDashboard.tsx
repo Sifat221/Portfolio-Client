@@ -17,7 +17,7 @@ import {
   Sparkles,
   ShieldCheck,
 } from 'lucide-react';
-import { IPersonalProfile, IProject, ISkill, IExperience, IEducation, ICertification, IAchievement, IGalleryPhoto } from '../../types/portfolio';
+import { IPersonalProfile, IProject, ISkill, IExperience, IEducation, ICertification, IAchievement, IGalleryPhoto, IContactMessage } from '../../types/portfolio';
 import { ProfileEditor } from './ProfileEditor';
 import { AdminFormModal } from './AdminFormModal';
 import {
@@ -28,8 +28,9 @@ import {
   createCertification, updateCertification, deleteCertification,
   createAchievement, updateAchievement, deleteAchievement,
   createGalleryPhoto, updateGalleryPhoto, deleteGalleryPhoto,
+  markContactMessageRead, deleteContactMessage,
 } from '../../services/api';
-import { Image as ImageIcon } from 'lucide-react';
+import { Image as ImageIcon, Mail } from 'lucide-react';
 
 interface AdminDashboardProps {
   personal: IPersonalProfile;
@@ -40,6 +41,7 @@ interface AdminDashboardProps {
   certifications: ICertification[];
   achievements: IAchievement[];
   galleryPhotos?: IGalleryPhoto[];
+  contactMessages?: IContactMessage[];
   onClose: () => void;
   onLogout: () => void;
   onRefreshData?: () => void;
@@ -54,12 +56,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   certifications,
   achievements,
   galleryPhotos = [],
+  contactMessages = [],
   onClose,
   onLogout,
   onRefreshData,
 }) => {
   const [activeTab, setActiveTab] = useState<
-    'profile' | 'projects' | 'skills' | 'experience' | 'education' | 'certifications' | 'achievements' | 'gallery'
+    'profile' | 'messages' | 'projects' | 'skills' | 'experience' | 'education' | 'certifications' | 'achievements' | 'gallery'
   >('profile');
 
   // Modal State for Add/Edit
@@ -303,6 +306,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <div className="w-full md:w-64 bg-slate-900/60 border-r border-slate-800 p-4 space-y-2 shrink-0 overflow-y-auto">
             {[
               { id: 'profile', label: 'Profile & Photos', icon: <User className="w-4 h-4" /> },
+              { id: 'messages', label: 'Inbox Messages', icon: <Mail className="w-4 h-4" />, count: contactMessages.filter(m => !m.isRead).length },
               { id: 'gallery', label: 'Memorable Gallery', icon: <ImageIcon className="w-4 h-4" />, count: galleryPhotos.length },
               { id: 'projects', label: 'Projects', icon: <FolderPlus className="w-4 h-4" />, count: projects.length },
               { id: 'skills', label: 'Skills', icon: <Wrench className="w-4 h-4" />, count: skills.length },
@@ -326,8 +330,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <span className={isActive ? 'text-[#9B8FCD]' : 'text-slate-500'}>{tab.icon}</span>
                     <span>{tab.label}</span>
                   </div>
-                  {tab.count !== undefined && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-slate-800 text-slate-300">
+                  {tab.count !== undefined && tab.count > 0 && (
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                      tab.id === 'messages' ? 'bg-[#9B8FCD] text-white animate-pulse' : 'bg-slate-800 text-slate-300'
+                    }`}>
                       {tab.count}
                     </span>
                   )}
@@ -353,7 +359,108 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
             )}
 
-            {activeTab !== 'profile' && (
+            {activeTab === 'messages' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-base font-bold text-white font-mono flex items-center gap-2">
+                      <Mail className="w-5 h-5 text-[#9B8FCD]" /> Messages Inbox
+                    </h3>
+                    <p className="text-xs text-slate-400">Direct inquiries submitted by website visitors</p>
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-xs font-mono bg-[#9B8FCD]/20 text-[#9B8FCD] border border-[#9B8FCD]/40 font-bold">
+                    {contactMessages.length} Total Messages
+                  </span>
+                </div>
+
+                {contactMessages.length === 0 ? (
+                  <div className="text-center py-16 bg-slate-900/50 rounded-3xl border border-slate-800 space-y-3">
+                    <Mail className="w-12 h-12 text-slate-600 mx-auto" />
+                    <h4 className="text-sm font-bold text-slate-300">No Messages Received Yet</h4>
+                    <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                      Messages submitted by visitors through the "Get In Touch" contact form will appear here.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {contactMessages.map((msg) => (
+                      <div
+                        key={msg.id}
+                        className={`p-5 rounded-2xl border transition-all space-y-3 ${
+                          msg.isRead
+                            ? 'bg-slate-900/60 border-slate-800'
+                            : 'bg-gradient-to-r from-indigo-950/40 via-slate-900 to-slate-900 border-[#9B8FCD]/50 shadow-lg'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-4 flex-wrap">
+                          <div className="space-y-0.5">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-extrabold text-white text-base">{msg.name}</h4>
+                              {!msg.isRead && (
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-[#9B8FCD] text-white font-bold animate-pulse">
+                                  NEW
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-[#9B8FCD] font-mono">{msg.email}</p>
+                          </div>
+                          <span className="text-[11px] font-mono text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700">
+                            {msg.createdAt}
+                          </span>
+                        </div>
+
+                        {msg.subject && (
+                          <div className="text-xs font-mono text-indigo-300 font-semibold bg-indigo-950/30 px-3 py-1.5 rounded-xl border border-indigo-900/40">
+                            Subject: {msg.subject}
+                          </div>
+                        )}
+
+                        <p className="text-sm text-slate-200 leading-relaxed bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 whitespace-pre-wrap font-normal">
+                          {msg.message}
+                        </p>
+
+                        <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-800/80">
+                          {!msg.isRead && (
+                            <button
+                              onClick={async () => {
+                                await markContactMessageRead(msg.id);
+                                showToast('Marked as read!');
+                                onRefreshData?.();
+                              }}
+                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-all flex items-center gap-1.5"
+                            >
+                              <Check className="w-3.5 h-3.5" />
+                              <span>Mark Read</span>
+                            </button>
+                          )}
+                          <a
+                            href={`mailto:${msg.email}?subject=Re: ${encodeURIComponent(msg.subject || 'Portfolio Direct Message')}`}
+                            className="px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#9B8FCD] to-indigo-600 hover:scale-105 transition-all flex items-center gap-1.5 shadow-md"
+                          >
+                            <Mail className="w-3.5 h-3.5" />
+                            <span>Reply via Email</span>
+                          </a>
+                          <button
+                            onClick={async () => {
+                              if (!window.confirm('Delete this message?')) return;
+                              await deleteContactMessage(msg.id);
+                              showToast('Message deleted!');
+                              onRefreshData?.();
+                            }}
+                            className="p-1.5 rounded-xl text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/30 transition-all"
+                            title="Delete Message"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab !== 'profile' && activeTab !== 'messages' && (
               <div className="space-y-5">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-white font-mono capitalize">

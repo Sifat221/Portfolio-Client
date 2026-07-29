@@ -98,6 +98,16 @@ export interface IContactForm {
   message: string;
 }
 
+export interface IContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  subject?: string;
+  message: string;
+  createdAt: string;
+  isRead?: boolean;
+}
+
 // Admin types
 export type SectionName =
   | 'personal'
@@ -108,7 +118,8 @@ export type SectionName =
   | 'certifications'
   | 'achievements'
   | 'testimonials'
-  | 'gallery';
+  | 'gallery'
+  | 'messages';
 
 export type SectionDataMap = {
   personal: IPersonalProfile;

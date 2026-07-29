@@ -9,6 +9,7 @@ import {
   getAchievements,
   getTestimonials,
   getGalleryPhotos,
+  getContactMessages,
   sendContactMessage
 } from '../services/api';
 import { IContactForm } from '../types/portfolio';
@@ -82,6 +83,14 @@ export function useGalleryPhotos() {
   return useQuery({
     queryKey: ['galleryPhotos'],
     queryFn: getGalleryPhotos,
+    staleTime: 1000 * 5, // 5 seconds for instant reactivity
+  });
+}
+
+export function useContactMessages() {
+  return useQuery({
+    queryKey: ['contactMessages'],
+    queryFn: getContactMessages,
     staleTime: 1000 * 5, // 5 seconds for instant reactivity
   });
 }

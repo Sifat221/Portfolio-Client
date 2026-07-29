@@ -12,6 +12,7 @@ import {
   useCertifications,
   useAchievements,
   useGalleryPhotos,
+  useContactMessages,
 } from '../../hooks/usePortfolio';
 import {
   defaultPersonal,
@@ -40,6 +41,7 @@ export const AdminPage: React.FC = () => {
   const { data: certifications = defaultCertifications } = useCertifications();
   const { data: achievements = defaultAchievements } = useAchievements();
   const { data: galleryPhotos = defaultGalleryPhotos } = useGalleryPhotos();
+  const { data: contactMessages = [] } = useContactMessages();
 
   const handleRefreshData = () => {
     queryClient.invalidateQueries();
@@ -83,6 +85,7 @@ export const AdminPage: React.FC = () => {
         certifications={certifications}
         achievements={achievements}
         galleryPhotos={galleryPhotos}
+        contactMessages={contactMessages}
         onClose={() => navigate('/')}
         onLogout={handleLogout}
         onRefreshData={handleRefreshData}

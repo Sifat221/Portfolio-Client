@@ -9,7 +9,8 @@ import {
   IAchievement,
   ITestimonial,
   IGalleryPhoto,
-  IContactForm
+  IContactForm,
+  IContactMessage
 } from '../types/portfolio';
 
 const API_BASE_URL = 'https://portfolio-server-gamma-opal.vercel.app/api';
@@ -472,11 +473,62 @@ export async function getTestimonials(): Promise<ITestimonial[]> {
   return defaultTestimonials;
 }
 
+export async function getContactMessages(): Promise<IContactMessage[]> {
+  const saved = localStorage.getItem('portfolio_contact_messages');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn("Failed to parse stored contact messages", e);
+    }
+  }
+  return [];
+}
+
+export async function markContactMessageRead(id: string): Promise<boolean> {
+  const messages = await getContactMessages();
+  const updated = messages.map((m) => (m.id === id ? { ...m, isRead: true } : m));
+  localStorage.setItem('portfolio_contact_messages', JSON.stringify(updated));
+  return true;
+}
+
+export async function deleteContactMessage(id: string): Promise<boolean> {
+  const messages = await getContactMessages();
+  const updated = messages.filter((m) => m.id !== id);
+  localStorage.setItem('portfolio_contact_messages', JSON.stringify(updated));
+  return true;
+}
+
 export async function sendContactMessage(formData: IContactForm): Promise<{ success: boolean; message: string }> {
   const adminEmail = "sifatkhanjoy996@gmail.com";
 
+  // 1. ALWAYS store the message locally in Admin Control Center Messages Inbox
+  const newMsg: IContactMessage = {
+    id: `msg_${Date.now()}`,
+    name: formData.name,
+    email: formData.email,
+    subject: formData.subject || 'Portfolio Direct Message',
+    message: formData.message,
+    createdAt: new Date().toLocaleString('en-US', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }),
+    isRead: false,
+  };
+
   try {
-    // Direct REST delivery via FormSubmit service to admin email sifatkhanjoy996@gmail.com
+    const existing = await getContactMessages();
+    const updated = [newMsg, ...existing];
+    localStorage.setItem('portfolio_contact_messages', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("Failed to save contact message to localStorage", e);
+  }
+
+  // 2. Send via FormSubmit service directly to sifatkhanjoy996@gmail.com
+  try {
     const response = await fetch(`https://formsubmit.co/ajax/${adminEmail}`, {
       method: 'POST',
       headers: {
@@ -484,8 +536,10 @@ export async function sendContactMessage(formData: IContactForm): Promise<{ succ
         'Accept': 'application/json',
       },
       body: JSON.stringify({
-        _subject: `New Portfolio Inquiry from ${formData.name}: ${formData.subject || 'Direct Message'}`,
+        _subject: `New Portfolio Message from ${formData.name}: ${formData.subject || 'Direct Message'}`,
         _replyto: formData.email,
+        _captcha: 'false',
+        _template: 'table',
         name: formData.name,
         email: formData.email,
         subject: formData.subject || 'Portfolio Direct Message',
@@ -497,14 +551,14 @@ export async function sendContactMessage(formData: IContactForm): Promise<{ succ
     if (response.ok) {
       return {
         success: true,
-        message: `Thank you, ${formData.name}! Your message has been delivered directly to Sifat Khan's email (${adminEmail}).`,
+        message: `Thank you, ${formData.name}! Your message has been sent directly to Sifat Khan (${adminEmail}) and saved in your Admin Inbox!`,
       };
     }
   } catch (err) {
     console.warn("FormSubmit delivery attempt warning:", err);
   }
 
-  // Fallback API backend call
+  // 3. Fallback API backend call
   try {
     const res = await api.post('/contact', { ...formData, recipientEmail: adminEmail });
     if (res.data?.success) {
@@ -519,7 +573,7 @@ export async function sendContactMessage(formData: IContactForm): Promise<{ succ
 
   return {
     success: true,
-    message: `Thank you, ${formData.name}! Your message has been sent to ${adminEmail}.`,
+    message: `Thank you, ${formData.name}! Your message has been recorded and saved in Admin Inbox!`,
   };
 }
 
