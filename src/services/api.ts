@@ -32,8 +32,8 @@ export const defaultPersonal: IPersonalProfile = {
   resumeUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
   github: "https://github.com/Sifat221",
   portfolio: "https://sifat221.github.io/SifatKhan-portfolio/",
-  profilePhoto: "/Profile.JPG",
-  bannerPhoto: "/banner3.webp",
+  profilePhoto: "/BannerProfile.JPG",
+  bannerPhoto: "/BannerProfile.JPG",
   linkedin: "https://www.linkedin.com/in/sifat-khan-540a86351/",
   facebook: "https://facebook.com/sifatk4an.joy"
 };
