@@ -11,8 +11,8 @@ const VALID_ADMIN_EMAILS = ['sifatkhanjoy996@gmail.com'];
 const EXACT_ADMIN_PASSWORD = '@221_15_5869#$#';
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
-  const [email, setEmail] = useState('sifatkhanjoy996@gmail.com');
-  const [password, setPassword] = useState('@221_15_5869#$#');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,12 +70,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
         setIsSubmitting(false);
       }
     }, 300);
-  };
-
-  const handleAutoFillDemo = () => {
-    setEmail('sifatkhanjoy996@gmail.com');
-    setPassword('@221_15_5869#$#');
-    setError('');
   };
 
   return (
@@ -166,7 +160,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} autoComplete="off" className="space-y-5">
             {/* Email Input Field */}
             <div className="space-y-2">
               <label htmlFor="admin-email-input" className="block text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">
@@ -178,11 +172,13 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
                   id="admin-email-input"
                   type="email"
                   value={email}
+                  autoComplete="off"
+                  spellCheck={false}
                   onChange={(e) => {
                     setEmail(e.target.value);
                     if (error) setError('');
                   }}
-                  placeholder="admin@portfolio.com"
+                  placeholder="Enter admin email..."
                   className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white text-sm placeholder-slate-500 focus:border-[#9B8FCD] focus:ring-2 focus:ring-[#9B8FCD]/20 outline-none transition-all"
                   required
                 />
@@ -195,14 +191,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
                 <label htmlFor="admin-password-input" className="block text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">
                   Password
                 </label>
-                <button
-                  type="button"
-                  onClick={handleAutoFillDemo}
-                  className="text-[11px] font-mono text-[#9B8FCD] hover:underline flex items-center gap-1"
-                >
-                  <KeyRound className="w-3 h-3" />
-                  <span>Auto-fill Demo</span>
-                </button>
               </div>
 
               <div className="relative">
@@ -211,14 +199,15 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
                   id="admin-password-input"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
+                  autoComplete="new-password"
+                  spellCheck={false}
                   onChange={(e) => {
                     setPassword(e.target.value);
                     if (error) setError('');
                   }}
-                  placeholder="Enter password"
+                  placeholder="Enter secret password..."
                   className="w-full pl-11 pr-12 py-3.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white text-sm placeholder-slate-500 focus:border-[#9B8FCD] focus:ring-2 focus:ring-[#9B8FCD]/20 outline-none transition-all"
                   required
-                  autoFocus
                 />
                 <button
                   type="button"
