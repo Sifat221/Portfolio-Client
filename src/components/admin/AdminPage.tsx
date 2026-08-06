@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { AdminLogin } from './AdminLogin';
 import { AdminDashboard } from './AdminDashboard';
+import { IPersonalProfile } from '../../types/portfolio';
 import {
   usePersonalProfile,
   useProjects,
@@ -43,7 +44,10 @@ export const AdminPage: React.FC = () => {
   const { data: galleryPhotos = defaultGalleryPhotos } = useGalleryPhotos();
   const { data: contactMessages = [] } = useContactMessages();
 
-  const handleRefreshData = () => {
+  const handleRefreshData = (updatedProfile?: IPersonalProfile) => {
+    if (updatedProfile) {
+      queryClient.setQueryData(['personalProfile'], updatedProfile);
+    }
     queryClient.invalidateQueries();
   };
 

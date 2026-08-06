@@ -1,6 +1,6 @@
 import React, { useCallback, useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
-import './StaggeredMenu.css';
+import '../styles/StaggeredMenu.css';
 
 export interface StaggeredMenuItem {
   label: string;

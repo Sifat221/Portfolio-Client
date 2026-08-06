@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
-import './ProfileCard.css';
+import '../styles/ProfileCard.css';
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg, #2D1F47 0%, #090D16 100%)';
 

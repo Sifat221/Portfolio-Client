@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
-import './ChromaGrid.css';
+import '../styles/ChromaGrid.css';
 
 export interface ChromaItem {
   image: string;

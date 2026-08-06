@@ -203,7 +203,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                 <div className="min-w-0 flex-1">
                   <p className="text-[11px] text-slate-400 font-mono">WhatsApp Direct Chat</p>
                   <p className="text-xs sm:text-sm font-bold text-white group-hover:text-emerald-400 transition-colors truncate">
-                    +880 1313-997323
+                    {personal.phone || "+880 1313-997323"}
                   </p>
                 </div>
               </a>

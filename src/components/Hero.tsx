@@ -9,6 +9,66 @@ interface HeroProps {
   personal: IPersonalProfile;
 }
 
+const TypewriterHeadline: React.FC<{ name: string }> = ({ name }) => {
+  const prefix = "Hi, I'm ";
+  const fullName = name || "Sifat Khan";
+  const fullText = prefix + fullName;
+
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    let timer: any;
+
+    if (!isDeleting && charIndex < fullText.length) {
+      timer = setTimeout(() => {
+        setCharIndex((prev) => prev + 1);
+      }, 75);
+    } else if (!isDeleting && charIndex === fullText.length) {
+      timer = setTimeout(() => {
+        setIsDeleting(true);
+      }, 2500);
+    } else if (isDeleting && charIndex > 0) {
+      timer = setTimeout(() => {
+        setCharIndex((prev) => prev - 1);
+      }, 45);
+    } else if (isDeleting && charIndex === 0) {
+      timer = setTimeout(() => {
+        setIsDeleting(false);
+      }, 500);
+    }
+
+    return () => clearTimeout(timer);
+  }, [charIndex, isDeleting, fullText]);
+
+  const currentTypedText = fullText.slice(0, charIndex);
+
+  let prefixText = '';
+  let nameText = '';
+
+  if (currentTypedText.length <= prefix.length) {
+    prefixText = currentTypedText;
+  } else {
+    prefixText = prefix;
+    nameText = currentTypedText.slice(prefix.length);
+  }
+
+  return (
+    <motion.h1
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.15 }}
+      className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white flex items-center flex-wrap gap-x-3 gap-y-1 min-h-[52px] sm:min-h-[64px] lg:min-h-[76px]"
+    >
+      <span className="text-white font-serif whitespace-nowrap">{prefixText}</span>
+      <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-cyan-300 font-extrabold whitespace-nowrap">
+        {nameText}
+      </span>
+      <span className="inline-block w-1 h-8 sm:h-10 lg:h-12 bg-cyan-400 rounded-full animate-pulse align-middle shadow-lg shadow-cyan-400/50 shrink-0 ml-0.5" />
+    </motion.h1>
+  );
+};
+
 export const Hero: React.FC<HeroProps> = ({ personal }) => {
   const totalBanners = 3;
   const BANNER_DURATION = 30; // 30 seconds single banner duration
@@ -261,16 +321,19 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
               </span>
-              <span>Available for Remote & Full-time Roles</span>
+              <span>{personal.availability || "Available for Full-time Roles & Contracts"}</span>
             </motion.div>
 
             {/* Main Headline */}
             <div className="space-y-4">
+              {/* Animated Looping Typewriter Intro Name Headline */}
+              <TypewriterHeadline name={personal.name} />
+
               <SplitText
                 text="Let's Work Together to Create Mobile Wonders with Us"
                 highlightText="Mobile Wonders"
                 highlightClass="text-blue-500"
-                className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight"
+                className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.15] tracking-tight"
                 delay={40}
                 duration={1.25}
                 ease="power3.out"
@@ -288,7 +351,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal"
               >
-                A visionary Flutter & Mobile Application Developer, crafting captivating mobile experiences through art and clean code. Adept at turning imagination into extraordinary digital reality.
+                {personal.bio || "Motivated and detail-oriented Flutter Developer with strong skills in building beautiful, fast, and scalable mobile applications. Passionate about clean UI, responsive design, and backend API integration. Always eager to learn new technologies and contribute to real-world software solutions."}
               </motion.p>
             </div>
 

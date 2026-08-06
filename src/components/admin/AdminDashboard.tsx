@@ -16,6 +16,10 @@ import {
   Check,
   Sparkles,
   ShieldCheck,
+  Copy,
+  ExternalLink,
+  Send,
+  MessageSquare,
 } from 'lucide-react';
 import { IPersonalProfile, IProject, ISkill, IExperience, IEducation, ICertification, IAchievement, IGalleryPhoto, IContactMessage } from '../../types/portfolio';
 import { ProfileEditor } from './ProfileEditor';
@@ -44,7 +48,7 @@ interface AdminDashboardProps {
   contactMessages?: IContactMessage[];
   onClose: () => void;
   onLogout: () => void;
-  onRefreshData?: () => void;
+  onRefreshData?: (updatedProfile?: IPersonalProfile) => void;
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
@@ -76,6 +80,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   });
 
   const [toast, setToast] = useState<string | null>(null);
+
+  // Quick Reply Modal State
+  const [replyModalMsg, setReplyModalMsg] = useState<IContactMessage | null>(null);
+  const [replyText, setReplyText] = useState<string>('');
+
+  const handleOpenReplyModal = (msg: IContactMessage) => {
+    setReplyModalMsg(msg);
+    setReplyText(
+      `Hi ${msg.name},\n\nThank you for reaching out! I received your message regarding "${msg.subject || 'your inquiry'}" and would be happy to connect.\n\nBest regards,\nSifat Khan`
+    );
+  };
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -353,7 +368,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   personal={personal}
                   onSave={(updated) => {
                     showToast('Profile updated!');
-                    onRefreshData?.();
+                    onRefreshData?.(updated);
                   }}
                 />
               </div>
@@ -421,7 +436,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           {msg.message}
                         </p>
 
-                        <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-800/80">
+                        <div className="flex flex-wrap items-center justify-end gap-2.5 pt-3 border-t border-slate-800/80">
                           {!msg.isRead && (
                             <button
                               onClick={async () => {
@@ -435,13 +450,45 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                               <span>Mark Read</span>
                             </button>
                           )}
+
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(msg.email);
+                              showToast(`Copied ${msg.email} to clipboard!`);
+                            }}
+                            className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800/80 border border-slate-700/80 hover:bg-slate-700/80 hover:text-white transition-all flex items-center gap-1.5"
+                            title="Copy Email Address"
+                          >
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>Copy Email</span>
+                          </button>
+
                           <a
-                            href={`mailto:${msg.email}?subject=Re: ${encodeURIComponent(msg.subject || 'Portfolio Direct Message')}`}
-                            className="px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#9B8FCD] to-indigo-600 hover:scale-105 transition-all flex items-center gap-1.5 shadow-md"
+                            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(msg.email)}&su=${encodeURIComponent(`Re: ${msg.subject || 'Portfolio Direct Message'}`)}&body=${encodeURIComponent(`Hi ${msg.name},\n\n\n\n-------------------------\nOriginal Message from ${msg.name} (${msg.createdAt}):\n${msg.message}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={async () => {
+                              if (!msg.isRead) {
+                                await markContactMessageRead(msg.id);
+                                onRefreshData?.();
+                              }
+                              showToast(`Opening Gmail composer for ${msg.name}...`);
+                            }}
+                            className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-red-500 via-rose-600 to-indigo-600 hover:scale-105 transition-all flex items-center gap-1.5 shadow-md"
                           >
                             <Mail className="w-3.5 h-3.5" />
-                            <span>Reply via Email</span>
+                            <span>Reply via Gmail</span>
+                            <ExternalLink className="w-3 h-3 opacity-80" />
                           </a>
+
+                          <button
+                            onClick={() => handleOpenReplyModal(msg)}
+                            className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#9B8FCD] to-indigo-600 hover:scale-105 transition-all flex items-center gap-1.5 shadow-md"
+                          >
+                            <Send className="w-3.5 h-3.5" />
+                            <span>Quick Reply Modal</span>
+                          </button>
+
                           <button
                             onClick={async () => {
                               if (!window.confirm('Delete this message?')) return;
@@ -535,6 +582,149 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           onClose={() => setModalState({ ...modalState, isOpen: false })}
           onSave={handleSaveModalItem}
         />
+      )}
+
+      {/* Quick Reply Modal */}
+      {replyModalMsg && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+          <div className="w-full max-w-2xl bg-[#0D1322] border border-[#9B8FCD]/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 relative overflow-hidden text-slate-100 max-h-[90vh] overflow-y-auto">
+            {/* Glow background accent */}
+            <div className="absolute -top-24 -right-24 w-60 h-60 bg-[#9B8FCD]/15 rounded-full blur-3xl pointer-events-none" />
+
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-white flex items-center gap-2 font-mono">
+                  <Mail className="w-5 h-5 text-[#9B8FCD]" /> Reply to {replyModalMsg.name}
+                </h3>
+                <p className="text-xs text-[#9B8FCD] font-mono mt-0.5">{replyModalMsg.email}</p>
+              </div>
+              <button
+                onClick={() => setReplyModalMsg(null)}
+                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Original Message Quote Box */}
+            <div className="bg-slate-950/80 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+              <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                <span>Subject: {replyModalMsg.subject || 'Portfolio Direct Message'}</span>
+                <span>{replyModalMsg.createdAt}</span>
+              </div>
+              <p className="text-xs text-slate-300 line-clamp-3 italic">
+                "{replyModalMsg.message}"
+              </p>
+            </div>
+
+            {/* Reply Message Editor */}
+            <div className="space-y-2">
+              <label className="block text-xs font-mono font-bold text-slate-300">
+                Your Response Draft:
+              </label>
+              <textarea
+                rows={5}
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                className="w-full bg-slate-900 border border-slate-700 focus:border-[#9B8FCD] rounded-2xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#9B8FCD]/30 transition-all font-sans leading-relaxed"
+                placeholder="Write your email reply here..."
+              />
+            </div>
+
+            {/* Quick Template Chips */}
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-mono text-slate-400">Quick Reply Templates:</span>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setReplyText(`Hi ${replyModalMsg.name},\n\nThank you for reaching out! I reviewed your message regarding "${replyModalMsg.subject || 'your inquiry'}" and would be delighted to connect.\n\nBest regards,\nSifat Khan`)
+                  }
+                  className="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-indigo-900/50 transition-all"
+                >
+                  💬 General Reply
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setReplyText(`Hi ${replyModalMsg.name},\n\nThank you for your application and interest in working together! I am available for project opportunities and mobile app development. Let's schedule a call.\n\nBest regards,\nSifat Khan`)
+                  }
+                  className="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-900/50 transition-all"
+                >
+                  💼 Job / Collaboration
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setReplyText(`Hi ${replyModalMsg.name},\n\nThank you for reaching out! I have received your message and will review the details shortly.\n\nBest regards,\nSifat Khan`)
+                  }
+                  className="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-900/50 transition-all"
+                >
+                  🚀 Quick Confirmation
+                </button>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(`To: ${replyModalMsg.email}\nSubject: Re: ${replyModalMsg.subject || 'Portfolio Direct Message'}\n\n${replyText}`);
+                  showToast('Copied reply text to clipboard!');
+                }}
+                className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center gap-1.5 transition-all"
+              >
+                <Copy className="w-3.5 h-3.5" />
+                <span>Copy Reply Text</span>
+              </button>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const subject = `Re: ${replyModalMsg.subject || 'Portfolio Direct Message'}`;
+                    const body = `${replyText}\n\n-------------------------\nOriginal Message:\n${replyModalMsg.message}`;
+                    window.location.href = `mailto:${replyModalMsg.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                    if (!replyModalMsg.isRead) {
+                      markContactMessageRead(replyModalMsg.id);
+                      onRefreshData?.();
+                    }
+                    showToast('Opened system mail app!');
+                    setReplyModalMsg(null);
+                  }}
+                  className="px-3.5 py-2 rounded-xl text-xs font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-800/80 hover:bg-indigo-900 flex items-center gap-1.5 transition-all"
+                  title="Open system default mail app"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>System Mail</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const subject = `Re: ${replyModalMsg.subject || 'Portfolio Direct Message'}`;
+                    const body = `${replyText}\n\n-------------------------\nOriginal Message from ${replyModalMsg.name}:\n${replyModalMsg.message}`;
+                    const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(replyModalMsg.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                    if (!replyModalMsg.isRead) {
+                      await markContactMessageRead(replyModalMsg.id);
+                      onRefreshData?.();
+                    }
+                    showToast(`Opened Gmail composer for ${replyModalMsg.name}!`);
+                    setReplyModalMsg(null);
+                  }}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-red-500 via-rose-600 to-indigo-600 hover:scale-105 shadow-md flex items-center gap-2 transition-all"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Open in Gmail Web</span>
+                  <ExternalLink className="w-3 h-3 opacity-80" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

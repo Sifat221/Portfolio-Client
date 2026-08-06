@@ -26,12 +26,12 @@ const api = axios.create({
 export const defaultPersonal: IPersonalProfile = {
   name: "Sifat Khan",
   title: "Flutter & Mobile Application Developer",
-  bio: "Flutter Developer specializing in Clean Architecture, BLoC/GetX state management, and seamless REST/Firebase backend integration.",
-  location: "Dhaka, Bangladesh",
-  availability: "Available for Remote & Full-time Roles",
+  bio: "Motivated and detail-oriented Flutter Developer with strong skills in building beautiful, fast, and scalable mobile applications. Passionate about clean UI, responsive design, and backend API integration. Always eager to learn new technologies and contribute to real-world software solutions.",
+  location: "Mirpur, Dhaka, Bangladesh",
+  availability: "Available for Full-time Roles & Contracts",
   email: "sifatkhanjoy996@gmail.com",
   phone: "01313997323",
-  resumeUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
+  resumeUrl: "/assets/resume/Sifat_Khan_CV.pdf",
   github: "https://github.com/Sifat221",
   portfolio: "https://sifat221.github.io/SifatKhan-portfolio/",
   profilePhoto: "/Profile.jpg",
@@ -329,6 +329,51 @@ export const defaultGalleryPhotos: IGalleryPhoto[] = [
 
 let inMemoryPersonalProfile: IPersonalProfile | null = null;
 
+// IndexedDB Persistent Backup Engine for large assets & profile data
+const IDB_NAME = 'PortfolioDB';
+const IDB_STORE = 'PersonalProfile';
+
+function openIDB(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    if (typeof window === 'undefined' || !window.indexedDB) {
+      return reject('IndexedDB not supported');
+    }
+    const request = window.indexedDB.open(IDB_NAME, 1);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(IDB_STORE)) {
+        db.createObjectStore(IDB_STORE);
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+export async function saveProfileToIDB(data: IPersonalProfile): Promise<void> {
+  try {
+    const db = await openIDB();
+    const tx = db.transaction(IDB_STORE, 'readwrite');
+    tx.objectStore(IDB_STORE).put(data, 'current_profile');
+  } catch (e) {
+    console.warn("IndexedDB save error:", e);
+  }
+}
+
+export async function loadProfileFromIDB(): Promise<IPersonalProfile | null> {
+  try {
+    const db = await openIDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(IDB_STORE, 'readonly');
+      const req = tx.objectStore(IDB_STORE).get('current_profile');
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => resolve(null);
+    });
+  } catch {
+    return null;
+  }
+}
+
 // API Functions with automatic fallback
 export async function getPersonalProfile(): Promise<IPersonalProfile> {
   let localSaved: Partial<IPersonalProfile> = {};
@@ -341,6 +386,8 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
     }
   }
 
+  const idbSaved = await loadProfileFromIDB();
+
   let serverData: Partial<IPersonalProfile> = {};
   try {
     const response = await api.get('/personal');
@@ -351,11 +398,12 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
     console.warn("API Call /personal fallback active:", err);
   }
 
-  // Combine: defaultPersonal < serverData < localSaved < inMemoryPersonalProfile
+  // Priority order: defaultPersonal < serverData < localSaved < idbSaved < inMemoryPersonalProfile
   const combined = {
     ...defaultPersonal,
     ...serverData,
     ...localSaved,
+    ...(idbSaved || {}),
     ...(inMemoryPersonalProfile || {}),
   };
 
@@ -769,11 +817,14 @@ export async function updatePersonalProfile(data: Partial<IPersonalProfile>): Pr
     console.warn("localStorage setItem error:", e);
   }
 
+  await saveProfileToIDB(updated);
+
   try {
     const response = await api.put('/personal', updated);
     if (response.data?.data) {
       const serverResult = { ...updated, ...response.data.data };
       inMemoryPersonalProfile = serverResult;
+      await saveProfileToIDB(serverResult);
       return serverResult;
     }
   } catch (err) {
@@ -783,7 +834,7 @@ export async function updatePersonalProfile(data: Partial<IPersonalProfile>): Pr
 }
 
 // Image compression helper for persistent offline storage without localStorage quota errors
-async function compressImageFile(file: File, maxWidth = 600, maxHeight = 600, quality = 0.75): Promise<string> {
+async function compressImageFile(file: File, maxWidth = 400, maxHeight = 400, quality = 0.65): Promise<string> {
   return new Promise((resolve) => {
     if (!file.type.startsWith('image/')) {
       const reader = new FileReader();

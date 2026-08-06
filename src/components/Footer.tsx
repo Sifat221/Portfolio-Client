@@ -41,21 +41,21 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
             </div>
 
             <p className="text-xs text-slate-400 max-w-md leading-relaxed">
-              Motivated & detail-oriented Flutter Developer specializing in Clean Architecture, BLoC/GetX state management, REST APIs, and Firebase backends.
+              {personal.bio}
             </p>
 
             <div className="space-y-1.5 pt-1 text-xs font-mono text-slate-400">
               <p className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-[#9B8FCD]" />
-                <span>sifatkhanjoy996@gmail.com</span>
+                <span>{personal.email}</span>
               </p>
               <p className="flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-[#9B8FCD]" />
-                <span>01313997323</span>
+                <span>{personal.phone}</span>
               </p>
               <p className="flex items-center gap-2">
                 <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Mirpur, Dhaka, Bangladesh</span>
+                <span>{personal.location}</span>
               </p>
             </div>
           </div>

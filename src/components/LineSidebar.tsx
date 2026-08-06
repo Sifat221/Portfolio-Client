@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import './LineSidebar.css';
+import '../styles/LineSidebar.css';
 
 const FALLOFF_CURVES = {
   linear: (p: number) => p,
