@@ -327,6 +327,7 @@ export const defaultGalleryPhotos: IGalleryPhoto[] = [
 ];
 
 let inMemoryPersonalProfile: IPersonalProfile | null = null;
+let inMemoryEducation: IEducation[] | null = null;
 
 // IndexedDB Persistent Backup Engine for large assets & profile data
 const IDB_NAME = 'PortfolioDB';
@@ -501,11 +502,16 @@ export async function getExperience(): Promise<IExperience[]> {
 }
 
 export async function getEducation(): Promise<IEducation[]> {
+  if (inMemoryEducation && inMemoryEducation.length > 0) {
+    return inMemoryEducation;
+  }
+
   const saved = localStorage.getItem('portfolio_education');
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed) && parsed.length > 0) {
+        inMemoryEducation = parsed;
         return parsed;
       }
     } catch (e) {
@@ -515,6 +521,7 @@ export async function getEducation(): Promise<IEducation[]> {
 
   const idbSaved = await loadEducationFromIDB();
   if (idbSaved && Array.isArray(idbSaved) && idbSaved.length > 0) {
+    inMemoryEducation = idbSaved;
     try {
       localStorage.setItem('portfolio_education', JSON.stringify(idbSaved));
     } catch (e) {
@@ -787,6 +794,7 @@ export async function createEducation(data: Partial<IEducation>): Promise<IEduca
     relevantCourses: data.relevantCourses || [],
   };
   const updated = [newEdu, ...current];
+  inMemoryEducation = updated;
   try {
     localStorage.setItem('portfolio_education', JSON.stringify(updated));
   } catch (e) {
@@ -805,6 +813,7 @@ export async function createEducation(data: Partial<IEducation>): Promise<IEduca
 export async function updateEducation(id: string, data: Partial<IEducation>): Promise<IEducation> {
   const current = await getEducation();
   const updated = current.map((item) => (item.id === id ? { ...item, ...data } : item));
+  inMemoryEducation = updated;
   try {
     localStorage.setItem('portfolio_education', JSON.stringify(updated));
   } catch (e) {
@@ -824,6 +833,7 @@ export async function updateEducation(id: string, data: Partial<IEducation>): Pr
 export async function deleteEducation(id: string): Promise<boolean> {
   const current = await getEducation();
   const updated = current.filter((item) => item.id !== id);
+  inMemoryEducation = updated;
   try {
     localStorage.setItem('portfolio_education', JSON.stringify(updated));
   } catch (e) {

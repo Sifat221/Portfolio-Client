@@ -51,7 +51,7 @@ export function useEducation() {
   return useQuery({
     queryKey: ['education'],
     queryFn: getEducation,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 5, // 5 seconds for instant reactivity
   });
 }
 
