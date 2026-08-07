@@ -1012,6 +1012,11 @@ async function compressImageFile(file: File, maxWidth = 400, maxHeight = 400, qu
 
 // File Upload (Photo & CV)
 export async function uploadFile(file: File, type: 'photo' | 'resume'): Promise<{ url: string }> {
+  if (type === 'photo' || file.type.startsWith('image/')) {
+    const compressedUrl = await compressImageFile(file, 900, 900, 0.75);
+    return { url: compressedUrl };
+  }
+
   try {
     const formData = new FormData();
     formData.append('file', file);
@@ -1020,13 +1025,16 @@ export async function uploadFile(file: File, type: 'photo' | 'resume'): Promise<
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     if (response.data?.data?.url || response.data?.url) {
-      return { url: response.data?.data?.url || response.data?.url };
+      const serverUrl = response.data?.data?.url || response.data?.url;
+      if (serverUrl.startsWith('http') || serverUrl.startsWith('data:')) {
+        return { url: serverUrl };
+      }
     }
   } catch (err) {
     console.warn("API POST /upload error:", err);
   }
 
   // Fallback to compressed Base64 Data URL for persistent offline storage
-  const compressedUrl = await compressImageFile(file);
+  const compressedUrl = await compressImageFile(file, 900, 900, 0.75);
   return { url: compressedUrl };
 }

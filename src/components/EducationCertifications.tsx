@@ -78,7 +78,7 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
           </div>
 
           {education.map((edu, index) => {
-            const imageUrl = edu.imageUrl || universityPhotos[0]?.url || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200";
+            const imageUrl = (edu.imageUrl && edu.imageUrl.trim() !== '') ? edu.imageUrl : "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200";
             return (
               <motion.div
                 key={edu.id || index}
