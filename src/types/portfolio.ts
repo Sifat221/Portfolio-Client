@@ -56,6 +56,8 @@ export interface IEducation {
   institution: string;
   location?: string;
   timeline: string;
+  description?: string;
+  imageUrl?: string;
   relevantCourses?: string[];
 }
 

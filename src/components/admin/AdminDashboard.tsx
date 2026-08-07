@@ -221,10 +221,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         return {
           title: modalState.item ? 'Edit Education' : 'Add New Education',
           fields: [
-            { key: 'degree', label: 'Degree Name', type: 'text' as const, required: true },
             { key: 'institution', label: 'Institution Name', type: 'text' as const, required: true },
-            { key: 'timeline', label: 'Timeline', type: 'text' as const, required: true },
-            { key: 'relevantCourses', label: 'Relevant Courses (comma separated)', type: 'array' as const },
+            { key: 'degree', label: 'Degree Name / Program', type: 'text' as const, required: true },
+            { key: 'location', label: 'Location (e.g. Dhaka, Bangladesh)', type: 'text' as const },
+            { key: 'timeline', label: 'Timeline (e.g. 2022 – 2026)', type: 'text' as const, required: true },
+            { key: 'description', label: 'Specialization / Academic Description', type: 'textarea' as const },
+            { key: 'imageUrl', label: 'Campus / Graduation Photo (Upload Image or Paste URL)', type: 'image' as const },
+            { key: 'relevantCourses', label: 'Core Engineering Coursework (comma separated)', type: 'array' as const },
           ],
         };
       case 'certifications':

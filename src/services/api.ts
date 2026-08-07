@@ -202,23 +202,22 @@ export const defaultExperience: IExperience[] = [
 export const defaultEducation: IEducation[] = [
   {
     id: "edu_1",
-    degree: "B.Sc. in Computer Science and Engineering",
+    degree: "Bachelor of Science in Computer Science & Engineering",
     institution: "Daffodil International University",
-    timeline: "01/2022 – 12/2025",
+    location: "Dhaka, Bangladesh",
+    timeline: "2022 – 2026",
+    description: "Specialized in Mobile Application Engineering (Flutter), Clean Architecture, Distributed Systems, Artificial Intelligence, and Machine Learning algorithms. Maintained consistent academic excellence while leading software engineering initiatives.",
+    imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200",
     relevantCourses: [
-      "Object Oriented Programming (Java/Dart)",
-      "Data Structures & Algorithms",
-      "Software Engineering & Clean Architecture",
-      "Database Systems",
+      "Data Structures",
+      "Algorithms",
+      "Database Management Systems",
+      "Software Engineering",
+      "AI & Machine Learning",
+      "Operating Systems",
+      "Web Engineering",
       "Mobile Application Development (Flutter)"
     ]
-  },
-  {
-    id: "edu_2",
-    degree: "Higher Secondary Certification (HSC)",
-    institution: "Ibrahim Khan Govt. College",
-    timeline: "Completed",
-    relevantCourses: ["Science Stream", "Physics", "Chemistry", "Higher Mathematics"]
   }
 ];
 
@@ -474,9 +473,22 @@ export async function getExperience(): Promise<IExperience[]> {
 }
 
 export async function getEducation(): Promise<IEducation[]> {
+  const saved = localStorage.getItem('portfolio_education');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn("Failed to parse stored education data", e);
+    }
+  }
+
   try {
     const response = await api.get('/education');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
+      localStorage.setItem('portfolio_education', JSON.stringify(response.data.data));
       return response.data.data;
     }
   } catch (err) {
@@ -723,9 +735,66 @@ export const updateExperience = (id: string, data: Partial<IExperience>) => upda
 export const deleteExperience = (id: string) => deleteEntity('/experience', id);
 
 // Education CRUD
-export const createEducation = (data: Partial<IEducation>) => createEntity<IEducation>('/education', data);
-export const updateEducation = (id: string, data: Partial<IEducation>) => updateEntity<IEducation>('/education', id, data);
-export const deleteEducation = (id: string) => deleteEntity('/education', id);
+export async function createEducation(data: Partial<IEducation>): Promise<IEducation> {
+  const current = await getEducation();
+  const newEdu: IEducation = {
+    id: data.id || `edu_${Date.now()}`,
+    degree: data.degree || 'New Degree Program',
+    institution: data.institution || 'University Name',
+    location: data.location || '',
+    timeline: data.timeline || '2022 – 2026',
+    description: data.description || '',
+    imageUrl: data.imageUrl || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200',
+    relevantCourses: data.relevantCourses || [],
+  };
+  const updated = [newEdu, ...current];
+  try {
+    localStorage.setItem('portfolio_education', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await createEntity<IEducation>('/education', data);
+    return res;
+  } catch (e) {
+    console.warn("Backend /education error:", e);
+  }
+  return newEdu;
+}
+
+export async function updateEducation(id: string, data: Partial<IEducation>): Promise<IEducation> {
+  const current = await getEducation();
+  const updated = current.map((item) => (item.id === id ? { ...item, ...data } : item));
+  try {
+    localStorage.setItem('portfolio_education', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await updateEntity<IEducation>('/education', id, data);
+    return res;
+  } catch (e) {
+    console.warn("Backend /education error:", e);
+  }
+  const found = updated.find((item) => item.id === id);
+  return found || (data as IEducation);
+}
+
+export async function deleteEducation(id: string): Promise<boolean> {
+  const current = await getEducation();
+  const updated = current.filter((item) => item.id !== id);
+  try {
+    localStorage.setItem('portfolio_education', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    await deleteEntity('/education', id);
+  } catch (e) {
+    console.warn("Backend /education delete error:", e);
+  }
+  return true;
+}
 
 // Certifications CRUD
 export const createCertification = (data: Partial<ICertification>) => createEntity<ICertification>('/certifications', data);
