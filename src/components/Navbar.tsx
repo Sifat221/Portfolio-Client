@@ -40,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between">
-          {/* Logo with Profile Avatar */}
+          {/* Logo with Profile Avatar & Subtitle */}
           <a href="#" className="flex items-center gap-3 group" aria-label={`${personal.name} Home`}>
             <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-[#9B8FCD]/60 shadow-md group-hover:scale-105 transition-transform duration-200 shrink-0 bg-slate-900">
               <img
@@ -53,9 +53,14 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <span className="text-xl sm:text-2xl font-extrabold text-white tracking-tight group-hover:scale-105 transition-transform duration-200">
-              {personal.name}<span className="text-[#9B8FCD] animate-pulse">.</span>
-            </span>
+            <div className="flex flex-col justify-center group-hover:scale-105 transition-transform duration-200 leading-tight">
+              <span className="text-lg sm:text-xl font-extrabold text-white tracking-tight flex items-center">
+                {personal.name}<span className="text-[#9B8FCD] animate-pulse">.</span>
+              </span>
+              <span className="text-[11px] sm:text-xs font-semibold text-[#9B8FCD] tracking-wide mt-0.5">
+                {personal.title || "Flutter & AI Engineer"}
+              </span>
+            </div>
           </a>
 
           {/* Center GooeyNav Navigation */}

@@ -25,7 +25,7 @@ const api = axios.create({
 
 export const defaultPersonal: IPersonalProfile = {
   name: "Sifat Khan",
-  title: "Flutter & Mobile Application Developer",
+  title: "Flutter & AI Engineer",
   bio: "Motivated and detail-oriented Flutter Developer with strong skills in building beautiful, fast, and scalable mobile applications. Passionate about clean UI, responsive design, and backend API integration. Always eager to learn new technologies and contribute to real-world software solutions.",
   location: "Mirpur, Dhaka, Bangladesh",
   availability: "Available for Full-time Roles & Contracts",

@@ -410,9 +410,14 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
               height={24}
             />
           ) : (
-            <span className="text-xl font-extrabold text-white tracking-tight font-mono">
-              Sifat<span className="text-[#9B8FCD]">.</span>
-            </span>
+            <div className="flex flex-col justify-center leading-tight">
+              <span className="text-base sm:text-lg font-extrabold text-white tracking-tight">
+                Sifat Khan<span className="text-[#9B8FCD]">.</span>
+              </span>
+              <span className="text-[10px] font-semibold text-[#9B8FCD] tracking-wide">
+                Flutter & AI Engineer
+              </span>
+            </div>
           )}
         </div>
         <button
