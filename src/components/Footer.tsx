@@ -44,6 +44,17 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
               {personal.bio}
             </p>
 
+            {/* Availability / Role Status Pill (Matching 2nd Picture Style) */}
+            <div className="pt-1">
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-950/30 border border-emerald-500/35 text-emerald-400 text-xs font-mono font-semibold shadow-lg shadow-emerald-950/30 hover:border-emerald-400/60 transition-all">
+                <span className="relative flex h-2.5 w-2.5 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span>{personal.availability || "Open for Flutter & AI Roles"}</span>
+              </div>
+            </div>
+
             <div className="space-y-1.5 pt-1 text-xs font-mono text-slate-400">
               <p className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-[#9B8FCD]" />

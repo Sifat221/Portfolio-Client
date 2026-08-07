@@ -303,26 +303,13 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
       {/* ================= BALANCED & RICH LEFT SIDE CONTENT ================= */}
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-stretch">
-          {/* Left Side: Headline, Availability Pill, Core Focus Tags & Action Bar */}
+          {/* Left Side: Headline, Core Focus Tags & Action Bar */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="lg:col-span-6 flex flex-col justify-between space-y-8 text-center lg:text-left py-2"
           >
-            {/* Top Availability Status Pill */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass-panel border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold self-center lg:self-start shadow-lg shadow-emerald-950/20"
-            >
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-              </span>
-              <span>{personal.availability || "Available for Full-time Roles & Contracts"}</span>
-            </motion.div>
 
             {/* Main Headline */}
             <div className="space-y-4">
