@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, Award, BookOpen, ExternalLink, Calendar, MapPin, ChevronLeft, ChevronRight, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { GraduationCap, Award, BookOpen, ExternalLink, Calendar, MapPin, ChevronLeft, ChevronRight, Image as ImageIcon, Sparkles, ZoomIn, X } from 'lucide-react';
 import { IEducation, ICertification, IGalleryPhoto } from '../types/portfolio';
 import { defaultGalleryPhotos } from '../services/api';
 import SplitText from './SplitText';
@@ -18,6 +18,9 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
 }) => {
   const universityPhotos = (galleryPhotos && galleryPhotos.length > 0) ? galleryPhotos : defaultGalleryPhotos;
   const [currentPhotoIdx, setCurrentPhotoIdx] = useState(0);
+
+  // Lightbox Modal state for expanding campus image on click
+  const [activeModalImage, setActiveModalImage] = useState<{ url: string; title: string; subtitle: string } | null>(null);
 
   const handleNextPhoto = () => {
     setCurrentPhotoIdx((prev) => (prev + 1) % universityPhotos.length);
@@ -67,96 +70,110 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
           </p>
         </div>
 
-        {/* 1. ACADEMIC DEGREE CARDS (Exact Layout of Image 2) */}
+        {/* 1. ACADEMIC DEGREE CARDS (Exact Layout of Image 1 & 2) */}
         <div className="space-y-10">
           <div className="flex items-center gap-2 text-[#9B8FCD] font-mono text-xs font-bold uppercase tracking-wider">
             <GraduationCap className="w-4.5 h-4.5" />
             <span>Academic Degree Program</span>
           </div>
 
-          {education.map((edu, index) => (
-            <motion.div
-              key={edu.id || index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-card p-6 sm:p-8 lg:p-10 rounded-3xl border border-slate-800/80 hover:border-[#9B8FCD]/50 transition-all duration-300 shadow-2xl relative overflow-hidden group"
-            >
-              {/* Background Blur Glow */}
-              <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-[#9B8FCD]/10 rounded-full blur-3xl pointer-events-none group-hover:bg-[#9B8FCD]/20 transition-all"></div>
+          {education.map((edu, index) => {
+            const imageUrl = edu.imageUrl || universityPhotos[0]?.url || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200";
+            return (
+              <motion.div
+                key={edu.id || index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="glass-card p-6 sm:p-8 lg:p-10 rounded-3xl border border-slate-800/80 hover:border-[#9B8FCD]/50 transition-all duration-300 shadow-2xl relative overflow-hidden group"
+              >
+                {/* Background Blur Glow */}
+                <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-[#9B8FCD]/10 rounded-full blur-3xl pointer-events-none group-hover:bg-[#9B8FCD]/20 transition-all"></div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
-                {/* Left Side: Program Details & Coursework (7 Cols) */}
-                <div className="lg:col-span-7 space-y-5">
-                  {/* Top Badges Row */}
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <span className="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold bg-indigo-950/60 text-indigo-300 border border-indigo-500/40 shadow-sm flex items-center gap-1.5">
-                      <GraduationCap className="w-3.5 h-3.5 text-indigo-400" />
-                      {edu.degree.includes('B.Sc') || edu.degree.includes('Bachelor') ? 'B.Sc. Degree Program' : 'Academic Program'}
-                    </span>
-                    <span className="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold bg-emerald-950/60 text-emerald-400 border border-emerald-500/40 shadow-sm flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-emerald-400" />
-                      {edu.timeline}
-                    </span>
-                  </div>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
+                  {/* Left Side: Program Details & Coursework (7 Cols) */}
+                  <div className="lg:col-span-7 space-y-5">
+                    {/* Top Badges Row */}
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <span className="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold bg-indigo-950/60 text-indigo-300 border border-indigo-500/40 shadow-sm flex items-center gap-1.5">
+                        <GraduationCap className="w-3.5 h-3.5 text-indigo-400" />
+                        {edu.degree.includes('B.Sc') || edu.degree.includes('Bachelor') ? 'B.Sc. Degree Program' : 'Academic Program'}
+                      </span>
+                      <span className="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold bg-emerald-950/60 text-emerald-400 border border-emerald-500/40 shadow-sm flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-emerald-400" />
+                        {edu.timeline}
+                      </span>
+                    </div>
 
-                  {/* Institution Title & Degree */}
-                  <div>
-                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight font-serif">
-                      {edu.institution}
-                    </h3>
-                    <p className="text-base sm:text-lg font-bold text-cyan-400 flex items-center gap-2 mt-1">
-                      {edu.degree}
-                    </p>
-                    {edu.location && (
-                      <p className="text-xs font-mono text-slate-400 flex items-center gap-1.5 mt-1.5">
-                        <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>{edu.location}</span>
+                    {/* Institution Title & Degree */}
+                    <div>
+                      <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight font-serif">
+                        {edu.institution}
+                      </h3>
+                      <p className="text-base sm:text-lg font-bold text-cyan-400 flex items-center gap-2 mt-1">
+                        {edu.degree}
                       </p>
+                      {edu.location && (
+                        <p className="text-xs font-mono text-slate-400 flex items-center gap-1.5 mt-1.5">
+                          <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+                          <span>{edu.location}</span>
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal max-w-2xl">
+                      {edu.description || "Specialized in Mobile Application Engineering (Flutter), Clean Architecture, Distributed Systems, Artificial Intelligence, and Machine Learning algorithms. Maintained consistent academic excellence while leading student software engineering initiatives."}
+                    </p>
+
+                    {/* Coursework Section */}
+                    {edu.relevantCourses && edu.relevantCourses.length > 0 && (
+                      <div className="pt-3 space-y-3">
+                        <p className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                          <BookOpen className="w-4 h-4 text-cyan-400" />
+                          CORE ENGINEERING COURSEWORK
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {edu.relevantCourses.map((course, i) => (
+                            <span
+                              key={i}
+                              className="px-3.5 py-1.5 rounded-xl text-xs font-mono bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-[#9B8FCD]/60 transition-colors shadow-sm"
+                            >
+                              {course}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
 
-                  {/* Description */}
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal max-w-2xl">
-                    {edu.description || "Specialized in Mobile Application Engineering (Flutter), Clean Architecture, Distributed Systems, Artificial Intelligence, and Machine Learning algorithms. Maintained consistent academic excellence while leading student software engineering initiatives."}
-                  </p>
+                  {/* Right Side: Clickable Campus / Degree Photo Box (Matching Image 1) */}
+                  <div className="lg:col-span-5 flex justify-center">
+                    <div
+                      onClick={() => setActiveModalImage({ url: imageUrl, title: edu.institution, subtitle: edu.degree })}
+                      className="relative w-full h-64 sm:h-72 lg:h-80 rounded-2xl overflow-hidden border-2 border-slate-700/80 shadow-2xl group-hover:border-cyan-400/80 transition-all bg-slate-900 shrink-0 cursor-pointer group/img"
+                    >
+                      <img
+                        src={imageUrl}
+                        alt={`${edu.institution} Campus Photo`}
+                        className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#090D16]/80 via-transparent to-transparent pointer-events-none"></div>
 
-                  {/* Coursework Section */}
-                  {edu.relevantCourses && edu.relevantCourses.length > 0 && (
-                    <div className="pt-3 space-y-3">
-                      <p className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
-                        <BookOpen className="w-4 h-4 text-cyan-400" />
-                        CORE ENGINEERING COURSEWORK
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {edu.relevantCourses.map((course, i) => (
-                          <span
-                            key={i}
-                            className="px-3.5 py-1.5 rounded-xl text-xs font-mono bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-[#9B8FCD]/60 transition-colors shadow-sm"
-                          >
-                            {course}
-                          </span>
-                        ))}
+                      {/* Image Click Badge Overlay (Matching Image 1) */}
+                      <div className="absolute bottom-3 left-3 z-10">
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#060913]/90 border border-cyan-500/40 text-cyan-300 text-[11px] font-mono font-semibold shadow-lg backdrop-blur-sm group-hover/img:border-cyan-400 group-hover/img:bg-cyan-950/80 transition-all">
+                          <ZoomIn className="w-3.5 h-3.5 text-cyan-400" />
+                          <span>Click to view campus image</span>
+                        </div>
                       </div>
                     </div>
-                  )}
-                </div>
-
-                {/* Right Side: Campus / Degree Photo Box (5 Cols - Matching Image 2) */}
-                <div className="lg:col-span-5 flex justify-center">
-                  <div className="relative w-full h-64 sm:h-72 lg:h-80 rounded-2xl overflow-hidden border-2 border-slate-700/80 shadow-2xl group-hover:border-[#9B8FCD]/60 transition-all bg-slate-900 shrink-0">
-                    <img
-                      src={edu.imageUrl || universityPhotos[0]?.url || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200"}
-                      alt={`${edu.institution} Campus Photo`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#090D16]/60 via-transparent to-transparent pointer-events-none"></div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* 2. VERIFIED CREDENTIALS & CERTIFICATES */}
@@ -252,7 +269,8 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
                 transition={{ duration: 0.35, ease: 'easeInOut' }}
-                className="relative w-full h-full"
+                className="relative w-full h-full cursor-pointer"
+                onClick={() => setActiveModalImage({ url: universityPhotos[currentPhotoIdx].url, title: universityPhotos[currentPhotoIdx].title, subtitle: 'University Campus Gallery' })}
               >
                 <img
                   src={universityPhotos[currentPhotoIdx].url}
@@ -290,6 +308,53 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
           </div>
         </div>
       </motion.div>
+
+      {/* 4. INTERACTIVE CAMPUS IMAGE LIGHTBOX MODAL (Exact Matching Image 2) */}
+      <AnimatePresence>
+        {activeModalImage && (
+          <div
+            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 lg:p-8"
+            onClick={() => setActiveModalImage(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-4xl bg-[#0B0F1C] border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              {/* Modal Header (Matching Image 2) */}
+              <div className="px-6 py-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-extrabold text-white tracking-tight font-serif">
+                    {activeModalImage.title}
+                  </h3>
+                  <p className="text-xs text-cyan-400 font-mono">
+                    {activeModalImage.subtitle} • Campus Life
+                  </p>
+                </div>
+                <button
+                  onClick={() => setActiveModalImage(null)}
+                  className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  aria-label="Close image popup"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Modal Body Image */}
+              <div className="p-3 sm:p-4 bg-[#060912] flex items-center justify-center overflow-hidden">
+                <img
+                  src={activeModalImage.url}
+                  alt={activeModalImage.title}
+                  className="max-w-full max-h-[72vh] object-contain rounded-2xl border border-slate-800 shadow-2xl"
+                />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
