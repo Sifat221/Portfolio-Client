@@ -407,6 +407,10 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
     ...(inMemoryPersonalProfile || {}),
   };
 
+  if (!combined.title || combined.title.includes('Flutter Developer') || combined.title.includes('Mobile Application')) {
+    combined.title = "Flutter & AI Engineer";
+  }
+
   try {
     localStorage.setItem('portfolio_personal_profile', JSON.stringify(combined));
   } catch (e) {
