@@ -331,17 +331,21 @@ let inMemoryPersonalProfile: IPersonalProfile | null = null;
 // IndexedDB Persistent Backup Engine for large assets & profile data
 const IDB_NAME = 'PortfolioDB';
 const IDB_STORE = 'PersonalProfile';
+const IDB_EDU_STORE = 'EducationData';
 
 function openIDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     if (typeof window === 'undefined' || !window.indexedDB) {
       return reject('IndexedDB not supported');
     }
-    const request = window.indexedDB.open(IDB_NAME, 1);
-    request.onupgradeneeded = () => {
+    const request = window.indexedDB.open(IDB_NAME, 2);
+    request.onupgradeneeded = (e: any) => {
       const db = request.result;
       if (!db.objectStoreNames.contains(IDB_STORE)) {
         db.createObjectStore(IDB_STORE);
+      }
+      if (!db.objectStoreNames.contains(IDB_EDU_STORE)) {
+        db.createObjectStore(IDB_EDU_STORE);
       }
     };
     request.onsuccess = () => resolve(request.result);
@@ -365,6 +369,30 @@ export async function loadProfileFromIDB(): Promise<IPersonalProfile | null> {
     return new Promise((resolve) => {
       const tx = db.transaction(IDB_STORE, 'readonly');
       const req = tx.objectStore(IDB_STORE).get('current_profile');
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => resolve(null);
+    });
+  } catch {
+    return null;
+  }
+}
+
+export async function saveEducationToIDB(data: IEducation[]): Promise<void> {
+  try {
+    const db = await openIDB();
+    const tx = db.transaction(IDB_EDU_STORE, 'readwrite');
+    tx.objectStore(IDB_EDU_STORE).put(data, 'education_list');
+  } catch (e) {
+    console.warn("IndexedDB save education error:", e);
+  }
+}
+
+export async function loadEducationFromIDB(): Promise<IEducation[] | null> {
+  try {
+    const db = await openIDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(IDB_EDU_STORE, 'readonly');
+      const req = tx.objectStore(IDB_EDU_STORE).get('education_list');
       req.onsuccess = () => resolve(req.result || null);
       req.onerror = () => resolve(null);
     });
@@ -485,10 +513,21 @@ export async function getEducation(): Promise<IEducation[]> {
     }
   }
 
+  const idbSaved = await loadEducationFromIDB();
+  if (idbSaved && Array.isArray(idbSaved) && idbSaved.length > 0) {
+    try {
+      localStorage.setItem('portfolio_education', JSON.stringify(idbSaved));
+    } catch (e) {
+      console.warn("localStorage sync quota warning:", e);
+    }
+    return idbSaved;
+  }
+
   try {
     const response = await api.get('/education');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
       localStorage.setItem('portfolio_education', JSON.stringify(response.data.data));
+      await saveEducationToIDB(response.data.data);
       return response.data.data;
     }
   } catch (err) {
@@ -753,9 +792,10 @@ export async function createEducation(data: Partial<IEducation>): Promise<IEduca
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveEducationToIDB(updated);
+
   try {
-    const res = await createEntity<IEducation>('/education', data);
-    return res;
+    await createEntity<IEducation>('/education', data);
   } catch (e) {
     console.warn("Backend /education error:", e);
   }
@@ -770,9 +810,10 @@ export async function updateEducation(id: string, data: Partial<IEducation>): Pr
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveEducationToIDB(updated);
+
   try {
-    const res = await updateEntity<IEducation>('/education', id, data);
-    return res;
+    await updateEntity<IEducation>('/education', id, data);
   } catch (e) {
     console.warn("Backend /education error:", e);
   }
@@ -788,6 +829,8 @@ export async function deleteEducation(id: string): Promise<boolean> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveEducationToIDB(updated);
+
   try {
     await deleteEntity('/education', id);
   } catch (e) {

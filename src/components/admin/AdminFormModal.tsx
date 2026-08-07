@@ -94,7 +94,7 @@ export const AdminFormModal: React.FC<AdminFormModalProps> = ({
                   <div className="space-y-2">
                     <FileUploader
                       accept="image/png,image/jpeg,image/webp"
-                      label={field.label}
+                      label=""
                       currentUrl={formData[field.key]}
                       onFileSelect={async (file) => {
                         const result = await uploadFile(file, 'photo');
