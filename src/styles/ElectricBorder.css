@@ -1,35 +1,63 @@
-/* Electric Border Animation Styles */
-
-.electric-card-container {
+.electric-border {
+  --electric-light-color: var(--electric-border-color);
+  position: relative;
+  border-radius: inherit;
+  overflow: visible;
   isolation: isolate;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.electric-card-container:hover {
-  transform: translateY(-4px);
+.eb-canvas-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
 }
 
-/* Lightning stroke pulse */
-@keyframes lightningFlicker {
-  0%, 100% {
-    opacity: 0.95;
-    stroke-width: 2px;
-  }
-  50% {
-    opacity: 1;
-    stroke-width: 2.5px;
-  }
+.eb-canvas {
+  display: block;
 }
 
-.electric-lightning-stroke {
-  animation: lightningFlicker 1.8s ease-in-out infinite;
+.eb-content {
+  position: relative;
+  border-radius: inherit;
+  z-index: 1;
+  height: 100%;
 }
 
-/* Light mode responsiveness */
-html.light .electric-card-container {
-  box-shadow: 0 10px 30px -5px rgba(0, 240, 255, 0.2);
+.eb-layers {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
 }
 
-html.light .electric-card-container:hover {
-  box-shadow: 0 16px 36px -8px rgba(0, 240, 255, 0.3);
+.eb-glow-1,
+.eb-glow-2,
+.eb-background-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.eb-glow-1 {
+  border: 2px solid rgba(0, 240, 255, 0.6);
+  filter: blur(1px);
+}
+
+.eb-glow-2 {
+  border: 2px solid var(--electric-border-color);
+  filter: blur(4px);
+}
+
+.eb-background-glow {
+  z-index: -1;
+  transform: scale(1.1);
+  filter: blur(32px);
+  opacity: 0.3;
+  background: linear-gradient(-30deg, var(--electric-border-color), transparent, var(--electric-border-color));
 }

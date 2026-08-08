@@ -175,9 +175,10 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               {visibleProjects.map((project) => (
                 <ElectricBorder
                   key={project.id}
+                  color="#7df9ff"
+                  speed={1}
+                  chaos={0.12}
                   borderRadius={24}
-                  glowColor="#00f0ff"
-                  secondaryColor="#38bdf8"
                 >
                   <div className="glass-card rounded-3xl overflow-hidden border border-cyan-500/20 flex flex-col group/card transition-all duration-300 shadow-2xl h-full bg-[#080d19]">
                     {/* Image Container */}
