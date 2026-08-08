@@ -243,9 +243,11 @@ html.light section {
   color: #0F172A !important;
 }
 
-/* Card Containers & Panels in Light Mode: Pure White Background + Soft Shadow */
 html.light .glass-panel,
 html.light .glass-card,
+html.light .project-card-container,
+html.light [class*="bg-[#080d19]"],
+html.light [class*="bg-[#080D19]"],
 html.light [class*="bg-[#1A2335]"],
 html.light [class*="bg-[#1C2538]"],
 html.light [class*="bg-[#131A29]"],

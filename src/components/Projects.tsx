@@ -189,7 +189,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                     showTooltip={true}
                     captionText={project.title}
                   >
-                    <div className="rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">
+                    <div className="project-card-container rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">
                       {/* Image Container */}
                       <div className="relative h-56 overflow-hidden bg-slate-900">
                         <img
