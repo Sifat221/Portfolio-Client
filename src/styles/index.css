@@ -336,21 +336,28 @@ html.light footer .bg-slate-900 {
   color: #E2E8F0 !important;
 }
 
-/* Pill Chips, Badges & Dates in Light Mode */
+/* Pill Chips, Tech Stack Badges & Dates in Light Mode */
+html.light .project-tech-pill,
+html.light [class*="bg-[#0d1527]"],
+html.light [class*="bg-[#0c1424]"],
+html.light [class*="bg-[#0d152b]"],
+html.light [class*="bg-[#0e1628]"],
 html.light .bg-slate-800,
 html.light .bg-slate-800\/90,
 html.light .bg-slate-800\/80,
 html.light .bg-slate-800\/60,
 html.light .bg-slate-800\/50,
-html.light .bg-slate-800\/40 {
+html.light .bg-slate-800\/40,
+html.light .bg-slate-900\/90,
+html.light .bg-slate-900\/80 {
   background-color: #F1F5F9 !important;
   border-color: #CBD5E1 !important;
   color: #0F172A !important;
 }
 
-html.light .bg-slate-800 span,
-html.light .bg-slate-800\/80 span,
-html.light .bg-slate-800\/90 span {
+html.light .project-tech-pill span,
+html.light [class*="bg-[#0d1527]"] span,
+html.light .bg-slate-800 span {
   color: #0F172A !important;
 }
 

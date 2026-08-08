@@ -222,7 +222,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                           {project.techStack.slice(0, 9).map((tech, i) => (
                             <span
                               key={i}
-                              className="px-3 py-1 rounded-full text-[11px] font-mono bg-[#0d1527] text-slate-300 border border-slate-700/60"
+                              className="project-tech-pill px-3 py-1 rounded-full text-[11px] font-mono bg-[#0d1527] text-slate-300 border border-slate-700/60"
                             >
                               {tech}
                             </span>
