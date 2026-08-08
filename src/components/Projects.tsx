@@ -84,7 +84,9 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
             
             <SplitText
               text="Featured Projects"
-              className="text-4xl sm:text-5xl font-serif font-bold text-white tracking-tight"
+              highlightText="Projects"
+              highlightClass="text-blue-500"
+              className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight"
               delay={50}
               duration={1.25}
               ease="power3.out"
