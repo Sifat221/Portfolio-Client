@@ -7,7 +7,6 @@ interface ElectricBorderProps {
   glowColor?: string;
   secondaryColor?: string;
   borderRadius?: number;
-  isActive?: boolean;
 }
 
 export const ElectricBorder: React.FC<ElectricBorderProps> = ({
@@ -15,8 +14,7 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
   className = '',
   glowColor = '#00f0ff',
   secondaryColor = '#38bdf8',
-  borderRadius = 24,
-  isActive = true,
+  borderRadius = 20,
 }) => {
   const filterId = useId().replace(/:/g, '-');
   const gradientId = useId().replace(/:/g, '-');
@@ -28,28 +26,28 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
         <defs>
           <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor={glowColor} />
-            <stop offset="35%" stopColor="#38bdf8" />
-            <stop offset="70%" stopColor={secondaryColor} />
+            <stop offset="40%" stopColor={secondaryColor} />
+            <stop offset="80%" stopColor="#00e5ff" />
             <stop offset="100%" stopColor={glowColor} />
           </linearGradient>
-          <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%">
+          <filter id={filterId} x="-30%" y="-30%" width="160%" height="160%">
             <feTurbulence
               type="fractalNoise"
-              baseFrequency="0.04 0.08"
-              numOctaves="3"
+              baseFrequency="0.035 0.085"
+              numOctaves="4"
               result="noise"
             >
               <animate
-                attributeName="baseFrequency"
-                values="0.04 0.08; 0.06 0.11; 0.03 0.07; 0.05 0.09; 0.04 0.08"
-                dur="4s"
+                attributeName="seed"
+                values="1; 12; 27; 43; 61; 79; 94; 38; 82; 105"
+                dur="0.75s"
                 repeatCount="indefinite"
               />
             </feTurbulence>
             <feDisplacementMap
               in="SourceGraphic"
               in2="noise"
-              scale="5"
+              scale="7.5"
               xChannelSelector="R"
               yChannelSelector="G"
             />
@@ -57,48 +55,40 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
         </defs>
       </svg>
 
-      {/* Glowing Outer Cyan Energy Aura */}
-      <div 
-        className="absolute -inset-[3px] rounded-[26px] pointer-events-none z-10 transition-all duration-300 opacity-90 group-hover:opacity-100"
-        style={{
-          boxShadow: `0 0 15px ${glowColor}66, 0 0 30px ${glowColor}33, inset 0 0 15px ${glowColor}22`,
-          borderRadius: `${borderRadius + 2}px`,
-        }}
-      />
-
-      {/* Wavy Electric SVG Jagged Stroke Frame */}
-      <div className="absolute -inset-[3px] pointer-events-none z-10 overflow-visible">
+      {/* Crisp Crackling Electric Lightning SVG Stroke Outline */}
+      <div className="absolute -inset-[5px] pointer-events-none z-20 overflow-visible">
         <svg
           className="w-full h-full"
           style={{
-            filter: `drop-shadow(0 0 8px ${glowColor}) drop-shadow(0 0 20px ${glowColor}bb)`,
+            filter: `drop-shadow(0 0 3px ${glowColor}) drop-shadow(0 0 9px ${glowColor}cc)`,
           }}
         >
           <rect
-            x="2.5"
-            y="2.5"
-            width="calc(100% - 5px)"
-            height="calc(100% - 5px)"
+            x="4"
+            y="4"
+            width="calc(100% - 8px)"
+            height="calc(100% - 8px)"
             rx={borderRadius}
             ry={borderRadius}
             fill="none"
             stroke={`url(#${gradientId})`}
-            strokeWidth="2.5"
+            strokeWidth="2"
             style={{
               filter: `url(#${filterId})`,
             }}
-            className="electric-stroke-pulse"
+            className="electric-lightning-stroke"
           />
         </svg>
       </div>
 
-      {/* Traveling Electric Energy Arc / Spark Current Animation */}
+      {/* Soft Ambient Inner/Outer Cyan Energy Glow */}
       <div 
-        className="absolute -inset-[2px] pointer-events-none z-20 overflow-hidden"
-        style={{ borderRadius: `${borderRadius}px` }}
-      >
-        <div className="electric-arc-spark" />
-      </div>
+        className="absolute -inset-[3px] pointer-events-none z-10 transition-all duration-300 opacity-80 group-hover:opacity-100"
+        style={{
+          boxShadow: `0 0 12px ${glowColor}44, inset 0 0 8px ${glowColor}1a`,
+          borderRadius: `${borderRadius + 3}px`,
+        }}
+      />
 
       {/* Card Content Container */}
       <div 

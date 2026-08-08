@@ -6,59 +6,23 @@
 }
 
 .electric-card-container:hover {
-  transform: translateY(-6px) scale(1.01);
+  transform: translateY(-4px);
 }
 
-/* Pulse animation on the SVG stroke */
-@keyframes electricPulse {
+/* Lightning stroke pulse */
+@keyframes lightningFlicker {
   0%, 100% {
     opacity: 0.95;
-    stroke-width: 2.5;
+    stroke-width: 2px;
   }
   50% {
     opacity: 1;
-    stroke-width: 3.2;
+    stroke-width: 2.5px;
   }
 }
 
-.electric-stroke-pulse {
-  animation: electricPulse 2.5s ease-in-out infinite;
-}
-
-/* Traveling Electric Arc Spark along the perimeter */
-@keyframes electricArcSweep {
-  0% {
-    top: -100%;
-    left: -100%;
-  }
-  25% {
-    top: -100%;
-    left: 100%;
-  }
-  50% {
-    top: 100%;
-    left: 100%;
-  }
-  75% {
-    top: 100%;
-    left: -100%;
-  }
-  100% {
-    top: -100%;
-    left: -100%;
-  }
-}
-
-.electric-arc-spark {
-  position: absolute;
-  width: 140px;
-  height: 140px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.8) 0%, rgba(56, 189, 248, 0.4) 40%, transparent 70%);
-  border-radius: 50%;
-  filter: blur(8px);
-  animation: electricArcSweep 6s linear infinite;
-  pointer-events: none;
-  mix-blend-mode: screen;
+.electric-lightning-stroke {
+  animation: lightningFlicker 1.8s ease-in-out infinite;
 }
 
 /* Light mode responsiveness */
@@ -67,5 +31,5 @@ html.light .electric-card-container {
 }
 
 html.light .electric-card-container:hover {
-  box-shadow: 0 20px 40px -10px rgba(0, 240, 255, 0.35);
+  box-shadow: 0 16px 36px -8px rgba(0, 240, 255, 0.3);
 }
