@@ -5,6 +5,7 @@ import { IProject } from '../types/portfolio';
 import { ProjectModal } from './ProjectModal';
 import SplitText from './SplitText';
 import ElectricBorder from './ElectricBorder';
+import TiltedCard from './TiltedCard';
 
 interface ProjectsProps {
   projects: IProject[];
@@ -182,113 +183,122 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                   chaos={0.12}
                   borderRadius={24}
                 >
-                  <div className="rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">
-                    {/* Image Container */}
-                    <div className="relative h-56 overflow-hidden bg-slate-900">
-                      <img
-                        src={project.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800"}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-transparent to-transparent opacity-90"></div>
+                  <TiltedCard
+                    rotateAmplitude={12}
+                    scaleOnHover={1.04}
+                    showTooltip={true}
+                    captionText={project.title}
+                  >
+                    <div className="rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">
+                      {/* Image Container */}
+                      <div className="relative h-56 overflow-hidden bg-slate-900">
+                        <img
+                          src={project.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800"}
+                          alt={project.title}
+                          className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-transparent to-transparent opacity-90"></div>
 
-                      {/* Category & Featured Badge */}
-                      <div className="absolute top-4 right-4 flex items-center gap-2">
-                        {project.isFeatured && (
-                          <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-amber-950/60 text-amber-300 border border-amber-500/50 backdrop-blur-md flex items-center gap-1">
-                            <span className="text-amber-400">❖</span> Featured
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Card Content */}
-                    <div className="p-7 flex-1 flex flex-col justify-between space-y-5">
-                      <div className="space-y-2">
-                        <h3 className="text-2xl font-serif font-bold text-white group-hover/card:text-cyan-300 transition-colors">
-                          {project.title}
-                        </h3>
-                        <p className="text-xs text-[#9B8FCD] font-medium font-mono line-clamp-1">
-                          {project.tagline}
-                        </p>
-                        <p className="text-xs text-slate-300 line-clamp-3 leading-relaxed">
-                          {project.description}
-                        </p>
-                      </div>
-
-                      {/* Tech Stack Badges */}
-                      {project.techStack && (
-                        <div className="flex flex-wrap gap-2 pt-1">
-                          {project.techStack.slice(0, 9).map((tech, i) => (
-                            <span
-                              key={i}
-                              className="project-tech-pill px-3 py-1 rounded-full text-[11px] font-mono bg-[#0d1527] text-slate-300 border border-slate-700/60"
-                            >
-                              {tech}
+                        {/* Category & Featured Badge */}
+                        <div className="absolute top-4 right-4 flex items-center gap-2">
+                          {project.isFeatured && (
+                            <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-amber-950/60 text-amber-300 border border-amber-500/50 backdrop-blur-md flex items-center gap-1">
+                              <span className="text-amber-400">❖</span> Featured
                             </span>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Card Footer Bar */}
-                      <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-2">
-                        <button
-                          onClick={() => setSelectedProject(project)}
-                          className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group/btn"
-                        >
-                          <span>View Details</span>
-                        </button>
-
-                        <div className="flex items-center gap-3">
-                          {project.clientUrl ? (
-                            <a
-                              href={project.clientUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-300 hover:text-cyan-300 transition-colors"
-                            >
-                              <Github className="w-3.5 h-3.5 text-slate-400" />
-                              <span>Client</span>
-                            </a>
-                          ) : project.githubUrl && (
-                            <a
-                              href={project.githubUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-300 hover:text-cyan-300 transition-colors"
-                            >
-                              <Github className="w-3.5 h-3.5 text-slate-400" />
-                              <span>Code</span>
-                            </a>
-                          )}
-
-                          {project.serverUrl && (
-                            <a
-                              href={project.serverUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-300 hover:text-cyan-300 transition-colors"
-                            >
-                              <Github className="w-3.5 h-3.5 text-slate-400" />
-                              <span>Server</span>
-                            </a>
-                          )}
-
-                          {project.demoUrl && (
-                            <a
-                              href={project.demoUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0091ff] hover:bg-[#0080ff] text-white font-semibold text-xs shadow-md shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-105 transition-all"
-                            >
-                              <ExternalLink className="w-3.5 h-3.5" />
-                              <span>Live Demo</span>
-                            </a>
                           )}
                         </div>
                       </div>
+
+                      {/* Card Content */}
+                      <div className="p-7 flex-1 flex flex-col justify-between space-y-5">
+                        <div className="space-y-2">
+                          <h3 className="text-2xl font-serif font-bold text-white group-hover/card:text-cyan-300 transition-colors">
+                            {project.title}
+                          </h3>
+                          {project.tagline && (
+                            <p className="text-xs text-[#9B8FCD] font-mono font-semibold">
+                              {project.tagline}
+                            </p>
+                          )}
+                          <p className="text-slate-300 text-xs leading-relaxed line-clamp-3">
+                            {project.description}
+                          </p>
+                        </div>
+
+                        {/* Tech Stack Badges */}
+                        {project.techStack && (
+                          <div className="flex flex-wrap gap-2 pt-1">
+                            {project.techStack.slice(0, 9).map((tech, i) => (
+                              <span
+                                key={i}
+                                className="project-tech-pill px-3 py-1 rounded-full text-[11px] font-mono bg-[#0d1527] text-slate-300 border border-slate-700/60"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Card Footer Bar */}
+                        <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-2">
+                          <button
+                            onClick={() => setSelectedProject(project)}
+                            className="text-xs font-semibold text-slate-300 hover:text-white flex items-center gap-1 transition-colors group/btn"
+                          >
+                            <span>View Details</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform text-[#9B8FCD]" />
+                          </button>
+
+                          <div className="flex items-center gap-2">
+                            {project.clientUrl && (
+                              <a
+                                href={project.clientUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[11px] font-mono text-slate-400 hover:text-slate-200 transition-colors"
+                              >
+                                <Github className="w-3.5 h-3.5" />
+                                <span>Client</span>
+                              </a>
+                            )}
+                            {project.serverUrl && (
+                              <a
+                                href={project.serverUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[11px] font-mono text-slate-400 hover:text-slate-200 transition-colors"
+                              >
+                                <Github className="w-3.5 h-3.5" />
+                                <span>Server</span>
+                              </a>
+                            )}
+                            {project.githubUrl && !project.clientUrl && !project.serverUrl && (
+                              <a
+                                href={project.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[11px] font-mono text-slate-400 hover:text-slate-200 transition-colors"
+                              >
+                                <Github className="w-3.5 h-3.5" />
+                                <span>Code</span>
+                              </a>
+                            )}
+                            {project.demoUrl && (
+                              <a
+                                href={project.demoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0091ff] hover:bg-[#0080ff] text-white font-semibold text-xs shadow-md shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-105 transition-all"
+                              >
+                                <ExternalLink className="w-3.5 h-3.5" />
+                                <span>Live Demo</span>
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </TiltedCard>
                 </ElectricBorder>
               ))}
             </motion.div>
