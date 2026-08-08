@@ -182,7 +182,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                   chaos={0.12}
                   borderRadius={24}
                 >
-                  <div className="glass-card rounded-3xl overflow-hidden border border-cyan-500/30 flex flex-col group/card transition-all duration-300 shadow-2xl h-full bg-[#080d19]">
+                  <div className="rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">
                     {/* Image Container */}
                     <div className="relative h-56 overflow-hidden bg-slate-900">
                       <img

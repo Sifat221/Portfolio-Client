@@ -167,7 +167,7 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Configuration - Super tight border offset & displacement to hug card edge cleanly
+    // Configuration - Tight stroke rendering directly on card contour
     const octaves = 10;
     const lacunarity = 1.6;
     const gain = 0.7;
@@ -306,10 +306,6 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
     <div ref={containerRef} className={`electric-border ${className}`} style={{ ...vars, ...style }}>
       <div className="eb-canvas-container">
         <canvas ref={canvasRef} className="eb-canvas" />
-      </div>
-      <div className="eb-layers">
-        <div className="eb-glow-2" />
-        <div className="eb-background-glow" />
       </div>
       <div className="eb-content">{children}</div>
     </div>
