@@ -182,13 +182,13 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                   chaos={0.12}
                   borderRadius={24}
                 >
-                  <div className="glass-card rounded-3xl overflow-hidden border border-cyan-500/20 flex flex-col group/card transition-all duration-300 shadow-2xl h-full bg-[#080d19]">
+                  <div className="glass-card rounded-3xl overflow-hidden border border-cyan-500/30 flex flex-col group/card transition-all duration-300 shadow-2xl h-full bg-[#080d19]">
                     {/* Image Container */}
                     <div className="relative h-56 overflow-hidden bg-slate-900">
                       <img
                         src={project.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800"}
                         alt={project.title}
-                        className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-transparent to-transparent opacity-90"></div>
 

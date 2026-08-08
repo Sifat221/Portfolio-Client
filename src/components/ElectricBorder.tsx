@@ -167,15 +167,15 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Configuration
+    // Configuration - Tight border offset to eliminate black gaps behind the border
     const octaves = 10;
     const lacunarity = 1.6;
     const gain = 0.7;
     const amplitude = chaos;
     const frequency = 10;
     const baseFlatness = 0;
-    const displacement = 60;
-    const borderOffset = 60;
+    const displacement = 25;
+    const borderOffset = 25;
 
     const updateSize = () => {
       const rect = container.getBoundingClientRect();
@@ -216,7 +216,7 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
       ctx.scale(dpr, dpr);
 
       ctx.strokeStyle = color;
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.8;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
 
@@ -308,7 +308,6 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
         <canvas ref={canvasRef} className="eb-canvas" />
       </div>
       <div className="eb-layers">
-        <div className="eb-glow-1" />
         <div className="eb-glow-2" />
         <div className="eb-background-glow" />
       </div>
