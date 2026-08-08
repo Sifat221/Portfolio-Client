@@ -167,15 +167,15 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Configuration - Tight border offset to eliminate black gaps behind the border
+    // Configuration - Super tight border offset & displacement to hug card edge cleanly
     const octaves = 10;
     const lacunarity = 1.6;
     const gain = 0.7;
     const amplitude = chaos;
     const frequency = 10;
     const baseFlatness = 0;
-    const displacement = 25;
-    const borderOffset = 25;
+    const displacement = 8;
+    const borderOffset = 12;
 
     const updateSize = () => {
       const rect = container.getBoundingClientRect();
