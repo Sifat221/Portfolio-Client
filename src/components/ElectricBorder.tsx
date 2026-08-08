@@ -167,15 +167,15 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Configuration - Tight stroke directly tracing the card contour to eliminate outer white box
+    // Configuration
     const octaves = 10;
     const lacunarity = 1.6;
     const gain = 0.7;
     const amplitude = chaos;
     const frequency = 10;
     const baseFlatness = 0;
-    const displacement = 12;
-    const borderOffset = 14;
+    const displacement = 60;
+    const borderOffset = 60;
 
     const updateSize = () => {
       const rect = container.getBoundingClientRect();
@@ -216,7 +216,7 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
       ctx.scale(dpr, dpr);
 
       ctx.strokeStyle = color;
-      ctx.lineWidth = 1.8;
+      ctx.lineWidth = 1;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
 
@@ -299,13 +299,18 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
 
   const vars = {
     '--electric-border-color': color,
-    borderRadius: `${borderRadius}px`
+    borderRadius: typeof borderRadius === 'number' ? `${borderRadius}px` : borderRadius
   } as React.CSSProperties;
 
   return (
     <div ref={containerRef} className={`electric-border ${className}`} style={{ ...vars, ...style }}>
       <div className="eb-canvas-container">
         <canvas ref={canvasRef} className="eb-canvas" />
+      </div>
+      <div className="eb-layers">
+        <div className="eb-glow-1" />
+        <div className="eb-glow-2" />
+        <div className="eb-background-glow" />
       </div>
       <div className="eb-content">{children}</div>
     </div>
