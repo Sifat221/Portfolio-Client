@@ -4,6 +4,7 @@ import { Smartphone, ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRig
 import { IProject } from '../types/portfolio';
 import { ProjectModal } from './ProjectModal';
 import SplitText from './SplitText';
+import ElectricBorder from './ElectricBorder';
 
 interface ProjectsProps {
   projects: IProject[];
@@ -38,7 +39,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   };
 
   const filteredProjects = getFilteredProjects();
-  const itemsPerPage = 3;
+  const itemsPerPage = 2;
   const maxIndex = Math.max(0, filteredProjects.length - itemsPerPage);
 
   const handleTabChange = (tabId: string) => {
@@ -58,7 +59,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
     }
   };
 
-  // Visible 3 projects slice for the carousel
+  // Visible 2 projects slice for the carousel
   const visibleProjects = filteredProjects.slice(currentIndex, currentIndex + itemsPerPage);
 
   return (
@@ -78,12 +79,12 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           <div className="text-center md:text-left space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-[#9B8FCD]/30 text-[#9B8FCD] text-xs font-mono font-bold">
               <Smartphone className="w-3.5 h-3.5" />
-              <span>Flagship Applications</span>
+              <span>Showcase Applications</span>
             </div>
             
             <SplitText
-              text="Featured Mobile Projects"
-              className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight"
+              text="Featured Projects"
+              className="text-4xl sm:text-5xl font-serif font-bold text-white tracking-tight"
               delay={50}
               duration={1.25}
               ease="power3.out"
@@ -96,7 +97,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
             />
 
             <p className="text-slate-300 text-sm font-normal">
-              Explore production mobile solutions built with Flutter, Clean Architecture, BLoC/GetX, and REST API backends.
+              Explore full-stack web and production mobile solutions built with Clean Architecture, REST APIs, and scalable backends.
             </p>
           </div>
 
@@ -160,7 +161,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           </div>
         </div>
 
-        {/* Interactive 3-Item Carousel Grid */}
+        {/* Interactive 2-Item Carousel Grid */}
         <div className="relative overflow-hidden min-h-[460px]">
           <AnimatePresence mode="wait">
             <motion.div
@@ -169,100 +170,123 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -40 }}
               transition={{ duration: 0.35, ease: 'easeInOut' }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 gap-8"
             >
               {visibleProjects.map((project) => (
-                <div
+                <ElectricBorder
                   key={project.id}
-                  className="glass-card rounded-3xl overflow-hidden border border-slate-800/80 flex flex-col group hover:border-[#9B8FCD]/50 transition-all duration-300 shadow-xl"
+                  borderRadius={24}
+                  glowColor="#00f0ff"
+                  secondaryColor="#38bdf8"
                 >
-                  {/* Image Container */}
-                  <div className="relative h-52 overflow-hidden bg-slate-900">
-                    <img
-                      src={project.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800"}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#111726] via-transparent to-transparent opacity-90"></div>
+                  <div className="glass-card rounded-3xl overflow-hidden border border-cyan-500/20 flex flex-col group/card transition-all duration-300 shadow-2xl h-full bg-[#080d19]">
+                    {/* Image Container */}
+                    <div className="relative h-56 overflow-hidden bg-slate-900">
+                      <img
+                        src={project.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800"}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-transparent to-transparent opacity-90"></div>
 
-                    {/* Category & Featured Badge */}
-                    <div className="absolute top-4 left-4 flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-[#090D16]/90 text-[#9B8FCD] border border-[#9B8FCD]/40 backdrop-blur-md">
-                        {project.category || 'Mobile App'}
-                      </span>
-                      {project.isFeatured && (
-                        <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 backdrop-blur-md">
-                          Featured
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Card Content */}
-                  <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-bold text-white group-hover:text-[#9B8FCD] transition-colors">
-                        {project.title}
-                      </h3>
-                      <p className="text-xs text-[#9B8FCD] font-medium font-mono line-clamp-1">
-                        {project.tagline}
-                      </p>
-                      <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed">
-                        {project.description}
-                      </p>
-                    </div>
-
-                    {/* Tech Stack Badges */}
-                    {project.techStack && (
-                      <div className="flex flex-wrap gap-1.5 pt-1">
-                        {project.techStack.slice(0, 4).map((tech, i) => (
-                          <span
-                            key={i}
-                            className="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-slate-800/80 text-slate-300 border border-slate-700/60"
-                          >
-                            {tech}
+                      {/* Category & Featured Badge */}
+                      <div className="absolute top-4 right-4 flex items-center gap-2">
+                        {project.isFeatured && (
+                          <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-amber-950/60 text-amber-300 border border-amber-500/50 backdrop-blur-md flex items-center gap-1">
+                            <span className="text-amber-400">❖</span> Featured
                           </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Card Footer Bar */}
-                    <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                      <button
-                        onClick={() => setSelectedProject(project)}
-                        className="text-xs font-bold text-[#9B8FCD] hover:text-white flex items-center gap-1 group/btn"
-                      >
-                        <span>View Details</span>
-                        <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                      </button>
-
-                      <div className="flex items-center gap-2">
-                        {project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-slate-800/80 text-slate-300 hover:text-white hover:border-[#9B8FCD]/50 border border-slate-700/60 transition-colors"
-                            aria-label="GitHub Repo"
-                          >
-                            <Github className="w-4 h-4" />
-                          </a>
-                        )}
-                        {project.demoUrl && (
-                          <a
-                            href={project.demoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-[#9B8FCD] text-white hover:bg-[#8B7DBE] shadow-sm transition-colors"
-                            aria-label="Live Demo"
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
                         )}
                       </div>
                     </div>
+
+                    {/* Card Content */}
+                    <div className="p-7 flex-1 flex flex-col justify-between space-y-5">
+                      <div className="space-y-2">
+                        <h3 className="text-2xl font-serif font-bold text-white group-hover/card:text-cyan-300 transition-colors">
+                          {project.title}
+                        </h3>
+                        <p className="text-xs text-[#9B8FCD] font-medium font-mono line-clamp-1">
+                          {project.tagline}
+                        </p>
+                        <p className="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+                          {project.description}
+                        </p>
+                      </div>
+
+                      {/* Tech Stack Badges */}
+                      {project.techStack && (
+                        <div className="flex flex-wrap gap-2 pt-1">
+                          {project.techStack.slice(0, 9).map((tech, i) => (
+                            <span
+                              key={i}
+                              className="px-3 py-1 rounded-full text-[11px] font-mono bg-[#0d1527] text-slate-300 border border-slate-700/60"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Card Footer Bar */}
+                      <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-2">
+                        <button
+                          onClick={() => setSelectedProject(project)}
+                          className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group/btn"
+                        >
+                          <span>View Details</span>
+                        </button>
+
+                        <div className="flex items-center gap-3">
+                          {project.clientUrl ? (
+                            <a
+                              href={project.clientUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-300 hover:text-cyan-300 transition-colors"
+                            >
+                              <Github className="w-3.5 h-3.5 text-slate-400" />
+                              <span>Client</span>
+                            </a>
+                          ) : project.githubUrl && (
+                            <a
+                              href={project.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-300 hover:text-cyan-300 transition-colors"
+                            >
+                              <Github className="w-3.5 h-3.5 text-slate-400" />
+                              <span>Code</span>
+                            </a>
+                          )}
+
+                          {project.serverUrl && (
+                            <a
+                              href={project.serverUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-300 hover:text-cyan-300 transition-colors"
+                            >
+                              <Github className="w-3.5 h-3.5 text-slate-400" />
+                              <span>Server</span>
+                            </a>
+                          )}
+
+                          {project.demoUrl && (
+                            <a
+                              href={project.demoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0091ff] hover:bg-[#0080ff] text-white font-semibold text-xs shadow-md shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-105 transition-all"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                              <span>Live Demo</span>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </ElectricBorder>
               ))}
             </motion.div>
           </AnimatePresence>

@@ -42,6 +42,43 @@ export const defaultPersonal: IPersonalProfile = {
 
 export const defaultProjects: IProject[] = [
   {
+    id: "meal_manager",
+    title: "Meal Manager",
+    tagline: "Full-Stack Restaurant",
+    description: "Designed and developed a full stack mess management platform featuring automated daily meal tracking, deposit logging, bazaar duty roster allocation, and automated month-end balance settlements. - Implemented secure JWT PIN authentication with role-based access...",
+    techStack: ["React", "TypeScript", "TanStack Query", "Express.js", "Prisma ORM", "PostgreSQL", "JWT", "Nodemailer"],
+    features: [
+      "Automated daily meal tracking & deposit logging",
+      "Bazaar duty roster allocation & monthly balance settlement",
+      "Secure JWT PIN authentication with role-based access"
+    ],
+    githubUrl: "https://github.com/Sifat221",
+    clientUrl: "https://github.com/Sifat221",
+    demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
+    imageUrl: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800",
+    isFeatured: true,
+    category: "Development"
+  },
+  {
+    id: "safus_restaurant",
+    title: "SaFus Restaurant",
+    tagline: "FullStack Restaurant & Order Management Platform",
+    description: "Designed and developed a full-stack restaurant platform featuring dual payment gateways (Stripe & SSLCommerz), online table reservations, dynamic order management, and secure JWT authentication with Resend OTP verification, centralized API handling, and role-based...",
+    techStack: ["MongoDB", "Express.js", "React.js", "Node.js", "TypeScript", "Tailwind CSS", "JWT", "Stripe API", "SSLCommerz"],
+    features: [
+      "Dual payment gateways integration (Stripe & SSLCommerz)",
+      "Online table reservations & dynamic order management",
+      "JWT authentication with Resend OTP verification"
+    ],
+    githubUrl: "https://github.com/Sifat221",
+    clientUrl: "https://github.com/Sifat221",
+    serverUrl: "https://github.com/Sifat221",
+    demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
+    imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800",
+    isFeatured: true,
+    category: "Development"
+  },
+  {
     id: "medbridge_telemedicine",
     title: "Telemedicine Platform (MedBridge)",
     tagline: "Healthcare & Doctor Appointment App",

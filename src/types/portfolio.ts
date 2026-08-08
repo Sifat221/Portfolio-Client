@@ -24,6 +24,8 @@ export interface IProject {
   techStack: string[];
   features?: string[];
   githubUrl?: string;
+  clientUrl?: string;
+  serverUrl?: string;
   demoUrl?: string;
   imageUrl?: string;
   isFeatured?: boolean;

@@ -1,0 +1,71 @@
+/* Electric Border Animation Styles */
+
+.electric-card-container {
+  isolation: isolate;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.electric-card-container:hover {
+  transform: translateY(-6px) scale(1.01);
+}
+
+/* Pulse animation on the SVG stroke */
+@keyframes electricPulse {
+  0%, 100% {
+    opacity: 0.95;
+    stroke-width: 2.5;
+  }
+  50% {
+    opacity: 1;
+    stroke-width: 3.2;
+  }
+}
+
+.electric-stroke-pulse {
+  animation: electricPulse 2.5s ease-in-out infinite;
+}
+
+/* Traveling Electric Arc Spark along the perimeter */
+@keyframes electricArcSweep {
+  0% {
+    top: -100%;
+    left: -100%;
+  }
+  25% {
+    top: -100%;
+    left: 100%;
+  }
+  50% {
+    top: 100%;
+    left: 100%;
+  }
+  75% {
+    top: 100%;
+    left: -100%;
+  }
+  100% {
+    top: -100%;
+    left: -100%;
+  }
+}
+
+.electric-arc-spark {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.8) 0%, rgba(56, 189, 248, 0.4) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(8px);
+  animation: electricArcSweep 6s linear infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Light mode responsiveness */
+html.light .electric-card-container {
+  box-shadow: 0 10px 30px -5px rgba(0, 240, 255, 0.2);
+}
+
+html.light .electric-card-container:hover {
+  box-shadow: 0 20px 40px -10px rgba(0, 240, 255, 0.35);
+}
