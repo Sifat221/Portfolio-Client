@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sun, Moon, MoreVertical, X } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
-import { StaggeredMenu } from './StaggeredMenu';
 import { GooeyNav } from './GooeyNav';
 import { useTheme } from '../context/ThemeContext';
 
@@ -12,14 +12,8 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('about');
 
   const navLinks = [
     { name: 'About', href: '#about' },
@@ -30,15 +24,38 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
     { name: 'Contact', href: '#contact' },
   ];
 
+  useEffect(() => {
+    const sections = ['about', 'skills', 'projects', 'experience', 'education', 'contact'];
+
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+
+      const scrollPosition = window.scrollY + 200;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const element = document.getElementById(sections[i]);
+        if (element && element.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const activeIndex = Math.max(0, navLinks.findIndex((l) => l.href === `#${activeSection}`));
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        scrolled
           ? 'glass-panel py-3 shadow-2xl border-b border-slate-800/90'
           : 'bg-[#090D16]/80 backdrop-blur-md py-4 border-b border-slate-800/40'
-        }`}
+      }`}
       role="banner"
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between">
           {/* Logo with Profile Avatar & Subtitle */}
           <a href="#" className="flex items-center gap-3 group" aria-label={`${personal.name} Home`}>
@@ -63,21 +80,17 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
             </div>
           </a>
 
-          {/* Center GooeyNav Navigation */}
+          {/* Center Pill Navigation (Desktop & Landscape Rotation) */}
           <div className="hidden md:block">
             <GooeyNav
               items={navLinks.map((link) => ({ label: link.name, href: link.href }))}
-              particleCount={25}
-              particleDistances={[90, 10]}
-              particleR={300}
-              initialActiveIndex={0}
-              animationTime={600}
-              timeVariance={2000}
-              colors={[1, 2, 3, 1, 2, 3, 1, 4]}
+              particleCount={20}
+              initialActiveIndex={activeIndex}
+              colors={[1, 2, 3, 1, 2, 3]}
             />
           </div>
 
-          {/* Right Action Buttons & Mobile Menu */}
+          {/* Right Action Buttons & Mobile 3-Dots Menu */}
           <div className="flex items-center gap-2.5 sm:gap-3">
             {/* Theme Toggle Button */}
             <button
@@ -102,32 +115,69 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
               <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </a>
 
-            {/* Mobile StaggeredMenu Integration */}
+            {/* 3-Dots Mobile Menu Trigger Button (Portrait Mobile View) */}
             <div className="md:hidden flex items-center">
-              <StaggeredMenu
-                position="right"
-                items={[
-                  { label: 'About', link: '#about' },
-                  { label: 'Skills', link: '#skills' },
-                  { label: 'Projects', link: '#projects' },
-                  { label: 'Experience', link: '#experience' },
-                  { label: 'Education', link: '#education' },
-                  { label: 'Contact', link: '#contact' },
-                ]}
-                socialItems={[
-                  { label: 'GitHub', link: personal.github || 'https://github.com' },
-                  { label: 'LinkedIn', link: personal.linkedin || 'https://linkedin.com' },
-                  { label: 'Facebook', link: personal.facebook || 'https://facebook.com' },
-                ]}
-                displaySocials={true}
-                displayItemNumbering={true}
-                colors={['#9B8FCD', '#4F46E5', '#090D16']}
-                accentColor="#9B8FCD"
-              />
+              <button
+                onClick={() => setMobileMenuOpen((prev) => !prev)}
+                className={`p-2.5 rounded-full transition-all shadow-md active:scale-95 flex items-center justify-center border ${
+                  mobileMenuOpen
+                    ? 'bg-slate-800 text-white border-[#9B8FCD]'
+                    : 'glass-card border-slate-700/60 text-slate-200 hover:text-white hover:border-[#9B8FCD]'
+                }`}
+                aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open 3-dots navigation menu'}
+                title="Navigation Options"
+              >
+                {mobileMenuOpen ? (
+                  <X className="w-5 h-5 text-[#9B8FCD]" />
+                ) : (
+                  <MoreVertical className="w-5 h-5 text-[#9B8FCD]" />
+                )}
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Animated Mobile 3-Dots Dropdown Menu (Pill Bar matching user screenshot) */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="md:hidden absolute top-full left-0 right-0 p-4 bg-[#090D16]/95 backdrop-blur-2xl border-b border-slate-800/80 shadow-2xl z-50"
+          >
+            <div className="max-w-md mx-auto flex flex-wrap items-center justify-center gap-2 py-2">
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href.replace('#', '');
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveSection(link.href.replace('#', ''));
+                      setMobileMenuOpen(false);
+                      const target = document.querySelector(link.href);
+                      if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                      isActive
+                        ? 'bg-white text-slate-950 shadow-lg scale-105 font-extrabold'
+                        : 'text-slate-200 hover:text-white hover:bg-slate-800/80 border border-slate-700/60 font-semibold'
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
