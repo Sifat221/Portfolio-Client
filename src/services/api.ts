@@ -93,7 +93,7 @@ export const defaultProjects: IProject[] = [
     demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
     imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800",
     isFeatured: true,
-    category: "Healthcare"
+    category: "AI & Machine Learning"
   },
   {
     id: "shop_management",
@@ -144,7 +144,7 @@ export const defaultProjects: IProject[] = [
     demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
     imageUrl: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&q=80&w=800",
     isFeatured: true,
-    category: "Productivity"
+    category: "Design"
   },
   {
     id: "virtual_care",
@@ -161,7 +161,7 @@ export const defaultProjects: IProject[] = [
     demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
     imageUrl: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=800",
     isFeatured: true,
-    category: "Healthcare"
+    category: "Design"
   }
 ];
 

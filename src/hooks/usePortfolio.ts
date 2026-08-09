@@ -27,7 +27,7 @@ export function useProjects() {
   return useQuery({
     queryKey: ['projects'],
     queryFn: getProjects,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 5, // 5 seconds for instant reactivity
   });
 }
 
