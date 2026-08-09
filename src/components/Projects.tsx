@@ -216,9 +216,9 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                   borderRadius={24}
                 >
                   <TiltedCard
-                    rotateAmplitude={12}
-                    scaleOnHover={1.04}
-                    showTooltip={true}
+                    rotateAmplitude={isMobile ? 0 : 8}
+                    scaleOnHover={isMobile ? 1 : 1.03}
+                    showTooltip={false}
                     captionText={project.title}
                   >
                     <div className="project-card-container rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">

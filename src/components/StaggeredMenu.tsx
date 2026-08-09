@@ -1,5 +1,6 @@
 import React, { useCallback, useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
+import { MoreVertical } from 'lucide-react';
 import '../styles/StaggeredMenu.css';
 
 export interface StaggeredMenuItem {
@@ -438,9 +439,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
               ))}
             </span>
           </span>
-          <span ref={iconRef} className="sm-icon" aria-hidden="true">
-            <span ref={plusHRef} className="sm-icon-line" />
-            <span ref={plusVRef} className="sm-icon-line sm-icon-line-v" />
+          <span ref={iconRef} className="sm-icon flex items-center justify-center text-[#9B8FCD]" aria-hidden="true">
+            <MoreVertical className="w-4 h-4 text-[#9B8FCD]" />
           </span>
         </button>
       </header>
