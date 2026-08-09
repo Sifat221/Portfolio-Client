@@ -28,31 +28,25 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const getFilteredProjects = () => {
     if (activeTab === 'All') return projects;
     if (activeTab === 'Design') {
-      return projects.filter(
-        (p) =>
-          p.category === 'Design' ||
-          p.category === 'Healthcare' ||
-          p.category === 'Mobile Development'
-      );
+      return projects.filter((p) => p.category === 'Design');
     }
     if (activeTab === 'AI & Machine Learning') {
       return projects.filter(
         (p) =>
           p.category === 'AI & Machine Learning' ||
           p.category === 'AI' ||
-          p.category === 'Machine Learning' ||
-          p.title.includes('MedBridge') ||
-          p.description?.toLowerCase().includes('machine learning') ||
-          p.description?.toLowerCase().includes('ai')
+          p.category === 'Machine Learning'
       );
     }
     if (activeTab === 'Development') {
       return projects.filter(
         (p) =>
           p.category === 'Development' ||
+          !p.category ||
+          p.category === 'Healthcare' ||
+          p.category === 'Mobile Development' ||
           p.category === 'E-Commerce' ||
-          p.category === 'Productivity' ||
-          !p.category
+          p.category === 'Productivity'
       );
     }
     return projects;
@@ -194,7 +188,16 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               transition={{ duration: 0.35, ease: 'easeInOut' }}
               className="grid grid-cols-1 md:grid-cols-2 gap-8"
             >
-              {visibleProjects.map((project) => (
+              {filteredProjects.length === 0 ? (
+                <div className="col-span-1 md:col-span-2 flex flex-col items-center justify-center text-center py-20 bg-[#080d19]/90 rounded-3xl border border-slate-800 space-y-3">
+                  <Brain className="w-10 h-10 text-slate-600 mb-1 animate-pulse" />
+                  <h3 className="text-base font-bold text-slate-300 font-mono">No Projects Added in {activeTab} Yet</h3>
+                  <p className="text-xs text-slate-400 max-w-md">
+                    Projects added under <span className="text-[#9B8FCD] font-bold">{activeTab}</span> in the Admin Control Center will automatically appear here.
+                  </p>
+                </div>
+              ) : (
+                visibleProjects.map((project) => (
                 <ElectricBorder
                   key={project.id}
                   color="#7df9ff"
@@ -331,7 +334,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                     </div>
                   </TiltedCard>
                 </ElectricBorder>
-              ))}
+              )))}
             </motion.div>
           </AnimatePresence>
         </div>
