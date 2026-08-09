@@ -243,10 +243,9 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                         <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-2">
                           <button
                             onClick={() => setSelectedProject(project)}
-                            className="text-xs font-semibold text-slate-300 hover:text-white flex items-center gap-1 transition-colors group/btn"
+                            className="text-xs font-semibold text-[#38bdf8] hover:text-cyan-300 underline underline-offset-4 decoration-[#38bdf8]/60 hover:decoration-cyan-300 transition-colors"
                           >
-                            <span>View Details</span>
-                            <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform text-[#9B8FCD]" />
+                            View Details
                           </button>
 
                           <div className="flex items-center gap-2">
