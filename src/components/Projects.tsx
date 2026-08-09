@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Smartphone, ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight, Layout, Brain, Code } from 'lucide-react';
+import { Smartphone, ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight, Layout, Brain, Code, Sparkles } from 'lucide-react';
 import { IProject } from '../types/portfolio';
 import { ProjectModal } from './ProjectModal';
 import SplitText from './SplitText';
@@ -200,11 +200,24 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                         <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-transparent to-transparent opacity-90"></div>
 
                         {/* Category & Featured Badge */}
-                        <div className="absolute top-4 right-4 flex items-center gap-2">
+                        <div className="absolute top-4 right-4 flex items-center gap-2 z-20">
                           {project.isFeatured && (
-                            <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-amber-950/60 text-amber-300 border border-amber-500/50 backdrop-blur-md flex items-center gap-1">
-                              <span className="text-amber-400">❖</span> Featured
-                            </span>
+                            <motion.div
+                              whileHover={{ scale: 1.08, y: -2 }}
+                              whileTap={{ scale: 0.95 }}
+                              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                              className="group/featured px-3.5 py-1 rounded-full text-xs font-semibold bg-[#181926]/95 text-amber-300 border border-amber-500/70 backdrop-blur-md flex items-center gap-1.5 shadow-md hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] hover:border-amber-400 cursor-pointer transition-all duration-300 select-none"
+                            >
+                              <motion.span
+                                animate={{ rotate: [0, 15, -15, 0] }}
+                                transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                                whileHover={{ rotate: 180, scale: 1.3 }}
+                                className="inline-flex items-center justify-center text-amber-400 group-hover/featured:text-amber-300 transition-colors"
+                              >
+                                <Sparkles className="w-3.5 h-3.5" />
+                              </motion.span>
+                              <span className="tracking-wide">Featured</span>
+                            </motion.div>
                           )}
                         </div>
                       </div>

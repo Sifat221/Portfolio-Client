@@ -50,10 +50,22 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                   {project.category || 'Mobile App'}
                 </span>
                 {project.isFeatured && (
-                  <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 backdrop-blur-md flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-amber-400" />
-                    Featured App
-                  </span>
+                  <motion.div
+                    whileHover={{ scale: 1.08, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                    className="group/featured px-3.5 py-1 rounded-full text-xs font-semibold bg-[#181926]/95 text-amber-300 border border-amber-500/70 backdrop-blur-md flex items-center gap-1.5 shadow-md hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] hover:border-amber-400 cursor-pointer transition-all duration-300 select-none"
+                  >
+                    <motion.span
+                      animate={{ rotate: [0, 15, -15, 0] }}
+                      transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                      whileHover={{ rotate: 180, scale: 1.3 }}
+                      className="inline-flex items-center justify-center text-amber-400 group-hover/featured:text-amber-300 transition-colors"
+                    >
+                      <Sparkles className="w-3.5 h-3.5" />
+                    </motion.span>
+                    <span className="tracking-wide">Featured App</span>
+                  </motion.div>
                 )}
               </div>
 
