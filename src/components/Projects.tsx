@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Smartphone, ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight, Layout, Brain, Code, Sparkles } from 'lucide-react';
 import { IProject } from '../types/portfolio';
@@ -52,8 +52,18 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
     return projects;
   };
 
+  const [isMobile, setIsMobile] = useState<boolean>(() => typeof window !== 'undefined' && window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const filteredProjects = getFilteredProjects();
-  const itemsPerPage = 2;
+  const itemsPerPage = isMobile ? 1 : 2;
   const maxIndex = Math.max(0, filteredProjects.length - itemsPerPage);
 
   const handleTabChange = (tabId: string) => {
