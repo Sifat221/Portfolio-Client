@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, MoreVertical, X } from 'lucide-react';
+import { Sun, Moon, Menu, X } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { GooeyNav } from './GooeyNav';
 import { useTheme } from '../context/ThemeContext';
@@ -18,14 +18,14 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
   const navLinks = [
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
+    { name: 'Education', href: '#education' },
     { name: 'Projects', href: '#projects' },
     { name: 'Experience', href: '#experience' },
-    { name: 'Education', href: '#education' },
     { name: 'Contact', href: '#contact' },
   ];
 
   useEffect(() => {
-    const sections = ['about', 'skills', 'projects', 'experience', 'education', 'contact'];
+    const sections = ['about', 'skills', 'education', 'projects', 'experience', 'contact'];
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -43,6 +43,18 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Lock body scroll when mobile menu overlay is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
 
   const activeIndex = Math.max(0, navLinks.findIndex((l) => l.href === `#${activeSection}`));
 
@@ -80,7 +92,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
             </div>
           </a>
 
-          {/* Center Pill Navigation (Desktop & Landscape Rotation) */}
+          {/* Center Navigation Bar (Desktop & Landscape Rotation) */}
           <div className="hidden md:block">
             <GooeyNav
               items={navLinks.map((link) => ({ label: link.name, href: link.href }))}
@@ -90,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
             />
           </div>
 
-          {/* Right Action Buttons & Mobile 3-Dots Menu */}
+          {/* Right Action Buttons & Mobile Hamburger Button */}
           <div className="flex items-center gap-2.5 sm:gap-3">
             {/* Theme Toggle Button */}
             <button
@@ -115,40 +127,66 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
               <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </a>
 
-            {/* 3-Dots Mobile Menu Trigger Button (Portrait Mobile View) */}
+            {/* Mobile Hamburger Button (3 Horizontal Lines matching Image 1) */}
             <div className="md:hidden flex items-center">
               <button
-                onClick={() => setMobileMenuOpen((prev) => !prev)}
-                className={`p-2.5 rounded-full transition-all shadow-md active:scale-95 flex items-center justify-center border ${
-                  mobileMenuOpen
-                    ? 'bg-slate-800 text-white border-[#9B8FCD]'
-                    : 'glass-card border-slate-700/60 text-slate-200 hover:text-white hover:border-[#9B8FCD]'
-                }`}
-                aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open 3-dots navigation menu'}
-                title="Navigation Options"
+                onClick={() => setMobileMenuOpen(true)}
+                className="p-2.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-slate-200 hover:text-white hover:border-[#9B8FCD] shadow-lg active:scale-95 transition-all flex items-center justify-center cursor-pointer"
+                aria-label="Open mobile menu"
               >
-                {mobileMenuOpen ? (
-                  <X className="w-5 h-5 text-[#9B8FCD]" />
-                ) : (
-                  <MoreVertical className="w-5 h-5 text-[#9B8FCD]" />
-                )}
+                <Menu className="w-5 h-5 text-slate-200" />
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Animated Mobile 3-Dots Dropdown Menu (Pill Bar matching user screenshot) */}
+      {/* Full-screen Mobile Navigation Drawer Overlay (matching Image 2) */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="md:hidden absolute top-full left-0 right-0 p-4 bg-[#090D16]/95 backdrop-blur-2xl border-b border-slate-800/80 shadow-2xl z-50"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="fixed inset-0 z-50 bg-[#090D16]/98 backdrop-blur-2xl flex flex-col p-6 overflow-y-auto"
           >
-            <div className="max-w-md mx-auto flex flex-wrap items-center justify-center gap-2 py-2">
+            {/* Top Header Row matching Image 2 */}
+            <div className="flex items-center justify-between pb-6 border-b border-slate-800/80">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#9B8FCD] to-indigo-600 p-0.5 shadow-lg flex items-center justify-center shrink-0">
+                  <img
+                    src={personal.profilePhoto || personal.bannerPhoto || "/Profile.jpg"}
+                    alt={personal.name}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/Profile.jpg";
+                    }}
+                    className="w-full h-full object-cover rounded-[14px]"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-lg font-bold text-white tracking-tight">
+                    {personal.name}
+                  </span>
+                  <span className="text-xs font-semibold text-[#9B8FCD] tracking-wide">
+                    Flutter & AI Engineer
+                  </span>
+                </div>
+              </div>
+
+              {/* Close Button X matching Image 2 */}
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-slate-300 hover:text-white hover:border-[#9B8FCD] transition-all shadow-md active:scale-95 cursor-pointer"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5 text-slate-300" />
+              </button>
+            </div>
+
+            {/* Vertical Navigation Links List matching Image 2 */}
+            <div className="flex flex-col gap-6 pt-8 px-2">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href.replace('#', '');
                 return (
@@ -164,13 +202,16 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                         target.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                    className={`text-lg font-semibold tracking-wide transition-all duration-200 flex items-center justify-between ${
                       isActive
-                        ? 'bg-white text-slate-950 shadow-lg scale-105 font-extrabold'
-                        : 'text-slate-200 hover:text-white hover:bg-slate-800/80 border border-slate-700/60 font-semibold'
+                        ? 'text-[#9B8FCD] font-bold text-xl translate-x-1'
+                        : 'text-slate-300 hover:text-white hover:translate-x-1'
                     }`}
                   >
-                    {link.name}
+                    <span>{link.name}</span>
+                    {isActive && (
+                      <span className="w-2 h-2 rounded-full bg-[#9B8FCD] shadow-[0_0_10px_#9B8FCD]" />
+                    )}
                   </a>
                 );
               })}
