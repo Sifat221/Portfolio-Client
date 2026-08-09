@@ -25,11 +25,21 @@ export const AdminFormModal: React.FC<AdminFormModalProps> = ({
 
   useEffect(() => {
     if (initialData) {
-      setFormData({ ...initialData });
+      const data = { ...initialData };
+      if (data.isFeatured !== undefined) {
+        data.isFeatured = (data.isFeatured === true || data.isFeatured === 'true' || data.isFeatured === 'Yes') ? 'Yes' : 'No';
+      }
+      setFormData(data);
     } else {
       const empty: Record<string, any> = {};
       fields.forEach((f) => {
-        empty[f.key] = f.type === 'array' ? [] : '';
+        if (f.key === 'isFeatured') {
+          empty[f.key] = 'Yes';
+        } else if (f.key === 'category') {
+          empty[f.key] = (f.options && f.options.length > 0) ? f.options[0] : 'Development';
+        } else {
+          empty[f.key] = f.type === 'array' ? [] : '';
+        }
       });
       setFormData(empty);
     }
@@ -46,7 +56,13 @@ export const AdminFormModal: React.FC<AdminFormModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    const processed = { ...formData };
+    fields.forEach((f) => {
+      if (f.key === 'isFeatured') {
+        processed.isFeatured = processed.isFeatured === 'Yes' || processed.isFeatured === true || processed.isFeatured === 'true';
+      }
+    });
+    onSave(processed);
     onClose();
   };
 

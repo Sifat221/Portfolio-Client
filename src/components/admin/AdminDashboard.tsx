@@ -20,6 +20,9 @@ import {
   ExternalLink,
   Send,
   MessageSquare,
+  Layout,
+  Brain,
+  Code,
 } from 'lucide-react';
 import { IPersonalProfile, IProject, ISkill, IExperience, IEducation, ICertification, IAchievement, IGalleryPhoto, IContactMessage } from '../../types/portfolio';
 import { ProfileEditor } from './ProfileEditor';
@@ -79,6 +82,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     section: 'projects',
   });
 
+  const [projectAdminCategory, setProjectAdminCategory] = useState<string>('All');
   const [toast, setToast] = useState<string | null>(null);
 
   // Quick Reply Modal State
@@ -97,8 +101,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setTimeout(() => setToast(null), 3000);
   };
 
-  const handleOpenAdd = (section: any) => {
-    setModalState({ isOpen: true, section, item: undefined });
+  const handleOpenAdd = (section: any, defaultCategory?: string) => {
+    const defaultItem = defaultCategory ? { category: defaultCategory, isFeatured: true } : undefined;
+    setModalState({ isOpen: true, section, item: defaultItem });
   };
 
   const handleOpenEdit = (section: any, item: any) => {
@@ -163,17 +168,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     switch (section) {
       case 'projects':
         return {
-          title: modalState.item ? 'Edit Project' : 'Add New Project',
+          title: modalState.item?.id ? 'Edit Project' : modalState.item?.category ? `Add New ${modalState.item.category} Project` : 'Add New Project',
           fields: [
             { key: 'title', label: 'Title', type: 'text' as const, required: true },
             { key: 'tagline', label: 'Tagline', type: 'text' as const },
             { key: 'description', label: 'Description', type: 'textarea' as const, required: true },
+            { key: 'category', label: 'Project Section / Category (Website Tab)', type: 'select' as const, options: ['Design', 'AI & Machine Learning', 'Development'], required: true },
+            { key: 'isFeatured', label: 'Featured Badge (Golden Sparkle Badge)', type: 'select' as const, options: ['Yes', 'No'], required: true },
             { key: 'techStack', label: 'Tech Stack (comma separated)', type: 'array' as const, required: true },
             { key: 'features', label: 'Key Features (comma separated)', type: 'array' as const },
             { key: 'githubUrl', label: 'GitHub Repository URL', type: 'text' as const },
             { key: 'demoUrl', label: 'Live Demo URL', type: 'text' as const },
             { key: 'imageUrl', label: 'Project Cover Image (Drag & Drop File or URL)', type: 'image' as const },
-            { key: 'category', label: 'Category', type: 'text' as const },
           ],
         };
       case 'skills':
@@ -512,7 +518,148 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
             )}
 
-            {activeTab !== 'profile' && activeTab !== 'messages' && (
+            {activeTab === 'projects' && (
+              <div className="space-y-6">
+                {/* Header Card with Category Quick Add Buttons */}
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-slate-900/80 p-5 rounded-3xl border border-slate-800 shadow-lg">
+                  <div className="space-y-1">
+                    <h3 className="text-base font-bold text-white font-mono flex items-center gap-2">
+                      <FolderPlus className="w-5 h-5 text-[#9B8FCD]" /> Manage Projects & Categorized Portfolios
+                    </h3>
+                    <p className="text-xs text-slate-400">
+                      Add projects directly under <span className="text-purple-300 font-bold">Design</span>, <span className="text-cyan-300 font-bold">AI & Machine Learning</span>, or <span className="text-emerald-300 font-bold">Development</span> to feature them in specific website sections.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 flex-wrap shrink-0">
+                    <button
+                      onClick={() => handleOpenAdd('projects', 'Design')}
+                      className="px-3.5 py-2 rounded-xl text-xs font-bold text-purple-300 bg-purple-950/60 border border-purple-500/40 hover:bg-purple-900/50 hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 shadow-sm"
+                    >
+                      <Layout className="w-3.5 h-3.5" />
+                      <span>+ Add Design</span>
+                    </button>
+                    <button
+                      onClick={() => handleOpenAdd('projects', 'AI & Machine Learning')}
+                      className="px-3.5 py-2 rounded-xl text-xs font-bold text-cyan-300 bg-cyan-950/60 border border-cyan-500/40 hover:bg-cyan-900/50 hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 shadow-sm"
+                    >
+                      <Brain className="w-3.5 h-3.5" />
+                      <span>+ Add AI/ML</span>
+                    </button>
+                    <button
+                      onClick={() => handleOpenAdd('projects', 'Development')}
+                      className="px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-500/40 hover:bg-emerald-900/50 hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 shadow-sm"
+                    >
+                      <Code className="w-3.5 h-3.5" />
+                      <span>+ Add Dev</span>
+                    </button>
+                    <button
+                      onClick={() => handleOpenAdd('projects')}
+                      className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#9B8FCD] to-indigo-600 shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>+ Add New Project</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Category Sub-Tabs in Admin */}
+                <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
+                  {[
+                    { id: 'All', label: 'All Projects', icon: <FolderPlus className="w-3.5 h-3.5" />, count: projects.length },
+                    { id: 'Design', label: 'Design', icon: <Layout className="w-3.5 h-3.5" />, count: projects.filter(p => p.category === 'Design').length },
+                    { id: 'AI & Machine Learning', label: 'AI & Machine Learning', icon: <Brain className="w-3.5 h-3.5" />, count: projects.filter(p => p.category === 'AI & Machine Learning' || p.category === 'AI').length },
+                    { id: 'Development', label: 'Development', icon: <Code className="w-3.5 h-3.5" />, count: projects.filter(p => p.category === 'Development' || p.category === 'Healthcare' || p.category === 'E-Commerce' || p.category === 'Productivity' || !p.category).length },
+                  ].map(tab => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setProjectAdminCategory(tab.id)}
+                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+                        projectAdminCategory === tab.id
+                          ? 'bg-[#9B8FCD]/20 text-[#9B8FCD] border border-[#9B8FCD]/50 shadow-sm'
+                          : 'text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent'
+                      }`}
+                    >
+                      {tab.icon}
+                      <span>{tab.label}</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-300 font-mono font-bold">
+                        {tab.count}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Filtered Project Card List */}
+                <div className="space-y-3">
+                  {projects
+                    .filter(p => {
+                      if (projectAdminCategory === 'All') return true;
+                      if (projectAdminCategory === 'Design') return p.category === 'Design';
+                      if (projectAdminCategory === 'AI & Machine Learning') return p.category === 'AI & Machine Learning' || p.category === 'AI';
+                      if (projectAdminCategory === 'Development') return p.category === 'Development' || p.category === 'Healthcare' || p.category === 'E-Commerce' || p.category === 'Productivity' || !p.category;
+                      return true;
+                    })
+                    .map((item: any, i: number) => (
+                      <div
+                        key={item.id || i}
+                        className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-center justify-between gap-4 hover:border-slate-700 transition-colors"
+                      >
+                        <div className="flex items-center gap-4 min-w-0">
+                          {item.imageUrl && (
+                            <img
+                              src={item.imageUrl}
+                              alt={item.title}
+                              className="w-14 h-14 rounded-xl object-cover border border-slate-700 shrink-0"
+                            />
+                          )}
+                          <div className="space-y-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="font-bold text-white text-sm truncate">{item.title}</h4>
+                              {item.category && (
+                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold border ${
+                                  item.category === 'Design' ? 'bg-purple-950/60 text-purple-300 border-purple-500/40' :
+                                  item.category === 'AI & Machine Learning' ? 'bg-cyan-950/60 text-cyan-300 border-cyan-500/40' :
+                                  'bg-emerald-950/60 text-emerald-300 border-emerald-500/40'
+                                }`}>
+                                  {item.category}
+                                </span>
+                              )}
+                              {item.isFeatured && (
+                                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#181926] text-amber-300 border border-amber-500/70 flex items-center gap-1">
+                                  <Sparkles className="w-3 h-3 text-amber-400" /> Featured
+                                </span>
+                              )}
+                            </div>
+                            {item.tagline && (
+                              <p className="text-xs text-[#9B8FCD] font-mono truncate">{item.tagline}</p>
+                            )}
+                            <p className="text-xs text-slate-400 line-clamp-1">{item.description}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <button
+                            onClick={() => handleOpenEdit('projects', item)}
+                            className="p-2 rounded-xl text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 transition-colors"
+                            title="Edit"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete('projects', item.id || String(i))}
+                            className="p-2 rounded-xl text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab !== 'profile' && activeTab !== 'messages' && activeTab !== 'projects' && (
               <div className="space-y-5">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-white font-mono capitalize">
@@ -530,7 +677,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 {/* Section Table View */}
                 <div className="space-y-3">
                   {(activeTab === 'gallery' ? galleryPhotos :
-                    activeTab === 'projects' ? projects :
                     activeTab === 'skills' ? skills :
                     activeTab === 'experience' ? experience :
                     activeTab === 'education' ? education :

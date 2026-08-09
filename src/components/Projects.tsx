@@ -28,13 +28,32 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const getFilteredProjects = () => {
     if (activeTab === 'All') return projects;
     if (activeTab === 'Design') {
-      return projects.filter((p) => p.category === 'Design' || p.category === 'Healthcare' || p.category === 'Mobile Development');
+      return projects.filter(
+        (p) =>
+          p.category === 'Design' ||
+          p.category === 'Healthcare' ||
+          p.category === 'Mobile Development'
+      );
     }
     if (activeTab === 'AI & Machine Learning') {
-      return projects.filter((p) => p.category === 'AI & Machine Learning' || p.title.includes('MedBridge') || p.description.includes('health'));
+      return projects.filter(
+        (p) =>
+          p.category === 'AI & Machine Learning' ||
+          p.category === 'AI' ||
+          p.category === 'Machine Learning' ||
+          p.title.includes('MedBridge') ||
+          p.description?.toLowerCase().includes('machine learning') ||
+          p.description?.toLowerCase().includes('ai')
+      );
     }
     if (activeTab === 'Development') {
-      return projects.filter((p) => p.category === 'Development' || p.category === 'E-Commerce' || p.category === 'Productivity');
+      return projects.filter(
+        (p) =>
+          p.category === 'Development' ||
+          p.category === 'E-Commerce' ||
+          p.category === 'Productivity' ||
+          !p.category
+      );
     }
     return projects;
   };
