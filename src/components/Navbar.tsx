@@ -77,8 +77,8 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
             />
           </div>
 
-          {/* Right Action Buttons & Theme Toggle */}
-          <div className="flex items-center gap-3">
+          {/* Right Action Buttons & Mobile Menu */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
             {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
@@ -101,30 +101,30 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
               <span className="relative z-10">Let's Talk</span>
               <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </a>
-          </div>
 
-          {/* Mobile StaggeredMenu Integration */}
-          <div className="md:hidden">
-            <StaggeredMenu
-              position="right"
-              items={[
-                { label: 'About', link: '#about' },
-                { label: 'Skills', link: '#skills' },
-                { label: 'Projects', link: '#projects' },
-                { label: 'Experience', link: '#experience' },
-                { label: 'Education', link: '#education' },
-                { label: 'Contact', link: '#contact' },
-              ]}
-              socialItems={[
-                { label: 'GitHub', link: personal.github || 'https://github.com' },
-                { label: 'LinkedIn', link: personal.linkedin || 'https://linkedin.com' },
-                { label: 'Facebook', link: personal.facebook || 'https://facebook.com' },
-              ]}
-              displaySocials={true}
-              displayItemNumbering={true}
-              colors={['#9B8FCD', '#4F46E5', '#090D16']}
-              accentColor="#9B8FCD"
-            />
+            {/* Mobile StaggeredMenu Integration */}
+            <div className="md:hidden flex items-center">
+              <StaggeredMenu
+                position="right"
+                items={[
+                  { label: 'About', link: '#about' },
+                  { label: 'Skills', link: '#skills' },
+                  { label: 'Projects', link: '#projects' },
+                  { label: 'Experience', link: '#experience' },
+                  { label: 'Education', link: '#education' },
+                  { label: 'Contact', link: '#contact' },
+                ]}
+                socialItems={[
+                  { label: 'GitHub', link: personal.github || 'https://github.com' },
+                  { label: 'LinkedIn', link: personal.linkedin || 'https://linkedin.com' },
+                  { label: 'Facebook', link: personal.facebook || 'https://facebook.com' },
+                ]}
+                displaySocials={true}
+                displayItemNumbering={true}
+                colors={['#9B8FCD', '#4F46E5', '#090D16']}
+                accentColor="#9B8FCD"
+              />
+            </div>
           </div>
         </div>
       </div>

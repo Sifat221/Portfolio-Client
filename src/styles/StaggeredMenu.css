@@ -17,16 +17,13 @@
 }
 
 .staggered-menu-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem 2rem;
+  justify-content: flex-end;
+  padding: 0;
   background: transparent;
-  pointer-events: none;
+  pointer-events: auto;
   z-index: 20;
 }
 
@@ -35,9 +32,7 @@
 }
 
 .sm-logo {
-  display: flex;
-  align-items: center;
-  user-select: none;
+  display: none !important;
 }
 
 .sm-logo-img {
