@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, MoreVertical, X, FileText, Send } from 'lucide-react';
+import { Sun, Moon, Menu, X, FileText, Send, Flame } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { GooeyNav } from './GooeyNav';
 import { useTheme } from '../context/ThemeContext';
@@ -71,17 +71,17 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
     <AnimatePresence>
       {mobileMenuOpen && (
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -25 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.2, ease: 'easeOut' }}
+          exit={{ opacity: 0, y: -25 }}
+          transition={{ duration: 0.22, ease: 'easeOut' }}
           style={{ zIndex: 99999 }}
-          className="fixed inset-0 w-screen h-screen bg-[#090D16] flex flex-col p-6 overflow-y-auto"
+          className="fixed inset-0 w-screen h-screen bg-[#090D16]/98 backdrop-blur-2xl flex flex-col p-6 overflow-y-auto"
         >
-          {/* Top Drawer Header */}
+          {/* Top Drawer Header matching Image 2 */}
           <div className="flex items-center justify-between pb-6 border-b border-slate-800/80">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-[#9B8FCD]/60 shadow-md shrink-0 bg-slate-900">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#9B8FCD] to-indigo-600 p-0.5 shadow-lg flex items-center justify-center shrink-0">
                 <img
                   src={personal.profilePhoto || personal.bannerPhoto || "/Profile.jpg"}
                   alt={personal.name}
@@ -89,31 +89,31 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                     const target = e.target as HTMLImageElement;
                     target.src = "/Profile.jpg";
                   }}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-[14px]"
                 />
               </div>
               <div className="flex flex-col leading-tight">
                 <span className="text-lg font-bold text-white tracking-tight flex items-center">
                   {personal.name}<span className="text-[#9B8FCD]">.</span>
                 </span>
-                <span className="text-xs font-semibold text-[#9B8FCD] tracking-wide">
+                <span className="text-xs font-semibold text-[#9B8FCD] tracking-wide mt-0.5">
                   Flutter & AI Engineer
                 </span>
               </div>
             </div>
 
-            {/* Close Button X */}
+            {/* Close Button X inside dark glass card matching Image 2 */}
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-slate-300 hover:text-white hover:border-[#9B8FCD] transition-all shadow-md active:scale-95 cursor-pointer"
+              className="p-2.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-slate-300 hover:text-white hover:border-[#9B8FCD] transition-all shadow-md active:scale-95 cursor-pointer"
               aria-label="Close menu"
             >
               <X className="w-5 h-5 text-slate-300" />
             </button>
           </div>
 
-          {/* Vertical Navigation Links List */}
-          <div className="flex flex-col gap-4 pt-6 px-2">
+          {/* Vertical Navigation Links List matching Image 2 */}
+          <div className="flex flex-col gap-3 pt-6 px-1">
             {navLinks.map((link, idx) => {
               const isActive = activeSection === link.href.replace('#', '');
               return (
@@ -132,19 +132,23 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                       target.scrollIntoView({ behavior: 'smooth' });
                     }
                   }}
-                  className={`text-xl font-bold tracking-wide transition-all duration-200 flex items-center justify-between py-2 border-b border-slate-800/40 ${
+                  className={`text-lg font-semibold tracking-wide transition-all duration-200 flex items-center gap-3 py-2.5 px-3 rounded-2xl ${
                     isActive
-                      ? 'text-[#9B8FCD] translate-x-1'
-                      : 'text-slate-300 hover:text-white hover:translate-x-1'
+                      ? 'text-amber-400 font-bold bg-amber-500/10 border border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.15)] translate-x-1'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-800/40 hover:translate-x-1'
                   }`}
                 >
-                  <span className="flex items-center gap-3">
-                    <span className="text-xs font-mono text-slate-500 font-bold">0{idx + 1}.</span>
-                    <span>{link.name}</span>
-                  </span>
-                  {isActive && (
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#9B8FCD] shadow-[0_0_10px_#9B8FCD]" />
-                  )}
+                  {isActive ? (
+                    <motion.span
+                      initial={{ scale: 0.5, rotate: -20 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                      className="inline-flex items-center text-amber-400 shrink-0"
+                    >
+                      <Flame className="w-4 h-4 text-amber-400 fill-amber-400/30 animate-pulse" />
+                    </motion.span>
+                  ) : null}
+                  <span>{link.name}</span>
                 </motion.a>
               );
             })}
@@ -223,7 +227,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
               />
             </div>
 
-            {/* Right Action Buttons & Mobile 3-Dots Button */}
+            {/* Right Action Buttons & Mobile Menu Icon Button matching Image 1 */}
             <div className="flex items-center gap-2.5 sm:gap-3">
               {/* Theme Toggle Button */}
               <button
@@ -248,7 +252,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                 <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               </a>
 
-              {/* Mobile 3-Dots Menu Button */}
+              {/* Mobile Menu Toggle Button (3 Horizontal Lines matching Image 1) */}
               <div className="md:hidden flex items-center">
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -258,7 +262,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                   {mobileMenuOpen ? (
                     <X className="w-5 h-5 text-[#9B8FCD]" />
                   ) : (
-                    <MoreVertical className="w-5 h-5 text-slate-200" />
+                    <Menu className="w-5 h-5 text-slate-200" />
                   )}
                 </button>
               </div>
