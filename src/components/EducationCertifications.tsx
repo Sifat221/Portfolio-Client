@@ -218,7 +218,7 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
 
         {/* 3. INTERACTIVE CAMPUS PHOTO GALLERY GRID (Exact Layout of Image 2) */}
         <div className="pt-6 border-t border-slate-800/80">
-          <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-[#040711]/90 border border-slate-800/80 shadow-2xl space-y-8 relative overflow-hidden">
+          <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-[#080D19] glass-card border border-slate-800/80 shadow-2xl space-y-8 relative overflow-hidden">
             {/* Background subtle glow */}
             <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -229,15 +229,15 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                   <ImageIcon className="w-3.5 h-3.5 text-cyan-400" />
                   <span>INTERACTIVE PHOTO GALLERY</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight font-serif flex items-center gap-2 flex-wrap">
-                  <span>Memorable</span>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight font-serif flex items-center gap-2 flex-wrap">
+                  <span className="text-[#F8FAFC] dark:text-white">Memorable</span>
                   <span className="text-[#38BDF8]">Campus Moments</span>
                   <span className="text-cyan-400 font-light animate-pulse ml-0.5">|</span>
                 </h2>
               </div>
 
               {/* Right Side Pill Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#071322]/90 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-semibold shadow-lg backdrop-blur-sm hover:border-cyan-400 hover:bg-cyan-950/80 transition-all cursor-pointer shrink-0">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#071322] border border-cyan-500/40 text-cyan-300 text-xs font-mono font-semibold shadow-lg backdrop-blur-sm hover:border-cyan-400 hover:bg-cyan-950/80 transition-all cursor-pointer shrink-0">
                 <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
                 <span>University Life</span>
               </div>
@@ -255,7 +255,7 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                     viewport={{ once: false }}
                     transition={{ duration: 0.4, delay: index * 0.1 }}
                     onClick={() => setActiveModalImage({ url: photo.url, title: photo.title, subtitle: subtitle })}
-                    className="glass-card bg-[#090D18] rounded-2xl border border-slate-800/90 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 group cursor-pointer overflow-hidden flex flex-col justify-between"
+                    className="glass-card bg-[#0D1322] rounded-2xl border border-slate-800/90 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 group cursor-pointer overflow-hidden flex flex-col justify-between"
                   >
                     {/* Card Image */}
                     <div className="relative h-48 sm:h-52 lg:h-56 w-full overflow-hidden bg-slate-900 shrink-0">
@@ -264,18 +264,18 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                         alt={photo.title}
                         className="w-full h-full object-cover filter grayscale contrast-105 brightness-95 group-hover:grayscale-0 group-hover:scale-105 group-hover:brightness-100 transition-all duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#090D18] via-transparent to-transparent opacity-80"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0D1322] via-transparent to-transparent opacity-80"></div>
                     </div>
 
                     {/* Card Content */}
-                    <div className="p-5 sm:p-6 space-y-1.5 flex-1 flex flex-col justify-between bg-[#090D18]">
+                    <div className="p-5 sm:p-6 space-y-1.5 flex-1 flex flex-col justify-between bg-[#0D1322]">
                       <div>
-                        <h3 className="font-serif text-base sm:text-lg font-bold text-white group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
+                        <h3 className="font-serif text-base sm:text-lg font-bold text-[#F8FAFC] dark:text-white group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
                           {index === 1 && <span className="text-cyan-400 mr-1 font-sans">•</span>}
                           {photo.title}
                         </h3>
                       </div>
-                      <p className="text-xs text-slate-400 font-sans tracking-wide pt-1">
+                      <p className="text-xs text-slate-400 dark:text-slate-400 font-sans tracking-wide pt-1">
                         {subtitle}
                       </p>
                     </div>
