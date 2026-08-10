@@ -493,10 +493,10 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
 
 export async function getProjects(): Promise<IProject[]> {
   const saved = localStorage.getItem('portfolio_projects');
-  if (saved) {
+  if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
         return parsed;
       }
     } catch (e) {
@@ -513,10 +513,28 @@ export async function getProjects(): Promise<IProject[]> {
   } catch (err) {
     console.warn("API Call /projects fallback active:", err);
   }
+
+  try {
+    localStorage.setItem('portfolio_projects', JSON.stringify(defaultProjects));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
   return defaultProjects;
 }
 
 export async function getSkills(): Promise<ISkill[]> {
+  const saved = localStorage.getItem('portfolio_skills');
+  if (saved !== null) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn("Failed to parse stored skills", e);
+    }
+  }
+
   try {
     const response = await api.get('/skills');
     if (
@@ -524,36 +542,62 @@ export async function getSkills(): Promise<ISkill[]> {
       Array.isArray(response.data?.data) &&
       response.data.data.length >= 10
     ) {
+      localStorage.setItem('portfolio_skills', JSON.stringify(response.data.data));
       return response.data.data;
     }
   } catch (err) {
     console.warn("API Call /skills fallback active:", err);
   }
+
+  try {
+    localStorage.setItem('portfolio_skills', JSON.stringify(defaultSkills));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
   return defaultSkills;
 }
 
 export async function getExperience(): Promise<IExperience[]> {
+  const saved = localStorage.getItem('portfolio_experience');
+  if (saved !== null) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn("Failed to parse stored experience", e);
+    }
+  }
+
   try {
     const response = await api.get('/experience');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
+      localStorage.setItem('portfolio_experience', JSON.stringify(response.data.data));
       return response.data.data;
     }
   } catch (err) {
     console.warn("API Call /experience fallback active:", err);
   }
+
+  try {
+    localStorage.setItem('portfolio_experience', JSON.stringify(defaultExperience));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
   return defaultExperience;
 }
 
 export async function getEducation(): Promise<IEducation[]> {
-  if (inMemoryEducation && inMemoryEducation.length > 0) {
+  if (inMemoryEducation) {
     return inMemoryEducation;
   }
 
   const saved = localStorage.getItem('portfolio_education');
-  if (saved) {
+  if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
         inMemoryEducation = parsed;
         return parsed;
       }
@@ -583,15 +627,21 @@ export async function getEducation(): Promise<IEducation[]> {
   } catch (err) {
     console.warn("API Call /education fallback active:", err);
   }
+
+  try {
+    localStorage.setItem('portfolio_education', JSON.stringify(defaultEducation));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
   return defaultEducation;
 }
 
 export async function getCertifications(): Promise<ICertification[]> {
   const saved = localStorage.getItem('portfolio_certifications');
-  if (saved) {
+  if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
         return parsed;
       }
     } catch (e) {
@@ -608,17 +658,42 @@ export async function getCertifications(): Promise<ICertification[]> {
   } catch (err) {
     console.warn("API Call /certifications fallback active:", err);
   }
+
+  try {
+    localStorage.setItem('portfolio_certifications', JSON.stringify(defaultCertifications));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
   return defaultCertifications;
 }
 
 export async function getAchievements(): Promise<IAchievement[]> {
+  const saved = localStorage.getItem('portfolio_achievements');
+  if (saved !== null) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn("Failed to parse stored achievements data", e);
+    }
+  }
+
   try {
     const response = await api.get('/achievements');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
+      localStorage.setItem('portfolio_achievements', JSON.stringify(response.data.data));
       return response.data.data;
     }
   } catch (err) {
     console.warn("API Call /achievements fallback active:", err);
+  }
+
+  try {
+    localStorage.setItem('portfolio_achievements', JSON.stringify(defaultAchievements));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
   }
   return defaultAchievements;
 }
@@ -827,14 +902,126 @@ export async function deleteProject(id: string): Promise<boolean> {
 }
 
 // Skills CRUD
-export const createSkill = (data: Partial<ISkill>) => createEntity<ISkill>('/skills', data);
-export const updateSkill = (id: string, data: Partial<ISkill>) => updateEntity<ISkill>('/skills', id, data);
-export const deleteSkill = (id: string) => deleteEntity('/skills', id);
+export async function createSkill(data: Partial<ISkill>): Promise<ISkill> {
+  const current = await getSkills();
+  const newSkill: ISkill = {
+    id: data.id || `skill_${Date.now()}`,
+    name: data.name || 'New Skill',
+    category: data.category || 'Development',
+    icon: data.icon || '',
+    proficiency: data.proficiency || 'Advanced',
+  };
+  const updated = [newSkill, ...current];
+  try {
+    localStorage.setItem('portfolio_skills', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await createEntity<ISkill>('/skills', data);
+    if (res && res.id) return res;
+  } catch (e) {
+    console.warn("Backend /skills create error:", e);
+  }
+  return newSkill;
+}
+
+export async function updateSkill(id: string, data: Partial<ISkill>): Promise<ISkill> {
+  const current = await getSkills();
+  const updated = current.map((item) => (item.id === id ? { ...item, ...data } : item));
+  try {
+    localStorage.setItem('portfolio_skills', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await updateEntity<ISkill>('/skills', id, data);
+    if (res && res.id) return res;
+  } catch (e) {
+    console.warn("Backend /skills update error:", e);
+  }
+  const found = updated.find((item) => item.id === id);
+  return found || ({ id, ...data } as ISkill);
+}
+
+export async function deleteSkill(id: string): Promise<boolean> {
+  const current = await getSkills();
+  const updated = current.filter((item) => item.id !== id);
+  try {
+    localStorage.setItem('portfolio_skills', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    await deleteEntity('/skills', id);
+  } catch (e) {
+    console.warn("Backend /skills delete error:", e);
+  }
+  return true;
+}
 
 // Experience CRUD
-export const createExperience = (data: Partial<IExperience>) => createEntity<IExperience>('/experience', data);
-export const updateExperience = (id: string, data: Partial<IExperience>) => updateEntity<IExperience>('/experience', id, data);
-export const deleteExperience = (id: string) => deleteEntity('/experience', id);
+export async function createExperience(data: Partial<IExperience>): Promise<IExperience> {
+  const current = await getExperience();
+  const newExp: IExperience = {
+    id: data.id || `exp_${Date.now()}`,
+    role: data.role || 'Software Engineer',
+    company: data.company || 'Company Name',
+    location: data.location || '',
+    startDate: data.startDate || '2023',
+    endDate: data.endDate || 'Present',
+    responsibilities: data.responsibilities || [],
+    technologies: data.technologies || [],
+    impact: data.impact || '',
+  };
+  const updated = [newExp, ...current];
+  try {
+    localStorage.setItem('portfolio_experience', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await createEntity<IExperience>('/experience', data);
+    if (res && res.id) return res;
+  } catch (e) {
+    console.warn("Backend /experience create error:", e);
+  }
+  return newExp;
+}
+
+export async function updateExperience(id: string, data: Partial<IExperience>): Promise<IExperience> {
+  const current = await getExperience();
+  const updated = current.map((item) => (item.id === id ? { ...item, ...data } : item));
+  try {
+    localStorage.setItem('portfolio_experience', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await updateEntity<IExperience>('/experience', id, data);
+    if (res && res.id) return res;
+  } catch (e) {
+    console.warn("Backend /experience update error:", e);
+  }
+  const found = updated.find((item) => item.id === id);
+  return found || ({ id, ...data } as IExperience);
+}
+
+export async function deleteExperience(id: string): Promise<boolean> {
+  const current = await getExperience();
+  const updated = current.filter((item) => item.id !== id);
+  try {
+    localStorage.setItem('portfolio_experience', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    await deleteEntity('/experience', id);
+  } catch (e) {
+    console.warn("Backend /experience delete error:", e);
+  }
+  return true;
+}
 
 // Education CRUD
 export async function createEducation(data: Partial<IEducation>): Promise<IEducation> {
@@ -969,9 +1156,63 @@ export async function deleteCertification(id: string): Promise<boolean> {
 }
 
 // Achievements CRUD
-export const createAchievement = (data: Partial<IAchievement>) => createEntity<IAchievement>('/achievements', data);
-export const updateAchievement = (id: string, data: Partial<IAchievement>) => updateEntity<IAchievement>('/achievements', id, data);
-export const deleteAchievement = (id: string) => deleteEntity('/achievements', id);
+export async function createAchievement(data: Partial<IAchievement>): Promise<IAchievement> {
+  const current = await getAchievements();
+  const newAch: IAchievement = {
+    id: data.id || `ach_${Date.now()}`,
+    title: data.title || 'New Achievement',
+    category: data.category || 'Milestone',
+    description: data.description || '',
+    year: data.year || '2024',
+  };
+  const updated = [newAch, ...current];
+  try {
+    localStorage.setItem('portfolio_achievements', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await createEntity<IAchievement>('/achievements', data);
+    if (res && res.id) return res;
+  } catch (e) {
+    console.warn("Backend /achievements create error:", e);
+  }
+  return newAch;
+}
+
+export async function updateAchievement(id: string, data: Partial<IAchievement>): Promise<IAchievement> {
+  const current = await getAchievements();
+  const updated = current.map((item) => (item.id === id ? { ...item, ...data } : item));
+  try {
+    localStorage.setItem('portfolio_achievements', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await updateEntity<IAchievement>('/achievements', id, data);
+    if (res && res.id) return res;
+  } catch (e) {
+    console.warn("Backend /achievements update error:", e);
+  }
+  const found = updated.find((item) => item.id === id);
+  return found || ({ id, ...data } as IAchievement);
+}
+
+export async function deleteAchievement(id: string): Promise<boolean> {
+  const current = await getAchievements();
+  const updated = current.filter((item) => item.id !== id);
+  try {
+    localStorage.setItem('portfolio_achievements', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    await deleteEntity('/achievements', id);
+  } catch (e) {
+    console.warn("Backend /achievements delete error:", e);
+  }
+  return true;
+}
 
 // Testimonials CRUD
 export const createTestimonial = (data: Partial<ITestimonial>) => createEntity<ITestimonial>('/testimonials', data);
@@ -981,10 +1222,10 @@ export const deleteTestimonial = (id: string) => deleteEntity('/testimonials', i
 // Gallery Photos CRUD
 export async function getGalleryPhotos(): Promise<IGalleryPhoto[]> {
   const saved = localStorage.getItem('portfolio_gallery_photos');
-  if (saved) {
+  if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
         return parsed;
       }
     } catch (e) {
