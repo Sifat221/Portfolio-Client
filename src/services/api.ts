@@ -345,21 +345,27 @@ export const defaultTestimonials: ITestimonial[] = [
 export const defaultGalleryPhotos: IGalleryPhoto[] = [
   {
     id: 'photo_1',
-    title: 'Daffodil International University - Software & App Showcase',
-    caption: 'Presenting Flutter mobile apps & Clean Architecture at DIU CS Department',
-    url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200'
+    title: 'DIU Main Campus & Academic Building',
+    subtitle: 'Campus Life',
+    category: 'Campus Life',
+    caption: 'Daffodil International University main campus environment & modern academic infrastructure',
+    url: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=1200'
   },
   {
     id: 'photo_2',
-    title: 'University Hackathon & Team Engineering',
-    caption: 'Collaborating with peers on real-time mobile app hackathon projects',
-    url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1200'
+    title: 'CSE Project Fair & Research Seminar',
+    subtitle: 'Research & Events',
+    category: 'Research & Events',
+    caption: 'Presenting Flutter mobile applications & engineering projects at DIU CS Department',
+    url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1200'
   },
   {
     id: 'photo_3',
-    title: 'Campus Life & Graduation Milestones',
-    caption: 'B.Sc. in Computer Science & Engineering graduation memories (2022 - 2025)',
-    url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1200'
+    title: 'Academic Excellence & Graduation Milestone',
+    subtitle: 'Milestones',
+    category: 'Milestones',
+    caption: 'B.Sc. in Computer Science & Engineering academic milestones & campus memories',
+    url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200'
   }
 ];
 

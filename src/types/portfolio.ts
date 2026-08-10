@@ -91,6 +91,8 @@ export interface ITestimonial {
 export interface IGalleryPhoto {
   id?: string;
   title: string;
+  subtitle?: string;
+  category?: string;
   caption?: string;
   url: string;
 }

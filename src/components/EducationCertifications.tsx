@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, Award, BookOpen, ExternalLink, Calendar, MapPin, ChevronLeft, ChevronRight, Image as ImageIcon, Sparkles, ZoomIn, X } from 'lucide-react';
+import { GraduationCap, Award, BookOpen, ExternalLink, Calendar, MapPin, Image as ImageIcon, Sparkles, ZoomIn, X } from 'lucide-react';
 import { IEducation, ICertification, IGalleryPhoto } from '../types/portfolio';
 import { defaultGalleryPhotos } from '../services/api';
 import SplitText from './SplitText';
@@ -17,18 +17,9 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
   galleryPhotos,
 }) => {
   const universityPhotos = (galleryPhotos && galleryPhotos.length > 0) ? galleryPhotos : defaultGalleryPhotos;
-  const [currentPhotoIdx, setCurrentPhotoIdx] = useState(0);
 
   // Lightbox Modal state for expanding campus image on click
   const [activeModalImage, setActiveModalImage] = useState<{ url: string; title: string; subtitle: string } | null>(null);
-
-  const handleNextPhoto = () => {
-    setCurrentPhotoIdx((prev) => (prev + 1) % universityPhotos.length);
-  };
-
-  const handlePrevPhoto = () => {
-    setCurrentPhotoIdx((prev) => (prev - 1 + universityPhotos.length) % universityPhotos.length);
-  };
 
   return (
     <section id="education" className="py-24 relative bg-[#090D16] border-t border-slate-800/80">
@@ -225,85 +216,72 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
           </div>
         </div>
 
-        {/* 3. UNIVERSITY MEMORABLE PHOTOS GALLERY CAROUSEL */}
-        <div className="pt-6 space-y-4 border-t border-slate-800/80">
-          <div className="flex items-center justify-between flex-wrap gap-4 pt-4">
-            <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <ImageIcon className="w-5 h-5 text-[#9B8FCD]" />
-                University Memorable Photos Gallery
-              </h3>
-              <p className="text-xs text-slate-400">Campus memories, hackathons, and graduation moments</p>
-            </div>
+        {/* 3. INTERACTIVE CAMPUS PHOTO GALLERY GRID (Exact Layout of Image 2) */}
+        <div className="pt-6 border-t border-slate-800/80">
+          <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-[#040711]/90 border border-slate-800/80 shadow-2xl space-y-8 relative overflow-hidden">
+            {/* Background subtle glow */}
+            <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-            {/* Slider Controls */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handlePrevPhoto}
-                className="p-2.5 rounded-full glass-card border border-slate-700 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] transition-all shadow-md active:scale-95"
-                aria-label="Previous Photo"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-
-              <span className="text-xs font-mono text-slate-300 font-bold px-1">
-                {currentPhotoIdx + 1} of {universityPhotos.length}
-              </span>
-
-              <button
-                onClick={handleNextPhoto}
-                className="p-2.5 rounded-full glass-card border border-slate-700 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] transition-all shadow-md active:scale-95"
-                aria-label="Next Photo"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Embedded Photo Gallery Carousel */}
-          <div className="relative h-72 sm:h-96 rounded-3xl overflow-hidden glass-card border border-slate-800 shadow-2xl">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={universityPhotos[currentPhotoIdx].id}
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.35, ease: 'easeInOut' }}
-                className="relative w-full h-full cursor-pointer"
-                onClick={() => setActiveModalImage({ url: universityPhotos[currentPhotoIdx].url, title: universityPhotos[currentPhotoIdx].title, subtitle: 'University Campus Gallery' })}
-              >
-                <img
-                  src={universityPhotos[currentPhotoIdx].url}
-                  alt={universityPhotos[currentPhotoIdx].title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#090D16] via-[#090D16]/30 to-transparent"></div>
-
-                {/* Caption & Title Overlay */}
-                <div className="absolute bottom-6 left-6 right-6 space-y-1">
-                  <div className="flex items-center gap-1.5 text-xs text-[#9B8FCD] font-mono font-bold">
-                    <Sparkles className="w-4 h-4 text-amber-400" />
-                    <span>{universityPhotos[currentPhotoIdx].title}</span>
-                  </div>
-                  <p className="text-sm text-slate-200 leading-relaxed font-normal max-w-2xl">
-                    {universityPhotos[currentPhotoIdx].caption}
-                  </p>
+            {/* Section Header (Exact Matching Image 2) */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2 text-cyan-400 font-mono text-[11px] sm:text-xs font-bold uppercase tracking-widest">
+                  <ImageIcon className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>INTERACTIVE PHOTO GALLERY</span>
                 </div>
-              </motion.div>
-            </AnimatePresence>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight font-serif flex items-center gap-2 flex-wrap">
+                  <span>Memorable</span>
+                  <span className="text-[#38BDF8]">Campus Moments</span>
+                  <span className="text-cyan-400 font-light animate-pulse ml-0.5">|</span>
+                </h2>
+              </div>
 
-            {/* Indicator Dots */}
-            <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
-              {universityPhotos.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentPhotoIdx(idx)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    currentPhotoIdx === idx ? 'w-8 bg-[#9B8FCD] shadow-sm shadow-[#9B8FCD]' : 'w-2 bg-white/40'
-                  }`}
-                  aria-label={`Go to photo ${idx + 1}`}
-                />
-              ))}
+              {/* Right Side Pill Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#071322]/90 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-semibold shadow-lg backdrop-blur-sm hover:border-cyan-400 hover:bg-cyan-950/80 transition-all cursor-pointer shrink-0">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                <span>University Life</span>
+              </div>
+            </div>
+
+            {/* 3-Column Card Grid (Exact Matching Image 2) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+              {universityPhotos.slice(0, 3).map((photo, index) => {
+                const subtitle = photo.subtitle || photo.category || (index === 0 ? 'Campus Life' : index === 1 ? 'Research & Events' : 'Milestones');
+                return (
+                  <motion.div
+                    key={photo.id || index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    onClick={() => setActiveModalImage({ url: photo.url, title: photo.title, subtitle: subtitle })}
+                    className="glass-card bg-[#090D18] rounded-2xl border border-slate-800/90 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 group cursor-pointer overflow-hidden flex flex-col justify-between"
+                  >
+                    {/* Card Image */}
+                    <div className="relative h-48 sm:h-52 lg:h-56 w-full overflow-hidden bg-slate-900 shrink-0">
+                      <img
+                        src={photo.url}
+                        alt={photo.title}
+                        className="w-full h-full object-cover filter grayscale contrast-105 brightness-95 group-hover:grayscale-0 group-hover:scale-105 group-hover:brightness-100 transition-all duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#090D18] via-transparent to-transparent opacity-80"></div>
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="p-5 sm:p-6 space-y-1.5 flex-1 flex flex-col justify-between bg-[#090D18]">
+                      <div>
+                        <h3 className="font-serif text-base sm:text-lg font-bold text-white group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
+                          {index === 1 && <span className="text-cyan-400 mr-1 font-sans">•</span>}
+                          {photo.title}
+                        </h3>
+                      </div>
+                      <p className="text-xs text-slate-400 font-sans tracking-wide pt-1">
+                        {subtitle}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>
