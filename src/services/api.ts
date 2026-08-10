@@ -587,9 +587,22 @@ export async function getEducation(): Promise<IEducation[]> {
 }
 
 export async function getCertifications(): Promise<ICertification[]> {
+  const saved = localStorage.getItem('portfolio_certifications');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn("Failed to parse stored certifications data", e);
+    }
+  }
+
   try {
     const response = await api.get('/certifications');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
+      localStorage.setItem('portfolio_certifications', JSON.stringify(response.data.data));
       return response.data.data;
     }
   } catch (err) {
@@ -893,9 +906,67 @@ export async function deleteEducation(id: string): Promise<boolean> {
 }
 
 // Certifications CRUD
-export const createCertification = (data: Partial<ICertification>) => createEntity<ICertification>('/certifications', data);
-export const updateCertification = (id: string, data: Partial<ICertification>) => updateEntity<ICertification>('/certifications', id, data);
-export const deleteCertification = (id: string) => deleteEntity('/certifications', id);
+export async function createCertification(data: Partial<ICertification>): Promise<ICertification> {
+  const current = await getCertifications();
+  const newCert: ICertification = {
+    id: data.id || `cert_${Date.now()}`,
+    title: data.title || 'New Certification',
+    issuer: data.issuer || 'Issuing Organization',
+    issueDate: data.issueDate || '',
+    credentialUrl: data.credentialUrl || '',
+    imageUrl: data.imageUrl || '',
+  };
+  const updated = [newCert, ...current];
+  try {
+    localStorage.setItem('portfolio_certifications', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+
+  try {
+    const res = await createEntity<ICertification>('/certifications', data);
+    if (res && res.id) return res;
+  } catch (e) {
+    console.warn("Backend /certifications create error:", e);
+  }
+  return newCert;
+}
+
+export async function updateCertification(id: string, data: Partial<ICertification>): Promise<ICertification> {
+  const current = await getCertifications();
+  const updated = current.map((item) => (item.id === id ? { ...item, ...data } : item));
+  try {
+    localStorage.setItem('portfolio_certifications', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+
+  try {
+    const res = await updateEntity<ICertification>('/certifications', id, data);
+    if (res && res.id) return res;
+  } catch (e) {
+    console.warn("Backend /certifications update error:", e);
+  }
+  const found = updated.find((item) => item.id === id);
+  return found || ({ id, ...data } as ICertification);
+}
+
+export async function deleteCertification(id: string): Promise<boolean> {
+  const current = await getCertifications();
+  const updated = current.filter((item) => item.id !== id);
+  try {
+    localStorage.setItem('portfolio_certifications', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+
+  try {
+    await deleteEntity('/certifications', id);
+  } catch (e) {
+    console.warn("Backend /certifications delete error:", e);
+  }
+  return true;
+}
 
 // Achievements CRUD
 export const createAchievement = (data: Partial<IAchievement>) => createEntity<IAchievement>('/achievements', data);

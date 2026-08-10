@@ -244,6 +244,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             { key: 'issuer', label: 'Issuing Organization', type: 'text' as const, required: true },
             { key: 'issueDate', label: 'Issue Date / Year', type: 'text' as const },
             { key: 'credentialUrl', label: 'Credential Link', type: 'text' as const },
+            { key: 'imageUrl', label: 'Certificate Image / Badge (Upload Image or Paste URL)', type: 'image' as const },
           ],
         };
       case 'gallery':

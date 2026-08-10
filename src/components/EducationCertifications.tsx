@@ -185,8 +185,12 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                 className="glass-card p-6 rounded-3xl border border-slate-800/80 hover:border-indigo-500/50 transition-all duration-300 flex flex-col justify-between space-y-4 shadow-xl group"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 shrink-0 group-hover:scale-110 transition-transform">
-                    <Award className="w-6 h-6" />
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 shrink-0 group-hover:scale-110 transition-transform overflow-hidden">
+                    {cert.imageUrl ? (
+                      <img src={cert.imageUrl} alt={cert.title} className="w-full h-full object-cover rounded-2xl" />
+                    ) : (
+                      <Award className="w-6 h-6" />
+                    )}
                   </div>
                   {cert.credentialUrl && (
                     <a

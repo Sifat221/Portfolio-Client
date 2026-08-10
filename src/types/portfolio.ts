@@ -69,6 +69,7 @@ export interface ICertification {
   issuer: string;
   issueDate?: string;
   credentialUrl?: string;
+  imageUrl?: string;
 }
 
 export interface IAchievement {
