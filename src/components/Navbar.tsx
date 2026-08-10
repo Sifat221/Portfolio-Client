@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, Moon, MoreVertical, X, FileText, Send } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
@@ -14,6 +15,11 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('about');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navLinks = [
     { name: 'About', href: '#about' },
@@ -48,15 +54,129 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
     } else {
       document.body.style.overflow = 'unset';
+      document.body.style.touchAction = 'unset';
     }
     return () => {
       document.body.style.overflow = 'unset';
+      document.body.style.touchAction = 'unset';
     };
   }, [mobileMenuOpen]);
 
   const activeIndex = Math.max(0, navLinks.findIndex((l) => l.href === `#${activeSection}`));
+
+  const mobileDrawerContent = (
+    <AnimatePresence>
+      {mobileMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
+          style={{ zIndex: 99999 }}
+          className="fixed inset-0 w-screen h-screen bg-[#090D16] flex flex-col p-6 overflow-y-auto"
+        >
+          {/* Top Drawer Header */}
+          <div className="flex items-center justify-between pb-6 border-b border-slate-800/80">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-[#9B8FCD]/60 shadow-md shrink-0 bg-slate-900">
+                <img
+                  src={personal.profilePhoto || personal.bannerPhoto || "/Profile.jpg"}
+                  alt={personal.name}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/Profile.jpg";
+                  }}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-lg font-bold text-white tracking-tight flex items-center">
+                  {personal.name}<span className="text-[#9B8FCD]">.</span>
+                </span>
+                <span className="text-xs font-semibold text-[#9B8FCD] tracking-wide">
+                  Flutter & AI Engineer
+                </span>
+              </div>
+            </div>
+
+            {/* Close Button X */}
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-slate-300 hover:text-white hover:border-[#9B8FCD] transition-all shadow-md active:scale-95 cursor-pointer"
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5 text-slate-300" />
+            </button>
+          </div>
+
+          {/* Vertical Navigation Links List */}
+          <div className="flex flex-col gap-4 pt-6 px-2">
+            {navLinks.map((link, idx) => {
+              const isActive = activeSection === link.href.replace('#', '');
+              return (
+                <motion.a
+                  key={link.name}
+                  href={link.href}
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.04, duration: 0.2 }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveSection(link.href.replace('#', ''));
+                    setMobileMenuOpen(false);
+                    const target = document.querySelector(link.href);
+                    if (target) {
+                      target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className={`text-xl font-bold tracking-wide transition-all duration-200 flex items-center justify-between py-2 border-b border-slate-800/40 ${
+                    isActive
+                      ? 'text-[#9B8FCD] translate-x-1'
+                      : 'text-slate-300 hover:text-white hover:translate-x-1'
+                  }`}
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="text-xs font-mono text-slate-500 font-bold">0{idx + 1}.</span>
+                    <span>{link.name}</span>
+                  </span>
+                  {isActive && (
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#9B8FCD] shadow-[0_0_10px_#9B8FCD]" />
+                  )}
+                </motion.a>
+              );
+            })}
+          </div>
+
+          {/* Mobile Action Buttons */}
+          <div className="mt-auto pt-8 flex flex-col gap-3">
+            <a
+              href="#contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full py-3.5 rounded-2xl font-bold text-center text-white bg-gradient-to-r from-[#9B8FCD] via-indigo-600 to-cyan-500 shadow-lg shadow-[#9B8FCD]/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+            >
+              <Send className="w-4 h-4" />
+              <span>Let's Talk</span>
+            </a>
+
+            {personal.resumeUrl && (
+              <a
+                href={personal.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 rounded-2xl font-semibold text-center text-slate-200 bg-slate-900 border border-slate-700/80 active:scale-95 transition-all flex items-center justify-center gap-2 hover:border-[#9B8FCD]"
+              >
+                <FileText className="w-4 h-4 text-[#9B8FCD]" />
+                <span>Download Resume</span>
+              </a>
+            )}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 
   return (
     <>
@@ -147,115 +267,10 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
         </div>
       </header>
 
-      {/* Full-screen Mobile Navigation Drawer Overlay (Rendered outside fixed header) */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="fixed inset-0 z-50 bg-[#090D16]/98 backdrop-blur-2xl flex flex-col p-6 overflow-y-auto"
-          >
-            {/* Top Drawer Header */}
-            <div className="flex items-center justify-between pb-6 border-b border-slate-800/80">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-[#9B8FCD]/60 shadow-md shrink-0 bg-slate-900">
-                  <img
-                    src={personal.profilePhoto || personal.bannerPhoto || "/Profile.jpg"}
-                    alt={personal.name}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "/Profile.jpg";
-                    }}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col leading-tight">
-                  <span className="text-lg font-bold text-white tracking-tight flex items-center">
-                    {personal.name}<span className="text-[#9B8FCD]">.</span>
-                  </span>
-                  <span className="text-xs font-semibold text-[#9B8FCD] tracking-wide">
-                    Flutter & AI Engineer
-                  </span>
-                </div>
-              </div>
-
-              {/* Close Button X */}
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-slate-300 hover:text-white hover:border-[#9B8FCD] transition-all shadow-md active:scale-95 cursor-pointer"
-                aria-label="Close menu"
-              >
-                <X className="w-5 h-5 text-slate-300" />
-              </button>
-            </div>
-
-            {/* Vertical Navigation Links List */}
-            <div className="flex flex-col gap-4 pt-6 px-2">
-              {navLinks.map((link, idx) => {
-                const isActive = activeSection === link.href.replace('#', '');
-                return (
-                  <motion.a
-                    key={link.name}
-                    href={link.href}
-                    initial={{ opacity: 0, x: -15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.04, duration: 0.2 }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setActiveSection(link.href.replace('#', ''));
-                      setMobileMenuOpen(false);
-                      const target = document.querySelector(link.href);
-                      if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                    className={`text-xl font-bold tracking-wide transition-all duration-200 flex items-center justify-between py-2 border-b border-slate-800/40 ${
-                      isActive
-                        ? 'text-[#9B8FCD] translate-x-1'
-                        : 'text-slate-300 hover:text-white hover:translate-x-1'
-                    }`}
-                  >
-                    <span className="flex items-center gap-3">
-                      <span className="text-xs font-mono text-slate-500 font-bold">0{idx + 1}.</span>
-                      <span>{link.name}</span>
-                    </span>
-                    {isActive && (
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#9B8FCD] shadow-[0_0_10px_#9B8FCD]" />
-                    )}
-                  </motion.a>
-                );
-              })}
-            </div>
-
-            {/* Mobile Action Buttons */}
-            <div className="mt-auto pt-8 flex flex-col gap-3">
-              <a
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-3.5 rounded-2xl font-bold text-center text-white bg-gradient-to-r from-[#9B8FCD] via-indigo-600 to-cyan-500 shadow-lg shadow-[#9B8FCD]/30 active:scale-95 transition-all flex items-center justify-center gap-2"
-              >
-                <Send className="w-4 h-4" />
-                <span>Let's Talk</span>
-              </a>
-
-              {personal.resumeUrl && (
-                <a
-                  href={personal.resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 rounded-2xl font-semibold text-center text-slate-200 bg-slate-900 border border-slate-700/80 active:scale-95 transition-all flex items-center justify-center gap-2 hover:border-[#9B8FCD]"
-                >
-                  <FileText className="w-4 h-4 text-[#9B8FCD]" />
-                  <span>Download Resume</span>
-                </a>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Render Mobile Navigation Drawer directly into document.body using React Portal */}
+      {mounted && createPortal(mobileDrawerContent, document.body)}
     </>
   );
 };
+
 
