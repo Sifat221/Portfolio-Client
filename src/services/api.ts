@@ -904,7 +904,7 @@ export async function updateProject(id: string, data: Partial<IProject>): Promis
 
 export async function deleteProject(id: string): Promise<boolean> {
   const current = await getProjects();
-  const updated = current.filter((p) => p.id !== id);
+  const updated = current.filter((p, idx) => String(p.id || `proj_${idx}`) !== String(id) && String(idx) !== String(id));
   try {
     localStorage.setItem('portfolio_projects', JSON.stringify(updated));
   } catch (e) {
@@ -963,7 +963,7 @@ export async function updateSkill(id: string, data: Partial<ISkill>): Promise<IS
 
 export async function deleteSkill(id: string): Promise<boolean> {
   const current = await getSkills();
-  const updated = current.filter((item) => item.id !== id);
+  const updated = current.filter((item, idx) => String(item.id || `skill_${idx}`) !== String(id) && String(idx) !== String(id));
   try {
     localStorage.setItem('portfolio_skills', JSON.stringify(updated));
   } catch (e) {
@@ -1026,7 +1026,7 @@ export async function updateExperience(id: string, data: Partial<IExperience>): 
 
 export async function deleteExperience(id: string): Promise<boolean> {
   const current = await getExperience();
-  const updated = current.filter((item) => item.id !== id);
+  const updated = current.filter((item, idx) => String(item.id || `exp_${idx}`) !== String(id) && String(idx) !== String(id));
   try {
     localStorage.setItem('portfolio_experience', JSON.stringify(updated));
   } catch (e) {
@@ -1092,7 +1092,7 @@ export async function updateEducation(id: string, data: Partial<IEducation>): Pr
 
 export async function deleteEducation(id: string): Promise<boolean> {
   const current = await getEducation();
-  const updated = current.filter((item) => item.id !== id);
+  const updated = current.filter((item, idx) => String(item.id || `edu_${idx}`) !== String(id) && String(idx) !== String(id));
   inMemoryEducation = updated;
   try {
     localStorage.setItem('portfolio_education', JSON.stringify(updated));
@@ -1217,7 +1217,7 @@ export async function updateAchievement(id: string, data: Partial<IAchievement>)
 
 export async function deleteAchievement(id: string): Promise<boolean> {
   const current = await getAchievements();
-  const updated = current.filter((item) => item.id !== id);
+  const updated = current.filter((item, idx) => String(item.id || `ach_${idx}`) !== String(id) && String(idx) !== String(id));
   try {
     localStorage.setItem('portfolio_achievements', JSON.stringify(updated));
   } catch (e) {
@@ -1243,7 +1243,7 @@ export async function getGalleryPhotos(): Promise<IGalleryPhoto[]> {
     try {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed)) {
-        return parsed;
+        return parsed.map((p: any, idx: number) => ({ ...p, id: p.id || `photo_${idx}` }));
       }
     } catch (e) {
       console.warn("Failed to parse stored gallery photos", e);
@@ -1253,20 +1253,21 @@ export async function getGalleryPhotos(): Promise<IGalleryPhoto[]> {
   try {
     const response = await api.get('/gallery');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
-      localStorage.setItem('portfolio_gallery_photos', JSON.stringify(response.data.data));
-      return response.data.data;
+      const list = response.data.data.map((p: any, idx: number) => ({ ...p, id: p.id || `photo_${idx}` }));
+      localStorage.setItem('portfolio_gallery_photos', JSON.stringify(list));
+      return list;
     }
   } catch (err) {
     console.warn("API Call /gallery fallback active:", err);
   }
 
-  return defaultGalleryPhotos;
+  return defaultGalleryPhotos.map((p: any, idx: number) => ({ ...p, id: p.id || `photo_${idx}` }));
 }
 
 export async function createGalleryPhoto(data: Partial<IGalleryPhoto>): Promise<IGalleryPhoto> {
   const current = await getGalleryPhotos();
   const newPhoto: IGalleryPhoto = {
-    id: `photo_${Date.now()}`,
+    id: data.id || `photo_${Date.now()}`,
     title: data.title || 'University Memory',
     caption: data.caption || '',
     url: data.url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200',
@@ -1294,7 +1295,7 @@ export async function updateGalleryPhoto(id: string, data: Partial<IGalleryPhoto
 
 export async function deleteGalleryPhoto(id: string): Promise<boolean> {
   const current = await getGalleryPhotos();
-  const updated = current.filter((p) => p.id !== id);
+  const updated = current.filter((p, idx) => String(p.id || `photo_${idx}`) !== String(id) && String(idx) !== String(id));
   try {
     localStorage.setItem('portfolio_gallery_photos', JSON.stringify(updated));
   } catch (e) {
