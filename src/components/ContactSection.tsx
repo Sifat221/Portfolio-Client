@@ -92,15 +92,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
       >
         {/* Main Section Header (Centered - Matching Screenshot 2) */}
         <div className="text-center space-y-4 max-w-3xl mx-auto pt-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0D1629] border border-cyan-500/40 text-cyan-400 text-xs font-bold font-mono uppercase tracking-wider shadow-md">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-[#0D1629] border border-cyan-200 dark:border-cyan-500/40 text-cyan-700 dark:text-cyan-400 text-xs font-bold font-mono uppercase tracking-wider shadow-md">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 animate-pulse" />
             <span>LET'S CONNECT</span>
           </div>
 
           <div className="flex items-center justify-center">
             <SplitText
               text="Get In Touch"
-              className="text-4xl sm:text-5xl lg:text-6xl font-serif font-extrabold tracking-tight text-cyan-200 drop-shadow-[0_0_25px_rgba(56,189,248,0.5)]"
+              highlightText="Touch"
+              highlightClass="text-blue-600 dark:text-cyan-400 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 dark:from-cyan-400 dark:to-blue-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(56,189,248,0.4)]"
+              className="text-4xl sm:text-5xl lg:text-6xl font-serif font-extrabold tracking-tight text-slate-900 dark:text-white"
               delay={40}
               duration={1.0}
               ease="power3.out"
@@ -113,7 +115,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
             />
           </div>
 
-          <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto">
+          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto">
             Have a full-stack engineering role, AI research collaboration, or custom software project in mind? Send me a message and I'll respond promptly!
           </p>
         </div>
