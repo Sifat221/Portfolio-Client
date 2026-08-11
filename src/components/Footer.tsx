@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUp, Github, Linkedin, Facebook, MessageCircle, Mail, Phone, MapPin, Download, Heart, ExternalLink } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { LineSidebar } from './LineSidebar';
+import { downloadResume } from '../utils/download';
 
 interface FooterProps {
   personal: IPersonalProfile;
@@ -188,18 +189,17 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
               </a>
 
               {/* Download Resume */}
-              <a
-                href={personal.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
+              <button
+                type="button"
+                onClick={() => downloadResume(personal.resumeUrl, 'Sifat_Khan_CV.pdf')}
+                className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm cursor-pointer"
               >
                 <div className="flex items-center gap-2.5">
                   <Download className="w-4 h-4 text-[#9B8FCD] group-hover:scale-110 transition-transform" />
                   <span>Resume</span>
                 </div>
                 <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-              </a>
+              </button>
             </div>
           </div>
         </div>

@@ -1365,6 +1365,16 @@ async function compressImageFile(file: File, maxWidth = 400, maxHeight = 400, qu
   });
 }
 
+// Read file as Data URL helper (for PDFs and document files)
+export function readFileAsDataURL(file: File): Promise<string> {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => resolve((e.target?.result as string) || '');
+    reader.onerror = () => resolve('');
+    reader.readAsDataURL(file);
+  });
+}
+
 // File Upload (Photo & CV)
 export async function uploadFile(file: File, type: 'photo' | 'resume'): Promise<{ url: string }> {
   if (type === 'photo' || file.type.startsWith('image/')) {
@@ -1389,7 +1399,7 @@ export async function uploadFile(file: File, type: 'photo' | 'resume'): Promise<
     console.warn("API POST /upload error:", err);
   }
 
-  // Fallback to compressed Base64 Data URL for persistent offline storage
-  const compressedUrl = await compressImageFile(file, 900, 900, 0.75);
-  return { url: compressedUrl };
+  // Fallback for PDF / document files: read as base64 Data URL for persistent offline storage
+  const pdfDataUrl = await readFileAsDataURL(file);
+  return { url: pdfDataUrl };
 }

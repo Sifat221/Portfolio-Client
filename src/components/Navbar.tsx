@@ -5,6 +5,7 @@ import { Sun, Moon, Menu, X, FileText, Send, Flame } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { GooeyNav } from './GooeyNav';
 import { useTheme } from '../context/ThemeContext';
+import { downloadResume } from '../utils/download';
 
 interface NavbarProps {
   personal: IPersonalProfile;
@@ -166,15 +167,17 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
             </a>
 
             {personal.resumeUrl && (
-              <a
-                href={personal.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 rounded-2xl font-semibold text-center text-slate-200 bg-slate-900 border border-slate-700/80 active:scale-95 transition-all flex items-center justify-center gap-2 hover:border-[#9B8FCD]"
+              <button
+                type="button"
+                onClick={() => {
+                  downloadResume(personal.resumeUrl, 'Sifat_Khan_CV.pdf');
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full py-3 rounded-2xl font-semibold text-center text-slate-200 bg-slate-900 border border-slate-700/80 active:scale-95 transition-all flex items-center justify-center gap-2 hover:border-[#9B8FCD] cursor-pointer"
               >
                 <FileText className="w-4 h-4 text-[#9B8FCD]" />
                 <span>Download Resume</span>
-              </a>
+              </button>
             )}
           </div>
         </motion.div>

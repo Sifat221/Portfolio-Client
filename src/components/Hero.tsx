@@ -4,6 +4,7 @@ import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, 
 import { IPersonalProfile } from '../types/portfolio';
 import SplitText from './SplitText';
 import { LightRays } from './LightRays';
+import { downloadResume } from '../utils/download';
 
 interface HeroProps {
   personal: IPersonalProfile;
@@ -388,15 +389,14 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 Let's Talk
               </a>
 
-              <a
-                href={personal.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-3.5 rounded-full font-bold text-sm text-slate-200 glass-card border border-slate-700 hover:border-[#9B8FCD] hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2 shadow-lg"
+              <button
+                type="button"
+                onClick={() => downloadResume(personal.resumeUrl, 'Sifat_Khan_CV.pdf')}
+                className="px-8 py-3.5 rounded-full font-bold text-sm text-slate-200 glass-card border border-slate-700 hover:border-[#9B8FCD] hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2 shadow-lg cursor-pointer"
               >
                 <Download className="w-4 h-4 text-[#9B8FCD]" />
                 <span>Download Resume</span>
-              </a>
+              </button>
 
               {/* Social Media Link Buttons */}
               <div className="flex items-center gap-2.5 sm:pl-2 pt-2 sm:pt-0">
