@@ -4,6 +4,12 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 section {
@@ -20,6 +26,8 @@ section {
     background-color: #090D16;
     color: #F8FAFC;
     overflow-x: hidden;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
