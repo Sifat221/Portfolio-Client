@@ -262,7 +262,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
           </div>
 
           {/* Right Column: Direct Message Form (7 cols - Matching Screenshot 2) */}
-          <div className="lg:col-span-7 bg-[#0D1526]/80 p-8 sm:p-10 rounded-[28px] border border-slate-800/90 shadow-2xl space-y-6">
+          <div className="lg:col-span-7 contact-form-dark-card bg-[#0D1526]/80 p-8 sm:p-10 rounded-[28px] border border-slate-800/90 shadow-2xl space-y-6">
             <div>
               <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white flex items-center gap-2.5">
                 <Send className="w-6 h-6 text-cyan-400 transform -rotate-12" />
@@ -282,7 +282,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                   <input
                     type="text"
                     required
-                    placeholder="Md. Samim"
+                    placeholder="Sifat Khan"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3.5 rounded-2xl bg-[#080E1B] border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition-colors"
@@ -349,7 +349,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
         </div>
 
         {/* Ready to Collaborate Banner CTA Card - Positioned BELOW the Form Grid for perfect closing hook */}
-        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-r from-[#0D1527] via-[#121C30] to-[#0B2536] border border-slate-700/60 p-8 sm:p-12 shadow-2xl group mt-8">
+        <div className="collaborate-banner-card relative overflow-hidden rounded-[32px] bg-gradient-to-r from-[#0D1527] via-[#121C30] to-[#0B2536] border border-slate-700/60 p-8 sm:p-12 shadow-2xl group mt-8">
           <div className="absolute -top-20 -left-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
