@@ -5,6 +5,7 @@ import { IPersonalProfile } from '../types/portfolio';
 import { sendContactMessage } from '../services/api';
 import { playSuccessSound } from '../utils/sound';
 import { downloadResume } from '../utils/download';
+import SplitText from './SplitText';
 import { Toast } from './Toast';
 
 interface ContactSectionProps {
@@ -96,9 +97,22 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
             <span>LET'S CONNECT</span>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-white tracking-tight">
-            Get In Touch
-          </h2>
+          <div className="flex items-center justify-center gap-1.5">
+            <SplitText
+              text="Get In Touch"
+              className="text-4xl sm:text-5xl lg:text-6xl font-serif font-extrabold tracking-tight text-cyan-200 drop-shadow-[0_0_25px_rgba(56,189,248,0.5)]"
+              delay={40}
+              duration={1.0}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 35, scale: 0.9 }}
+              to={{ opacity: 1, y: 0, scale: 1 }}
+              threshold={0.05}
+              rootMargin="0px"
+              textAlign="center"
+            />
+            <span className="inline-block w-1.5 sm:w-2 h-9 sm:h-12 lg:h-14 bg-[#38bdf8] animate-pulse rounded-full shadow-[0_0_16px_#38bdf8] shrink-0 -mt-1" />
+          </div>
 
           <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto">
             Have a full-stack engineering role, AI research collaboration, or custom software project in mind? Send me a message and I'll respond promptly!
