@@ -317,9 +317,9 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#111328]/90 border border-indigo-500/40 text-indigo-200 text-xs sm:text-sm font-medium self-center lg:self-start shadow-lg shadow-indigo-950/50 backdrop-blur-md hover:border-[#9B8FCD]/60 transition-all"
+              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-indigo-50/90 dark:bg-[#111328]/90 border border-indigo-200 dark:border-indigo-500/40 text-indigo-900 dark:text-indigo-200 text-xs sm:text-sm font-semibold self-center lg:self-start shadow-md dark:shadow-lg dark:shadow-indigo-950/50 backdrop-blur-md hover:border-indigo-400 dark:hover:border-[#9B8FCD]/60 transition-all"
             >
-              <Sparkles className="w-4 h-4 text-[#9B8FCD] animate-pulse shrink-0" />
+              <Sparkles className="w-4 h-4 text-indigo-600 dark:text-[#9B8FCD] animate-pulse shrink-0" />
               <span>Flutter & AI Engineering Specialist</span>
             </motion.div>
 
@@ -331,8 +331,8 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               <SplitText
                 text="Let's Work Together to Create Mobile Wonders with Us"
                 highlightText="Mobile Wonders"
-                highlightClass="text-blue-500"
-                className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.15] tracking-tight"
+                highlightClass="text-blue-600 dark:text-cyan-400 drop-shadow-sm dark:drop-shadow-[0_0_20px_rgba(56,189,248,0.4)]"
+                className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white leading-[1.15] tracking-tight"
                 delay={40}
                 duration={1.25}
                 ease="power3.out"
