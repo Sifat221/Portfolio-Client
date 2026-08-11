@@ -101,7 +101,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
             <SplitText
               text="Get In Touch"
               highlightText="Touch"
-              highlightClass="text-blue-600 dark:text-cyan-400 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 dark:from-cyan-400 dark:to-blue-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(56,189,248,0.4)]"
+              highlightClass="text-blue-600 dark:text-cyan-400 drop-shadow-[0_0_20px_rgba(56,189,248,0.4)]"
               className="text-4xl sm:text-5xl lg:text-6xl font-serif font-extrabold tracking-tight text-slate-900 dark:text-white"
               delay={40}
               duration={1.0}
