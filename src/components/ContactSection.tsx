@@ -89,58 +89,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-16"
       >
-        {/* Ready to Collaborate Banner CTA Card */}
-        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-r from-[#0D1527] via-[#121C30] to-[#0B2536] border border-slate-700/60 p-8 sm:p-12 shadow-2xl group">
-          <div className="absolute -top-20 -left-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-            <div className="space-y-4 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-cyan-400 text-[11px] font-bold font-mono uppercase tracking-wider shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-                <span>Available for opportunities</span>
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-serif font-bold text-white tracking-tight leading-tight">
-                Ready to collaborate on your{' '}
-                <span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-400 bg-clip-text text-transparent">
-                  next big project?
-                </span>
-              </h2>
-
-              <p className="text-slate-300/90 text-xs sm:text-sm leading-relaxed max-w-xl">
-                Specialized in AI-driven automation, machine learning pipelines, distributed backend services, and high-performance web applications.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 shrink-0">
-              <button
-                type="button"
-                onClick={() => {
-                  const el = document.getElementById('contact-form-card');
-                  if (el) {
-                    el.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-                className="px-7 py-3.5 rounded-2xl font-bold text-sm text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 shadow-xl shadow-cyan-500/25 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer"
-              >
-                <Mail className="w-4 h-4 text-white" />
-                <span>Get In Touch</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => downloadResume(personal.resumeUrl, 'Sifat_Khan_CV.pdf')}
-                className="px-7 py-3.5 rounded-2xl font-bold text-sm text-slate-200 bg-slate-900/80 border border-slate-700/80 hover:border-cyan-400 hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2.5 shadow-lg cursor-pointer"
-              >
-                <FileText className="w-4 h-4 text-cyan-400" />
-                <span>Download CV</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Main Section Header (Centered - Matching Screenshot) */}
+        {/* Main Section Header (Centered - Matching Screenshot 2) */}
         <div className="text-center space-y-4 max-w-3xl mx-auto pt-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0D1629] border border-cyan-500/40 text-cyan-400 text-xs font-bold font-mono uppercase tracking-wider shadow-md">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
@@ -156,7 +105,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
           </p>
         </div>
 
-        {/* Two-Column Layout Grid (Matching Screenshot) */}
+        {/* Two-Column Layout Grid (Matching Screenshot 2) */}
         <div id="contact-form-card" className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left Column: Direct Channels / Reach Out Directly (5 cols) */}
           <div className="lg:col-span-5 space-y-6">
@@ -299,7 +248,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
             </div>
           </div>
 
-          {/* Right Column: Direct Message Form (7 cols - Matching Screenshot) */}
+          {/* Right Column: Direct Message Form (7 cols - Matching Screenshot 2) */}
           <div className="lg:col-span-7 bg-[#0D1526]/80 p-8 sm:p-10 rounded-[28px] border border-slate-800/90 shadow-2xl space-y-6">
             <div>
               <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white flex items-center gap-2.5">
@@ -383,6 +332,57 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                 )}
               </button>
             </form>
+          </div>
+        </div>
+
+        {/* Ready to Collaborate Banner CTA Card - Positioned BELOW the Form Grid for perfect closing hook */}
+        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-r from-[#0D1527] via-[#121C30] to-[#0B2536] border border-slate-700/60 p-8 sm:p-12 shadow-2xl group mt-8">
+          <div className="absolute -top-20 -left-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div className="space-y-4 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-cyan-400 text-[11px] font-bold font-mono uppercase tracking-wider shadow-sm">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                <span>Available for opportunities</span>
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-serif font-bold text-white tracking-tight leading-tight">
+                Ready to collaborate on your{' '}
+                <span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-400 bg-clip-text text-transparent">
+                  next big project?
+                </span>
+              </h2>
+
+              <p className="text-slate-300/90 text-xs sm:text-sm leading-relaxed max-w-xl">
+                Specialized in AI-driven automation, machine learning pipelines, distributed backend services, and high-performance web applications.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById('contact-form-card');
+                  if (el) {
+                    el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="px-7 py-3.5 rounded-2xl font-bold text-sm text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 shadow-xl shadow-cyan-500/25 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer"
+              >
+                <Mail className="w-4 h-4 text-white" />
+                <span>Get In Touch</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => downloadResume(personal.resumeUrl, 'Sifat_Khan_CV.pdf')}
+                className="px-7 py-3.5 rounded-2xl font-bold text-sm text-slate-200 bg-slate-900/80 border border-slate-700/80 hover:border-cyan-400 hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2.5 shadow-lg cursor-pointer"
+              >
+                <FileText className="w-4 h-4 text-cyan-400" />
+                <span>Download CV</span>
+              </button>
+            </div>
           </div>
         </div>
       </motion.div>
