@@ -246,8 +246,13 @@ html.light section {
 html.light .glass-panel,
 html.light .glass-card,
 html.light .project-card-container,
+html.light .contact-channel-card,
+html.light .contact-form-dark-card,
 html.light [class*="bg-[#080d19]"],
 html.light [class*="bg-[#080D19]"],
+html.light [class*="bg-[#080D1A]"],
+html.light [class*="bg-[#0D1526]"],
+html.light [class*="bg-[#080E1B]"],
 html.light [class*="bg-[#040711]"],
 html.light [class*="bg-[#090D18]"],
 html.light [class*="bg-[#071322]"],
@@ -270,7 +275,20 @@ html.light .bg-slate-950 {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03) !important;
 }
 
+html.light .contact-form-dark-card input,
+html.light .contact-form-dark-card textarea {
+  background-color: #F8FAFC !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+html.light .contact-form-dark-card input::placeholder,
+html.light .contact-form-dark-card textarea::placeholder {
+  color: #64748B !important;
+}
+
 html.light .glass-card:hover,
+html.light .contact-channel-card:hover,
 html.light [class*="bg-[#1A2335]"]:hover {
   background-color: #FFFFFF !important;
   border-color: #9B8FCD !important;
@@ -310,15 +328,12 @@ html.light footer {
   color: #CBD5E1 !important;
 }
 
-/* Dark banner & contact card exceptions: maintain dark background & crisp white text in both light & dark modes */
+/* Collaborate Banner Card Exceptions: Banner card maintains dark background & crisp white text in BOTH light and dark modes */
 html.light .collaborate-banner-card,
-html.light .contact-form-dark-card {
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4) !important;
-}
-
-html.light .collaborate-banner-card {
+html.dark .collaborate-banner-card {
   background: linear-gradient(to right, #0D1527, #121C30, #0B2536) !important;
   border-color: rgba(51, 65, 85, 0.6) !important;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4) !important;
 }
 
 html.light .collaborate-banner-card h2,
@@ -331,29 +346,6 @@ html.dark .collaborate-banner-card h2 span:not([class*="bg-gradient"]) {
 html.light .collaborate-banner-card p,
 html.dark .collaborate-banner-card p {
   color: rgba(226, 232, 240, 0.9) !important;
-}
-
-html.light .contact-form-dark-card {
-  background-color: rgba(13, 21, 38, 0.95) !important;
-  border-color: rgba(30, 41, 59, 0.9) !important;
-}
-
-html.light .contact-form-dark-card h3,
-html.light .contact-form-dark-card label {
-  color: #F8FAFC !important;
-}
-
-html.light .contact-form-dark-card p,
-html.light .contact-form-dark-card input::placeholder,
-html.light .contact-form-dark-card textarea::placeholder {
-  color: #94A3B8 !important;
-}
-
-html.light .contact-form-dark-card input,
-html.light .contact-form-dark-card textarea {
-  background-color: #080E1B !important;
-  border-color: #1E293B !important;
-  color: #FFFFFF !important;
 }
 
 html.light footer .text-white,
