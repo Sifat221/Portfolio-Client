@@ -328,26 +328,6 @@ html.light footer {
   color: #CBD5E1 !important;
 }
 
-/* Collaborate Banner Card Exceptions: Banner card maintains dark background & crisp white text in BOTH light and dark modes */
-html.light .collaborate-banner-card,
-html.dark .collaborate-banner-card {
-  background: linear-gradient(to right, #0D1527, #121C30, #0B2536) !important;
-  border-color: rgba(51, 65, 85, 0.6) !important;
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4) !important;
-}
-
-html.light .collaborate-banner-card h2,
-html.light .collaborate-banner-card h2 span:not([class*="bg-gradient"]),
-html.dark .collaborate-banner-card h2,
-html.dark .collaborate-banner-card h2 span:not([class*="bg-gradient"]) {
-  color: #FFFFFF !important;
-}
-
-html.light .collaborate-banner-card p,
-html.dark .collaborate-banner-card p {
-  color: rgba(226, 232, 240, 0.9) !important;
-}
-
 html.light footer .text-white,
 html.light footer span.text-white {
   color: #FFFFFF !important;

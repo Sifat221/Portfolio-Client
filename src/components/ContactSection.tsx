@@ -349,25 +349,25 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
         </div>
 
         {/* Ready to Collaborate Banner CTA Card - Positioned BELOW the Form Grid for perfect closing hook */}
-        <div className="collaborate-banner-card relative overflow-hidden rounded-[32px] bg-gradient-to-r from-[#0D1527] via-[#121C30] to-[#0B2536] border border-slate-700/60 p-8 sm:p-12 shadow-2xl group mt-8">
+        <div className="collaborate-banner-card relative overflow-hidden rounded-[32px] bg-white dark:bg-gradient-to-r dark:from-[#0D1527] dark:via-[#121C30] dark:to-[#0B2536] border border-slate-200/80 dark:border-slate-700/60 p-8 sm:p-12 shadow-xl dark:shadow-2xl group mt-8">
           <div className="absolute -top-20 -left-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
             <div className="space-y-4 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-cyan-400 text-[11px] font-bold font-mono uppercase tracking-wider shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200 dark:border-cyan-500/40 text-cyan-700 dark:text-cyan-400 text-[11px] font-bold font-mono uppercase tracking-wider shadow-sm">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 animate-pulse" />
                 <span>Available for opportunities</span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-serif font-bold text-white tracking-tight leading-tight">
+              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-serif font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
                 Ready to collaborate on your{' '}
-                <span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-cyan-600 via-indigo-600 to-blue-600 dark:from-cyan-400 dark:via-sky-300 dark:to-blue-400 bg-clip-text text-transparent">
                   next big project?
                 </span>
               </h2>
 
-              <p className="text-slate-300/90 text-xs sm:text-sm leading-relaxed max-w-xl">
+              <p className="text-slate-600 dark:text-slate-300/90 text-xs sm:text-sm leading-relaxed max-w-xl">
                 Specialized in AI-driven automation, machine learning pipelines, distributed backend services, and high-performance web applications.
               </p>
             </div>
@@ -390,9 +390,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
               <button
                 type="button"
                 onClick={() => downloadResume(personal.resumeUrl, 'Sifat_Khan_CV.pdf')}
-                className="px-7 py-3.5 rounded-2xl font-bold text-sm text-slate-200 bg-slate-900/80 border border-slate-700/80 hover:border-cyan-400 hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2.5 shadow-lg cursor-pointer"
+                className="px-7 py-3.5 rounded-2xl font-bold text-sm text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/80 hover:border-cyan-500 hover:text-slate-900 dark:hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2.5 shadow-md dark:shadow-lg cursor-pointer"
               >
-                <FileText className="w-4 h-4 text-cyan-400" />
+                <FileText className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                 <span>Download CV</span>
               </button>
             </div>
