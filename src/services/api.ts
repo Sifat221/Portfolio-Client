@@ -642,7 +642,7 @@ export async function getCertifications(): Promise<ICertification[]> {
     try {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed)) {
-        return parsed;
+        return parsed.map((c: any, idx: number) => ({ ...c, id: c.id || `cert_${idx}` }));
       }
     } catch (e) {
       console.warn("Failed to parse stored certifications data", e);
@@ -652,19 +652,21 @@ export async function getCertifications(): Promise<ICertification[]> {
   try {
     const response = await api.get('/certifications');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
-      localStorage.setItem('portfolio_certifications', JSON.stringify(response.data.data));
-      return response.data.data;
+      const list = response.data.data.map((c: any, idx: number) => ({ ...c, id: c.id || `cert_${idx}` }));
+      localStorage.setItem('portfolio_certifications', JSON.stringify(list));
+      return list;
     }
   } catch (err) {
     console.warn("API Call /certifications fallback active:", err);
   }
 
+  const defaultWithIds = defaultCertifications.map((c: any, idx: number) => ({ ...c, id: c.id || `cert_${idx}` }));
   try {
-    localStorage.setItem('portfolio_certifications', JSON.stringify(defaultCertifications));
+    localStorage.setItem('portfolio_certifications', JSON.stringify(defaultWithIds));
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
-  return defaultCertifications;
+  return defaultWithIds;
 }
 
 export async function getAchievements(): Promise<IAchievement[]> {
@@ -822,18 +824,33 @@ export async function sendContactMessage(formData: IContactForm): Promise<{ succ
 
 // Generic CRUD helpers
 async function createEntity<T>(endpoint: string, data: Partial<T>): Promise<T> {
-  const response = await api.post(endpoint, data);
-  return response.data?.data || data as T;
+  try {
+    const response = await api.post(endpoint, data);
+    return response.data?.data || (data as T);
+  } catch (e) {
+    console.warn(`Backend ${endpoint} create warning:`, e);
+    return data as T;
+  }
 }
 
 async function updateEntity<T>(endpoint: string, id: string, data: Partial<T>): Promise<T> {
-  const response = await api.put(`${endpoint}/${id}`, data);
-  return response.data?.data || data as T;
+  try {
+    const response = await api.put(`${endpoint}/${id}`, data);
+    return response.data?.data || (data as T);
+  } catch (e) {
+    console.warn(`Backend ${endpoint} update warning:`, e);
+    return data as T;
+  }
 }
 
 async function deleteEntity(endpoint: string, id: string): Promise<boolean> {
-  const response = await api.delete(`${endpoint}/${id}`);
-  return response.data?.success || true;
+  try {
+    const response = await api.delete(`${endpoint}/${id}`);
+    return response.data?.success ?? true;
+  } catch (e) {
+    console.warn(`Backend ${endpoint} delete warning:`, e);
+    return true;
+  }
 }
 
 // Projects CRUD
@@ -1140,7 +1157,7 @@ export async function updateCertification(id: string, data: Partial<ICertificati
 
 export async function deleteCertification(id: string): Promise<boolean> {
   const current = await getCertifications();
-  const updated = current.filter((item) => item.id !== id);
+  const updated = current.filter((item, idx) => String(item.id || `cert_${idx}`) !== String(id) && String(idx) !== String(id));
   try {
     localStorage.setItem('portfolio_certifications', JSON.stringify(updated));
   } catch (e) {
