@@ -248,7 +248,7 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
 
             {/* 3-Column Card Grid (Exact Matching Image 2) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-              {universityPhotos.slice(0, 3).map((photo, index) => {
+              {universityPhotos.map((photo, index) => {
                 const subtitle = photo.subtitle || photo.category || (index === 0 ? 'Campus Life' : index === 1 ? 'Research & Events' : 'Milestones');
                 return (
                   <motion.div
