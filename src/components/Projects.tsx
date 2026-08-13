@@ -133,14 +133,14 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
       >
-        {/* Header Top Action Bar: Back Button (Left), Badge (Center/Left), Search Input (Top Right) */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+        {/* 1. Badge & Back Button Row */}
+        <div className="flex items-center justify-between gap-4 mb-3">
           <div className="flex items-center gap-3 flex-wrap">
             {/* Back Option Button */}
             {isFilteredOrSearched && (
               <button
                 onClick={handleResetFilters}
-                className="px-3.5 py-1.5 rounded-2xl glass-card border border-slate-700/80 hover:border-cyan-400 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-2 transition-all shadow-md active:scale-95 group shrink-0"
+                className="px-3.5 py-1.5 rounded-full glass-card border border-slate-700/80 hover:border-cyan-400 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-2 transition-all shadow-md active:scale-95 group shrink-0"
                 title="Go back / Reset all filters"
               >
                 <ArrowLeft className="w-4 h-4 text-cyan-400 group-hover:-translate-x-0.5 transition-transform" />
@@ -153,34 +153,10 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               <span>Showcase Applications</span>
             </div>
           </div>
-
-          {/* Search Bar Input (Positioned Top Right as requested) */}
-          <div className="relative w-full sm:w-72 md:w-80 shrink-0">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentIndex(0);
-              }}
-              placeholder="Search by title, technology, or description..."
-              className="w-full pl-10 pr-9 py-2 rounded-2xl glass-card border border-slate-700/80 focus:border-cyan-400 bg-slate-900/60 text-slate-200 placeholder-slate-400 text-xs focus:outline-none transition-all shadow-inner"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs font-bold p-1"
-                aria-label="Clear search"
-              >
-                ✕
-              </button>
-            )}
-          </div>
         </div>
 
-        {/* Title Header */}
-        <div className="space-y-3 mb-8">
+        {/* 2. Main Title (Left) + Search Bar (Right - Moved down aligned with Title) */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-3">
           <SplitText
             text="Featured Works & Architecture"
             highlightText="Works"
@@ -197,25 +173,39 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
             textAlign="left"
           />
 
-          {/* Subtitle Description & "See More Projects" Action Button */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-2">
-            <p className="text-slate-300 text-sm font-normal max-w-2xl leading-relaxed">
-              Full-stack web platforms engineered with role-based access control, Stripe payment gateways, and real-time APIs.
-            </p>
-
-            <button
-              onClick={toggleShowAll}
-              className="self-start sm:self-auto group px-5 py-2.5 rounded-2xl glass-card border border-slate-700/80 hover:border-[#38bdf8] text-white text-xs font-bold flex items-center gap-2 shadow-lg hover:shadow-cyan-500/20 transition-all active:scale-95 shrink-0"
-            >
-              <span>{showAll ? 'Show Fewer Projects' : 'See More Projects'}</span>
-              <ArrowUpRight className={`w-4 h-4 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform ${showAll ? 'rotate-90' : ''}`} />
-            </button>
+          {/* Search Bar Input (Moved down to align with Title row) */}
+          <div className="relative w-full sm:w-72 md:w-80 shrink-0">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentIndex(0);
+              }}
+              placeholder="Search by title, technology, or description..."
+              className="w-full pl-10 pr-9 py-2.5 rounded-full glass-card border border-slate-700/80 focus:border-cyan-400 bg-slate-900/60 text-slate-200 placeholder-slate-400 text-xs focus:outline-none transition-all shadow-inner"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs font-bold p-1"
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Tab Navigation Bar */}
-        <div className="border-b border-slate-800/80 mb-10 overflow-x-auto">
-          <div className="flex items-center gap-8 min-w-max pb-3">
+        {/* 3. Subtitle Description */}
+        <p className="text-slate-300 text-sm font-normal max-w-2xl leading-relaxed mb-6">
+          Full-stack web platforms engineered with role-based access control, Stripe payment gateways, and real-time APIs.
+        </p>
+
+        {/* 4. Tab Navigation Bar (Left) + See More Projects Button (Right - Moved down to tab row) */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 mb-10 gap-4">
+          <div className="flex items-center gap-8 overflow-x-auto min-w-max pb-3">
             {tabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -245,6 +235,15 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               );
             })}
           </div>
+
+          {/* See More Projects Action Button (Moved down aligned with tab line) */}
+          <button
+            onClick={toggleShowAll}
+            className="self-start sm:self-auto group px-5 py-2 rounded-full glass-card border border-slate-700/80 hover:border-[#38bdf8] text-white text-xs font-bold flex items-center gap-2 shadow-lg hover:shadow-cyan-500/20 transition-all active:scale-95 shrink-0 mb-3 sm:mb-2"
+          >
+            <span>{showAll ? 'Show Fewer Projects' : 'See More Projects'}</span>
+            <ArrowUpRight className={`w-4 h-4 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform ${showAll ? 'rotate-90' : ''}`} />
+          </button>
         </div>
 
         {/* Interactive Carousel / Grid */}
