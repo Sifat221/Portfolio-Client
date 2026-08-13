@@ -223,13 +223,13 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                   >
                     <div className="project-card-container rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">
                       {/* Full-bleed Image Banner Container */}
-                      <div className="relative h-60 sm:h-64 overflow-hidden bg-slate-950">
+                      <div className="relative h-72 sm:h-[340px] md:h-[360px] overflow-hidden bg-slate-950">
                         <img
                           src={project.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800"}
                           alt={project.title}
-                          className="w-full h-full object-cover object-top group-hover/card:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover object-center group-hover/card:scale-105 transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-[#080d19]/20 to-transparent opacity-80 pointer-events-none z-10"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-transparent to-transparent opacity-60 pointer-events-none z-10"></div>
 
                         {/* Category & Featured Badge */}
                         <div className="absolute top-4 right-4 flex items-center gap-2 z-20">

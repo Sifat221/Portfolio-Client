@@ -26,13 +26,13 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking content
         >
           {/* Top Banner Image Header */}
-          <div className="relative h-60 sm:h-72 overflow-hidden shrink-0 bg-slate-950">
+          <div className="relative h-72 sm:h-[400px] overflow-hidden shrink-0 bg-slate-950">
             <img
               src={project.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=1200"}
               alt={project.title}
-              className="w-full h-full object-cover object-top"
+              className="w-full h-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0C1220] via-[#0C1220]/30 to-transparent pointer-events-none z-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0C1220] via-transparent to-transparent opacity-60 pointer-events-none z-10"></div>
 
             {/* Close Button */}
             <button
