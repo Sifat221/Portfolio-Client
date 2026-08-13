@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Smartphone, ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight, Layout, Brain, Code, Sparkles } from 'lucide-react';
+import { Smartphone, ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight, Layout, Brain, Code, Sparkles, Search, ArrowLeft } from 'lucide-react';
 import { IProject } from '../types/portfolio';
 import { ProjectModal } from './ProjectModal';
 import SplitText from './SplitText';
@@ -16,6 +16,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const [activeTab, setActiveTab] = useState<string>('All');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showAll, setShowAll] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Exact Tabs requested by the user
   const tabs = [
@@ -25,22 +26,22 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
     { id: 'Development', label: 'Development', icon: <Code className="w-4 h-4" /> },
   ];
 
-  // Map projects based on selected Tab
+  // Filter projects based on selected Tab and Search Query
   const getFilteredProjects = () => {
-    if (activeTab === 'All') return projects;
+    let result = projects;
+
+    // Filter by Tab
     if (activeTab === 'Design') {
-      return projects.filter((p) => p.category === 'Design');
-    }
-    if (activeTab === 'AI & Machine Learning') {
-      return projects.filter(
+      result = result.filter((p) => p.category === 'Design');
+    } else if (activeTab === 'AI & Machine Learning') {
+      result = result.filter(
         (p) =>
           p.category === 'AI & Machine Learning' ||
           p.category === 'AI' ||
           p.category === 'Machine Learning'
       );
-    }
-    if (activeTab === 'Development') {
-      return projects.filter(
+    } else if (activeTab === 'Development') {
+      result = result.filter(
         (p) =>
           p.category === 'Development' ||
           !p.category ||
@@ -50,7 +51,21 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           p.category === 'Productivity'
       );
     }
-    return projects;
+
+    // Filter by Search Query
+    const query = searchQuery.trim().toLowerCase();
+    if (query) {
+      result = result.filter((p) => {
+        const titleMatch = p.title.toLowerCase().includes(query);
+        const taglineMatch = p.tagline ? p.tagline.toLowerCase().includes(query) : false;
+        const descMatch = p.description ? p.description.toLowerCase().includes(query) : false;
+        const techMatch = p.techStack ? p.techStack.some((t) => t.toLowerCase().includes(query)) : false;
+        const categoryMatch = p.category ? p.category.toLowerCase().includes(query) : false;
+        return titleMatch || taglineMatch || descMatch || techMatch || categoryMatch;
+      });
+    }
+
+    return result;
   };
 
   const [isMobile, setIsMobile] = useState<boolean>(() => typeof window !== 'undefined' && window.innerWidth < 768);
@@ -91,12 +106,20 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
     setCurrentIndex(0);
   };
 
+  const handleResetFilters = () => {
+    setSearchQuery('');
+    setShowAll(false);
+    setActiveTab('All');
+    setCurrentIndex(0);
+  };
+
   // Visible projects slice for the carousel / grid
   const visibleProjects = showAll
     ? filteredProjects
     : filteredProjects.slice(currentIndex, currentIndex + itemsPerPage);
 
   const totalPages = Math.ceil(filteredProjects.length / stepSize);
+  const isFilteredOrSearched = searchQuery || showAll || activeTab !== 'All' || currentIndex > 0;
 
   return (
     <section id="projects" className="py-24 relative bg-[#090D16]">
@@ -110,13 +133,54 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
       >
-        {/* Top Header & Sub-header Area (Pic 3 & Pic 4 Layout) */}
-        <div className="space-y-3 mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-[#9B8FCD]/30 text-[#9B8FCD] text-xs font-mono font-bold">
-            <Smartphone className="w-3.5 h-3.5" />
-            <span>Showcase Applications</span>
+        {/* Header Top Action Bar: Back Button (Left), Badge (Center/Left), Search Input (Top Right) */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+          <div className="flex items-center gap-3 flex-wrap">
+            {/* Back Option Button */}
+            {isFilteredOrSearched && (
+              <button
+                onClick={handleResetFilters}
+                className="px-3.5 py-1.5 rounded-2xl glass-card border border-slate-700/80 hover:border-cyan-400 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-2 transition-all shadow-md active:scale-95 group shrink-0"
+                title="Go back / Reset all filters"
+              >
+                <ArrowLeft className="w-4 h-4 text-cyan-400 group-hover:-translate-x-0.5 transition-transform" />
+                <span>Back</span>
+              </button>
+            )}
+
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-[#9B8FCD]/30 text-[#9B8FCD] text-xs font-mono font-bold">
+              <Smartphone className="w-3.5 h-3.5" />
+              <span>Showcase Applications</span>
+            </div>
           </div>
 
+          {/* Search Bar Input (Positioned Top Right as requested) */}
+          <div className="relative w-full sm:w-72 md:w-80 shrink-0">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentIndex(0);
+              }}
+              placeholder="Search by title, technology, or description..."
+              className="w-full pl-10 pr-9 py-2 rounded-2xl glass-card border border-slate-700/80 focus:border-cyan-400 bg-slate-900/60 text-slate-200 placeholder-slate-400 text-xs focus:outline-none transition-all shadow-inner"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs font-bold p-1"
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Title Header */}
+        <div className="space-y-3 mb-8">
           <SplitText
             text="Featured Works & Architecture"
             highlightText="Works"
@@ -133,7 +197,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
             textAlign="left"
           />
 
-          {/* Subtitle Description & "See More Projects" Action Button (Pic 3) */}
+          {/* Subtitle Description & "See More Projects" Action Button */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-2">
             <p className="text-slate-300 text-sm font-normal max-w-2xl leading-relaxed">
               Full-stack web platforms engineered with role-based access control, Stripe payment gateways, and real-time APIs.
@@ -183,11 +247,11 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           </div>
         </div>
 
-        {/* Interactive Carousel / Grid (Pic 4) */}
+        {/* Interactive Carousel / Grid */}
         <div className="relative overflow-hidden min-h-[460px]">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeTab + currentIndex + (showAll ? 'all' : 'paginated')}
+              key={activeTab + currentIndex + searchQuery + (showAll ? 'all' : 'paginated')}
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -40 }}
@@ -197,10 +261,22 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               {filteredProjects.length === 0 ? (
                 <div className="col-span-1 md:col-span-2 flex flex-col items-center justify-center text-center py-20 bg-[#080d19]/90 rounded-3xl border border-slate-800 space-y-3">
                   <Brain className="w-10 h-10 text-slate-600 mb-1 animate-pulse" />
-                  <h3 className="text-base font-bold text-slate-300 font-mono">No Projects Added in {activeTab} Yet</h3>
+                  <h3 className="text-base font-bold text-slate-300 font-mono">
+                    {searchQuery ? `No Projects Found Matching "${searchQuery}"` : `No Projects Added in ${activeTab} Yet`}
+                  </h3>
                   <p className="text-xs text-slate-400 max-w-md">
-                    Projects added under <span className="text-[#9B8FCD] font-bold">{activeTab}</span> in the Admin Control Center will automatically appear here.
+                    {searchQuery
+                      ? 'Try searching for a different keyword such as "React", "Node", "Flutter", or project title.'
+                      : `Projects added under ${activeTab} in the Admin Control Center will automatically appear here.`}
                   </p>
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-cyan-400 transition-colors mt-2"
+                    >
+                      Clear Search Filter
+                    </button>
+                  )}
                 </div>
               ) : (
                 visibleProjects.map((project) => (
@@ -345,7 +421,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           </AnimatePresence>
         </div>
 
-        {/* Bottom Pagination Control Footer (Pic 2 & Pic 1 Style - Positioned Bottom Right) */}
+        {/* Bottom Pagination Control Footer (Positioned Bottom Right) */}
         {!showAll && filteredProjects.length > stepSize && (
           <div className="pt-8 mt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Bottom Left: Showing X to Y of Z projects */}
