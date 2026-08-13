@@ -26,23 +26,13 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking content
         >
           {/* Top Banner Image Header */}
-          <div className="relative h-64 sm:h-80 overflow-hidden shrink-0 bg-slate-950 flex items-center justify-center p-4">
-            {project.imageUrl && (
-              <img
-                src={project.imageUrl}
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 w-full h-full object-cover opacity-40 blur-xl scale-125 pointer-events-none select-none"
-              />
-            )}
-            <div className="absolute inset-0 bg-[#0C1220]/50 backdrop-blur-[2px] pointer-events-none"></div>
-
+          <div className="relative h-60 sm:h-72 overflow-hidden shrink-0 bg-slate-950">
             <img
               src={project.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=1200"}
               alt={project.title}
-              className="relative z-10 max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-2xl"
+              className="w-full h-full object-cover object-top"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0C1220] via-[#0C1220]/40 to-transparent pointer-events-none z-15"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0C1220] via-[#0C1220]/30 to-transparent pointer-events-none z-10"></div>
 
             {/* Close Button */}
             <button
