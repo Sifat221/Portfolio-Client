@@ -214,11 +214,11 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
 
           <button
             onClick={scrollToTop}
-            className="p-2.5 rounded-full glass-card text-slate-300 hover:text-white hover:border-[#9B8FCD]/60 transition-all flex items-center gap-1.5 shadow-md active:scale-95"
+            className="back-to-top-btn px-4 py-2 rounded-full bg-[#111625] border border-indigo-500/40 text-white hover:border-[#9B8FCD] hover:bg-[#1A2035] transition-all flex items-center gap-2 shadow-lg shadow-indigo-950/30 active:scale-95 cursor-pointer group"
             aria-label="Back to Top"
           >
-            <span className="text-[11px] font-bold">Back to Top</span>
-            <ArrowUp className="w-3.5 h-3.5 text-[#9B8FCD]" />
+            <span className="text-xs font-bold text-white tracking-wide">Back to Top</span>
+            <ArrowUp className="w-4 h-4 text-[#9B8FCD] group-hover:-translate-y-0.5 transition-transform" />
           </button>
         </div>
       </div>

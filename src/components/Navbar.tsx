@@ -101,7 +101,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                   {personal.name}<span className="text-[#9B8FCD]">.</span>
                 </span>
                 <span className="text-xs font-semibold text-[#9B8FCD] tracking-wide mt-0.5">
-                  {personal.title || "Flutter & AI Engineer"}
+                  {personal.title || "Flutter & AI Engineering Specialist"}
                 </span>
               </div>
             </div>
@@ -221,7 +221,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                   {personal.name}<span className="text-[#9B8FCD] animate-pulse">.</span>
                 </span>
                 <span className="text-[11px] sm:text-xs font-semibold text-[#9B8FCD] tracking-wide mt-0.5">
-                  {personal.title || "Flutter & AI Engineer"}
+                  {personal.title || "Flutter & AI Engineering Specialist"}
                 </span>
               </div>
             </a>

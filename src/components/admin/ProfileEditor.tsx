@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, User, Mail, Phone, MapPin, Briefcase, Globe, FileText } from 'lucide-react';
+import { Save, User, Mail, Phone, MapPin, Briefcase, Globe, FileText, Sparkles } from 'lucide-react';
 import { IPersonalProfile } from '../../types/portfolio';
 import { FileUploader } from './FileUploader';
 import { uploadFile, updatePersonalProfile } from '../../services/api';
@@ -145,9 +145,14 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
       </div>
 
       {/* Profile Fields */}
+      <div className="p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-xl text-xs text-indigo-300 font-mono flex items-center gap-2">
+        <Sparkles className="w-4 h-4 text-[#9B8FCD] shrink-0" />
+        <span>Tip: Editing <strong>Job Title / Specialist Badge</strong> updates the top Hero status badge & Navbar header live!</span>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {textField('name', 'Full Name', <User className="w-3 h-3" />, 'Your full name')}
-        {textField('title', 'Job Title', <Briefcase className="w-3 h-3" />, 'e.g. Flutter Developer')}
+        {textField('title', 'Job Title / Specialist Badge', <Briefcase className="w-3 h-3" />, 'e.g. Flutter & AI Engineering Specialist')}
         {textField('email', 'Email', <Mail className="w-3 h-3" />, 'your@email.com')}
         {textField('phone', 'Phone', <Phone className="w-3 h-3" />, '+880...')}
         {textField('location', 'Location', <MapPin className="w-3 h-3" />, 'City, Country')}

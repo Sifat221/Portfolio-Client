@@ -353,6 +353,32 @@ html.light footer .text-slate-400 {
   color: #94A3B8 !important;
 }
 
+/* Explicit Back to Top Button Contrast Protection */
+html.light footer .back-to-top-btn,
+html.dark footer .back-to-top-btn,
+footer .back-to-top-btn,
+.back-to-top-btn {
+  background-color: #111625 !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  color: #FFFFFF !important;
+}
+
+html.light footer .back-to-top-btn span,
+html.dark footer .back-to-top-btn span,
+footer .back-to-top-btn span,
+.back-to-top-btn span {
+  color: #FFFFFF !important;
+}
+
+html.light footer .back-to-top-btn:hover,
+html.dark footer .back-to-top-btn:hover,
+footer .back-to-top-btn:hover,
+.back-to-top-btn:hover {
+  background-color: #1A2035 !important;
+  border-color: #9B8FCD !important;
+  color: #FFFFFF !important;
+}
+
 html.light footer a {
   color: #E2E8F0 !important;
 }

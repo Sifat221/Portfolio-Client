@@ -25,7 +25,7 @@ const api = axios.create({
 
 export const defaultPersonal: IPersonalProfile = {
   name: "Sifat Khan",
-  title: "Flutter & AI Engineer",
+  title: "Flutter & AI Engineering Specialist",
   bio: "Motivated and detail-oriented Flutter Developer with strong skills in building beautiful, fast, and scalable mobile applications. Passionate about clean UI, responsive design, and backend API integration. Always eager to learn new technologies and contribute to real-world software solutions.",
   location: "Mirpur, Dhaka, Bangladesh",
   availability: "Open for Flutter and AI roles",
@@ -478,8 +478,8 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
     ...(inMemoryPersonalProfile || {}),
   };
 
-  if (!combined.title) {
-    combined.title = "Flutter & AI Engineer";
+  if (!combined.title || combined.title === "Flutter & AI Engineer" || combined.title === "Flutter Developer") {
+    combined.title = "Flutter & AI Engineering Specialist";
   }
 
   try {
