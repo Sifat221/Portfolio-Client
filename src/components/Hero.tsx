@@ -312,15 +312,26 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
             className="lg:col-span-6 flex flex-col justify-between space-y-8 text-center lg:text-left py-2"
           >
 
-            {/* Top Specialist Status Badge (Matching Image 1 & 3) */}
+            {/* Top Specialist Status Badge & Availability Status Pill (Matching Image 1 & 2) */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-indigo-50/90 dark:bg-[#111328]/90 border border-indigo-200 dark:border-indigo-500/40 text-indigo-900 dark:text-indigo-200 text-xs sm:text-sm font-semibold self-center lg:self-start shadow-md dark:shadow-lg dark:shadow-indigo-950/50 backdrop-blur-md hover:border-indigo-400 dark:hover:border-[#9B8FCD]/60 transition-all"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 self-center lg:self-start"
             >
-              <Sparkles className="w-4 h-4 text-indigo-600 dark:text-[#9B8FCD] animate-pulse shrink-0" />
-              <span>Flutter & AI Engineering Specialist</span>
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-indigo-50/90 dark:bg-[#111328]/90 border border-indigo-200 dark:border-indigo-500/40 text-indigo-900 dark:text-indigo-200 text-xs sm:text-sm font-semibold shadow-md dark:shadow-lg dark:shadow-indigo-950/50 backdrop-blur-md hover:border-indigo-400 dark:hover:border-[#9B8FCD]/60 transition-all">
+                <Sparkles className="w-4 h-4 text-indigo-600 dark:text-[#9B8FCD] animate-pulse shrink-0" />
+                <span>{personal.title || "Flutter & AI Engineering Specialist"}</span>
+              </div>
+
+              {/* Green Pulsing Availability Badge (Image 2 style) */}
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-950/40 border border-emerald-500/40 text-emerald-400 text-xs font-mono font-semibold shadow-md shadow-emerald-950/40 backdrop-blur-md hover:border-emerald-400/70 transition-all">
+                <span className="relative flex h-2.5 w-2.5 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span>{personal.availability || "Open for Flutter and AI roles"}</span>
+              </div>
             </motion.div>
 
             {/* Main Headline */}
