@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Github, CheckCircle2, Sparkles } from 'lucide-react';
+import { X, ExternalLink, Github, CheckCircle2, Sparkles, Smartphone } from 'lucide-react';
 import { IProject } from '../types/portfolio';
 
 interface ProjectModalProps {
@@ -140,6 +140,30 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                   >
                     <Github className="w-4 h-4 text-[#9B8FCD]" />
                     <span>GitHub Code</span>
+                  </a>
+                )}
+                {/* @ts-ignore */}
+                {project.androidUrl && (
+                  <a
+                    href={project.androidUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2.5 rounded-xl text-xs font-bold text-emerald-300 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/40 hover:border-emerald-400 shadow-md shadow-emerald-950/30 transition-all flex items-center gap-2"
+                  >
+                    <Smartphone className="w-4 h-4 text-emerald-400" />
+                    <span>Android</span>
+                  </a>
+                )}
+                {/* @ts-ignore */}
+                {project.iosUrl && (
+                  <a
+                    href={project.iosUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-100 bg-slate-800 hover:bg-slate-700 border border-slate-600 hover:border-slate-400 shadow-md transition-all flex items-center gap-2"
+                  >
+                    <Smartphone className="w-4 h-4 text-sky-400" />
+                    <span>iOS</span>
                   </a>
                 )}
                 {project.demoUrl && (

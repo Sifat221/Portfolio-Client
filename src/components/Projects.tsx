@@ -378,7 +378,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                             View Details
                           </button>
 
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             {project.clientUrl && (
                               <a
                                 href={project.clientUrl}
@@ -410,6 +410,28 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                               >
                                 <Github className="w-3.5 h-3.5" />
                                 <span>Code</span>
+                              </a>
+                            )}
+                            {project.androidUrl && (
+                              <a
+                                href={project.androidUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-400 hover:text-emerald-300 transition-colors"
+                              >
+                                <Smartphone className="w-3.5 h-3.5" />
+                                <span>Android</span>
+                              </a>
+                            )}
+                            {project.iosUrl && (
+                              <a
+                                href={project.iosUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[11px] font-mono text-sky-400 hover:text-sky-300 transition-colors"
+                              >
+                                <Smartphone className="w-3.5 h-3.5" />
+                                <span>iOS</span>
                               </a>
                             )}
                             {project.demoUrl && (

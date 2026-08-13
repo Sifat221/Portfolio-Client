@@ -29,6 +29,8 @@ export interface IProject {
   clientUrl?: string;
   serverUrl?: string;
   demoUrl?: string;
+  androidUrl?: string;
+  iosUrl?: string;
   imageUrl?: string;
   isFeatured?: boolean;
   category?: string;

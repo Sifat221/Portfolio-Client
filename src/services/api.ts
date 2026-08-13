@@ -92,6 +92,8 @@ export const defaultProjects: IProject[] = [
       "Interactive BMI calculator & consultation UI"
     ],
     githubUrl: "https://github.com/Sifat221/medbridge_telemedicine",
+    androidUrl: "https://github.com/Sifat221/medbridge_telemedicine/releases",
+    iosUrl: "https://github.com/Sifat221/medbridge_telemedicine",
     demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
     imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800",
     isFeatured: true,
@@ -109,6 +111,8 @@ export const defaultProjects: IProject[] = [
       "Team collaboration & role management workflow"
     ],
     githubUrl: "https://github.com/Sifat221",
+    androidUrl: "https://github.com/Sifat221",
+    iosUrl: "https://github.com/Sifat221",
     demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
     imageUrl: "https://images.unsplash.com/photo-1556742049-0a670f4a4591?auto=format&fit=crop&q=80&w=800",
     isFeatured: true,
@@ -126,6 +130,8 @@ export const defaultProjects: IProject[] = [
       "User authentication & REST API backend sync"
     ],
     githubUrl: "https://github.com/Sifat221/e_commerce",
+    androidUrl: "https://github.com/Sifat221/e_commerce/releases",
+    iosUrl: "https://github.com/Sifat221/e_commerce",
     demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
     imageUrl: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80&w=800",
     isFeatured: true,
@@ -143,6 +149,8 @@ export const defaultProjects: IProject[] = [
       "Fluid micro-animations & responsive layout"
     ],
     githubUrl: "https://github.com/Sifat221/task_manager_with_getx_impl",
+    androidUrl: "https://github.com/Sifat221/task_manager_with_getx_impl/releases",
+    iosUrl: "https://github.com/Sifat221/task_manager_with_getx_impl",
     demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
     imageUrl: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&q=80&w=800",
     isFeatured: true,
@@ -160,6 +168,8 @@ export const defaultProjects: IProject[] = [
       "Patient dashboard management"
     ],
     githubUrl: "https://github.com/Sifat221/virtual_care",
+    androidUrl: "https://github.com/Sifat221/virtual_care/releases",
+    iosUrl: "https://github.com/Sifat221/virtual_care",
     demoUrl: "https://sifat221.github.io/SifatKhan-portfolio/",
     imageUrl: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=800",
     isFeatured: true,
