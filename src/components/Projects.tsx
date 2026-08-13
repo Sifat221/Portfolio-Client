@@ -121,7 +121,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const totalPages = Math.ceil(filteredProjects.length / stepSize);
   const isFilteredOrSearched = searchQuery || showAll || activeTab !== 'All' || currentIndex > 0;
 
-  const headerBadgeText = showAll ? 'ALL PROJECTS & SYSTEMS' : 'FEATURED PORTFOLIO';
+  const headerBadgeText = showAll ? 'ALL PROJECTS & SYSTEMS' : 'FEATURED SHOWCASE';
   const headerTitleText = showAll ? 'Featured Works & Architecture' : 'Featured Projects';
   const headerHighlightText = showAll ? 'Architecture' : 'Projects';
   const headerDescriptionText = showAll
@@ -156,7 +156,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
             )}
 
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold uppercase tracking-wider">
-              <Smartphone className="w-3.5 h-3.5" />
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
               <span>{headerBadgeText}</span>
             </div>
           </div>
