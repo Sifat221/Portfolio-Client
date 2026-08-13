@@ -121,9 +121,12 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const totalPages = Math.ceil(filteredProjects.length / stepSize);
   const isFilteredOrSearched = searchQuery || showAll || activeTab !== 'All' || currentIndex > 0;
 
-  const headerBadgeText = showAll ? 'ALL PROJECTS & SYSTEMS' : 'PORTFOLIO WORK';
+  const headerBadgeText = showAll ? 'ALL PROJECTS & SYSTEMS' : 'FEATURED PORTFOLIO';
   const headerTitleText = showAll ? 'Featured Works & Architecture' : 'Featured Projects';
   const headerHighlightText = showAll ? 'Architecture' : 'Projects';
+  const headerDescriptionText = showAll
+    ? 'Comprehensive showcase of full-stack web platforms, mobile apps, AI/ML models, and enterprise software systems engineered with modern scalable architecture.'
+    : 'Selected mobile & web applications engineered with clean architecture, responsive UI/UX, role-based access control, and real-time APIs.';
 
   return (
     <section id="projects" className="py-24 relative bg-[#090D16]">
@@ -204,9 +207,15 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
         </div>
 
         {/* 3. Subtitle Description */}
-        <p className="text-slate-300 text-sm font-normal max-w-2xl leading-relaxed mb-6">
-          Full-stack web platforms engineered with role-based access control, Stripe payment gateways, and real-time APIs.
-        </p>
+        <motion.p
+          key={headerDescriptionText}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-slate-300 text-sm font-normal max-w-2xl leading-relaxed mb-6"
+        >
+          {headerDescriptionText}
+        </motion.p>
 
         {/* 4. Tab Navigation Bar (Left) + See More Projects Button (Right - Moved down to tab row) */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 mb-10 gap-4">
