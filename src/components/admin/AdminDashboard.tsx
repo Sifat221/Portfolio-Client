@@ -610,7 +610,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             <img
                               src={item.imageUrl}
                               alt={item.title}
-                              className="w-14 h-14 rounded-xl object-cover border border-slate-700 shrink-0"
+                              className="w-14 h-14 rounded-xl object-contain bg-slate-950 p-1 border border-slate-700 shrink-0"
                             />
                           )}
                           <div className="space-y-1 min-w-0">

@@ -222,14 +222,26 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                     captionText={project.title}
                   >
                     <div className="project-card-container rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">
-                      {/* Image Container */}
-                      <div className="relative h-56 overflow-hidden bg-slate-900">
+                      {/* Image Container - Ambient Blur + Perfect Fit Frame */}
+                      <div className="relative h-64 sm:h-72 overflow-hidden bg-[#0a0f1d] flex items-center justify-center p-3">
+                        {/* Background Ambient Blur from Image */}
+                        {project.imageUrl && (
+                          <img
+                            src={project.imageUrl}
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute inset-0 w-full h-full object-cover opacity-40 blur-xl scale-125 pointer-events-none select-none"
+                          />
+                        )}
+                        <div className="absolute inset-0 bg-[#080d19]/40 backdrop-blur-[2px] pointer-events-none"></div>
+
+                        {/* Foreground Image - Fits 100% without cropping top headers or app screens */}
                         <img
                           src={project.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800"}
                           alt={project.title}
-                          className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
+                          className="relative z-10 max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl group-hover/card:scale-[1.03] transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-transparent to-transparent opacity-90"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-transparent to-transparent opacity-50 pointer-events-none z-15"></div>
 
                         {/* Category & Featured Badge */}
                         <div className="absolute top-4 right-4 flex items-center gap-2 z-20">
