@@ -144,10 +144,75 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
         />
       </div>
 
-      {/* Profile Fields */}
-      <div className="p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-xl text-xs text-indigo-300 font-mono flex items-center gap-2">
-        <Sparkles className="w-4 h-4 text-[#9B8FCD] shrink-0" />
-        <span>Tip: Editing <strong>Job Title / Specialist Badge</strong> updates the top Hero status badge & Navbar header live!</span>
+      {/* ================= DEDICATED HERO STATUS BADGE CONTROL ================= */}
+      <div className="p-5 bg-slate-900/90 border-2 border-[#9B8FCD]/50 rounded-2xl shadow-xl space-y-4 relative overflow-hidden">
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-[#9B8FCD]/20 text-[#9B8FCD]">
+              <Sparkles className="w-5 h-5 animate-pulse" />
+            </div>
+            <div>
+              <h4 className="text-sm font-extrabold text-white tracking-wide flex items-center gap-2">
+                Hero Status Badge Control
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-[#9B8FCD]/20 text-[#9B8FCD] border border-[#9B8FCD]/40">
+                  Homepage Badge
+                </span>
+              </h4>
+              <p className="text-xs text-slate-400 font-mono">
+                Update badge text or toggle visibility (Remove/Show on Hero section)
+              </p>
+            </div>
+          </div>
+
+          {/* Toggle Switch */}
+          <label className="flex items-center gap-3 cursor-pointer select-none">
+            <span className="text-xs font-mono font-bold text-slate-300">
+              {form.showBadge !== false ? 'Badge Visible' : 'Badge Hidden'}
+            </span>
+            <div className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={form.showBadge !== false}
+                onChange={(e) => setForm((prev) => ({ ...prev, showBadge: e.target.checked }))}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#9B8FCD]" />
+            </div>
+          </label>
+        </div>
+
+        {/* Inputs & Live Preview */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end pt-2">
+          <div className="space-y-1.5">
+            <label className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-[#9B8FCD]" /> Badge Text
+            </label>
+            <input
+              type="text"
+              value={form.badgeText !== undefined ? form.badgeText : (form.title || 'Flutter & AI Engineering Specialist')}
+              onChange={(e) => setForm((prev) => ({ ...prev, badgeText: e.target.value }))}
+              placeholder="e.g. Flutter & AI Engineering Specialist"
+              className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm placeholder-slate-500 focus:border-[#9B8FCD] focus:ring-1 focus:ring-[#9B8FCD] outline-none transition-all"
+            />
+          </div>
+
+          {/* Live Preview Box */}
+          <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 space-y-1.5">
+            <span className="text-[10px] font-mono text-slate-400 font-bold uppercase tracking-wider block">
+              Live Badge Preview on Homepage
+            </span>
+            {form.showBadge !== false && (form.badgeText || form.title || '').trim() ? (
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
+                <Sparkles className="w-3.5 h-3.5 text-[#9B8FCD] animate-pulse" />
+                <span>{form.badgeText || form.title || "Flutter & AI Engineering Specialist"}</span>
+              </div>
+            ) : (
+              <div className="text-xs font-mono text-rose-400 font-bold flex items-center gap-1.5 py-1">
+                ⚠️ Status badge is hidden / removed from Hero section.
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

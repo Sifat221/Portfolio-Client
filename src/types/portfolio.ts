@@ -14,6 +14,8 @@ export interface IPersonalProfile {
   linkedin?: string;
   facebook?: string;
   whatsapp?: string;
+  badgeText?: string;
+  showBadge?: boolean;
 }
 
 export interface IProject {

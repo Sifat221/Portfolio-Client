@@ -313,15 +313,17 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
           >
 
             {/* Top Specialist Status Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-indigo-50/90 dark:bg-[#111328]/90 border border-indigo-200 dark:border-indigo-500/40 text-indigo-900 dark:text-indigo-200 text-xs sm:text-sm font-semibold self-center lg:self-start shadow-md dark:shadow-lg dark:shadow-indigo-950/50 backdrop-blur-md hover:border-indigo-400 dark:hover:border-[#9B8FCD]/60 transition-all"
-            >
-              <Sparkles className="w-4 h-4 text-indigo-600 dark:text-[#9B8FCD] animate-pulse shrink-0" />
-              <span>{personal.title || "Flutter & AI Engineering Specialist"}</span>
-            </motion.div>
+            {personal.showBadge !== false && Boolean((personal.badgeText || personal.title || '').trim()) && (
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-indigo-50/90 dark:bg-[#111328]/90 border border-indigo-200 dark:border-indigo-500/40 text-indigo-900 dark:text-indigo-200 text-xs sm:text-sm font-semibold self-center lg:self-start shadow-md dark:shadow-lg dark:shadow-indigo-950/50 backdrop-blur-md hover:border-indigo-400 dark:hover:border-[#9B8FCD]/60 transition-all"
+              >
+                <Sparkles className="w-4 h-4 text-indigo-600 dark:text-[#9B8FCD] animate-pulse shrink-0" />
+                <span>{personal.badgeText || personal.title || "Flutter & AI Engineering Specialist"}</span>
+              </motion.div>
+            )}
 
             {/* Main Headline */}
             <div className="space-y-4">

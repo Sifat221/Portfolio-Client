@@ -37,7 +37,9 @@ export const defaultPersonal: IPersonalProfile = {
   profilePhoto: "/Profile.jpg",
   bannerPhoto: "/Profile.jpg",
   linkedin: "https://www.linkedin.com/in/sifat-khan-540a86351/",
-  facebook: "https://facebook.com/sifatk4an.joy"
+  facebook: "https://facebook.com/sifatk4an.joy",
+  badgeText: "Flutter & AI Engineering Specialist",
+  showBadge: true,
 };
 
 export const defaultProjects: IProject[] = [
@@ -480,6 +482,13 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
 
   if (!combined.title || combined.title === "Flutter & AI Engineer" || combined.title === "Flutter Developer") {
     combined.title = "Flutter & AI Engineering Specialist";
+  }
+
+  if (combined.badgeText === undefined) {
+    combined.badgeText = combined.title || "Flutter & AI Engineering Specialist";
+  }
+  if (combined.showBadge === undefined) {
+    combined.showBadge = true;
   }
 
   try {
