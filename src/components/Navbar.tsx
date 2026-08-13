@@ -84,11 +84,14 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#9B8FCD] to-indigo-600 p-0.5 shadow-lg flex items-center justify-center shrink-0">
                 <img
+                  key={personal.profilePhoto || personal.bannerPhoto || 'profile_avatar'}
                   src={personal.profilePhoto || personal.bannerPhoto || "/Profile.jpg"}
                   alt={personal.name}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = "/Profile.jpg";
+                    if (!target.src.endsWith('/Profile.jpg')) {
+                      target.src = "/Profile.jpg";
+                    }
                   }}
                   className="w-full h-full object-cover rounded-[14px]"
                 />
@@ -201,11 +204,14 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
             <a href="#" className="flex items-center gap-3 group" aria-label={`${personal.name} Home`}>
               <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-[#9B8FCD]/60 shadow-md group-hover:scale-105 transition-transform duration-200 shrink-0 bg-slate-900">
                 <img
+                  key={personal.profilePhoto || personal.bannerPhoto || 'profile_avatar_desktop'}
                   src={personal.profilePhoto || personal.bannerPhoto || "/Profile.jpg"}
                   alt={personal.name}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = "/Profile.jpg";
+                    if (!target.src.endsWith('/Profile.jpg')) {
+                      target.src = "/Profile.jpg";
+                    }
                   }}
                   className="w-full h-full object-cover"
                 />

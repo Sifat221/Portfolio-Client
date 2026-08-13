@@ -478,7 +478,7 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
     ...(inMemoryPersonalProfile || {}),
   };
 
-  if (!combined.title || combined.title.includes('Flutter Developer') || combined.title.includes('Mobile Application')) {
+  if (!combined.title) {
     combined.title = "Flutter & AI Engineer";
   }
 
