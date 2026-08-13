@@ -121,6 +121,10 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const totalPages = Math.ceil(filteredProjects.length / stepSize);
   const isFilteredOrSearched = searchQuery || showAll || activeTab !== 'All' || currentIndex > 0;
 
+  const headerBadgeText = showAll ? 'ALL PROJECTS & SYSTEMS' : 'PORTFOLIO WORK';
+  const headerTitleText = showAll ? 'Featured Works & Architecture' : 'Featured Projects';
+  const headerHighlightText = showAll ? 'Architecture' : 'Projects';
+
   return (
     <section id="projects" className="py-24 relative bg-[#090D16]">
       {/* Background Soft Glow */}
@@ -148,9 +152,9 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               </button>
             )}
 
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-[#9B8FCD]/30 text-[#9B8FCD] text-xs font-mono font-bold">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold uppercase tracking-wider">
               <Smartphone className="w-3.5 h-3.5" />
-              <span>Showcase Applications</span>
+              <span>{headerBadgeText}</span>
             </div>
           </div>
         </div>
@@ -158,9 +162,10 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
         {/* 2. Main Title (Left) + Search Bar (Right - Moved down aligned with Title) */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-3">
           <SplitText
-            text="Featured Works & Architecture"
-            highlightText="Works"
-            highlightClass="text-blue-500"
+            key={headerTitleText + showAll}
+            text={headerTitleText}
+            highlightText={headerHighlightText}
+            highlightClass="text-[#38bdf8]"
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight"
             delay={50}
             duration={1.25}
