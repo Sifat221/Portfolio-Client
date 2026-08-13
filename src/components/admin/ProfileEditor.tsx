@@ -217,12 +217,15 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {textField('name', 'Full Name', <User className="w-3 h-3" />, 'Your full name')}
-        {textField('title', 'Job Title / Specialist Badge', <Briefcase className="w-3 h-3" />, 'e.g. Flutter & AI Engineering Specialist')}
+        {textField('title', 'Job Title / Subtitle', <Briefcase className="w-3 h-3" />, 'e.g. Flutter & AI Engineering Specialist')}
         {textField('email', 'Email', <Mail className="w-3 h-3" />, 'your@email.com')}
         {textField('phone', 'Phone', <Phone className="w-3 h-3" />, '+880...')}
         {textField('location', 'Location', <MapPin className="w-3 h-3" />, 'City, Country')}
-        {textField('availability', 'Availability', <FileText className="w-3 h-3" />, 'Available for...')}
-        {textField('github', 'GitHub URL', <Globe className="w-3 h-3" />, 'https://github.com/...')}
+        {textField('availability', 'Availability Status', <FileText className="w-3 h-3" />, 'Available for...')}
+        {textField('github', 'GitHub Profile URL', <Globe className="w-3 h-3" />, 'https://github.com/...')}
+        {textField('linkedin', 'LinkedIn Profile URL', <Globe className="w-3 h-3" />, 'https://linkedin.com/in/...')}
+        {textField('facebook', 'Facebook Profile URL', <Globe className="w-3 h-3" />, 'https://facebook.com/...')}
+        {textField('whatsapp', 'WhatsApp Phone / Link', <Phone className="w-3 h-3" />, '+880...')}
         {textField('portfolio', 'Portfolio URL', <Globe className="w-3 h-3" />, 'https://...')}
       </div>
 
