@@ -15,6 +15,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const [selectedProject, setSelectedProject] = useState<IProject | null>(null);
   const [activeTab, setActiveTab] = useState<string>('All');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [showAll, setShowAll] = useState<boolean>(false);
 
   // Exact Tabs requested by the user
   const tabs = [
@@ -63,8 +64,8 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   }, []);
 
   const filteredProjects = getFilteredProjects();
-  const itemsPerPage = isMobile ? 1 : 2;
-  const maxIndex = Math.max(0, filteredProjects.length - itemsPerPage);
+  const stepSize = isMobile ? 1 : 2;
+  const itemsPerPage = showAll ? filteredProjects.length : stepSize;
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
@@ -72,19 +73,30 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   };
 
   const handleNext = () => {
-    if (currentIndex + itemsPerPage < filteredProjects.length) {
-      setCurrentIndex((prev) => prev + 1);
+    if (currentIndex + stepSize < filteredProjects.length) {
+      setCurrentIndex((prev) => prev + stepSize);
     }
   };
 
   const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
+    if (currentIndex - stepSize >= 0) {
+      setCurrentIndex((prev) => prev - stepSize);
+    } else {
+      setCurrentIndex(0);
     }
   };
 
-  // Visible 2 projects slice for the carousel
-  const visibleProjects = filteredProjects.slice(currentIndex, currentIndex + itemsPerPage);
+  const toggleShowAll = () => {
+    setShowAll((prev) => !prev);
+    setCurrentIndex(0);
+  };
+
+  // Visible projects slice for the carousel / grid
+  const visibleProjects = showAll
+    ? filteredProjects
+    : filteredProjects.slice(currentIndex, currentIndex + itemsPerPage);
+
+  const totalPages = Math.ceil(filteredProjects.length / stepSize);
 
   return (
     <section id="projects" className="py-24 relative bg-[#090D16]">
@@ -98,57 +110,41 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
       >
-        {/* Clean Header */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
-          <div className="text-center md:text-left space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-[#9B8FCD]/30 text-[#9B8FCD] text-xs font-mono font-bold">
-              <Smartphone className="w-3.5 h-3.5" />
-              <span>Showcase Applications</span>
-            </div>
-            
-            <SplitText
-              text="Featured Projects"
-              highlightText="Projects"
-              highlightClass="text-blue-500"
-              className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight"
-              delay={50}
-              duration={1.25}
-              ease="power3.out"
-              splitType="chars"
-              from={{ opacity: 0, y: 40 }}
-              to={{ opacity: 1, y: 0 }}
-              threshold={0.05}
-              rootMargin="0px"
-              textAlign="left"
-            />
-
-            <p className="text-slate-300 text-sm font-normal">
-              Explore full-stack web and production mobile solutions built with Clean Architecture, REST APIs, and scalable backends.
-            </p>
+        {/* Top Header & Sub-header Area (Pic 3 & Pic 4 Layout) */}
+        <div className="space-y-3 mb-8">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-[#9B8FCD]/30 text-[#9B8FCD] text-xs font-mono font-bold">
+            <Smartphone className="w-3.5 h-3.5" />
+            <span>Showcase Applications</span>
           </div>
 
-          {/* Carousel Control Buttons (Left & Right Arrows) */}
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={handlePrev}
-              disabled={currentIndex === 0}
-              className="p-3 rounded-full glass-card border border-slate-700/80 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] disabled:opacity-30 disabled:pointer-events-none transition-all shadow-lg active:scale-95"
-              aria-label="Previous Projects"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            
-            <span className="text-xs font-mono text-slate-400 font-bold px-1">
-              {filteredProjects.length > 0 ? `${Math.min(currentIndex + 1, filteredProjects.length)} - ${Math.min(currentIndex + itemsPerPage, filteredProjects.length)} of ${filteredProjects.length}` : '0 of 0'}
-            </span>
+          <SplitText
+            text="Featured Works & Architecture"
+            highlightText="Works"
+            highlightClass="text-blue-500"
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight"
+            delay={50}
+            duration={1.25}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.05}
+            rootMargin="0px"
+            textAlign="left"
+          />
+
+          {/* Subtitle Description & "See More Projects" Action Button (Pic 3) */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-2">
+            <p className="text-slate-300 text-sm font-normal max-w-2xl leading-relaxed">
+              Full-stack web platforms engineered with role-based access control, Stripe payment gateways, and real-time APIs.
+            </p>
 
             <button
-              onClick={handleNext}
-              disabled={currentIndex >= maxIndex || filteredProjects.length <= itemsPerPage}
-              className="p-3 rounded-full glass-card border border-slate-700/80 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] disabled:opacity-30 disabled:pointer-events-none transition-all shadow-lg active:scale-95"
-              aria-label="Next Projects"
+              onClick={toggleShowAll}
+              className="self-start sm:self-auto group px-5 py-2.5 rounded-2xl glass-card border border-slate-700/80 hover:border-[#38bdf8] text-white text-xs font-bold flex items-center gap-2 shadow-lg hover:shadow-cyan-500/20 transition-all active:scale-95 shrink-0"
             >
-              <ChevronRight className="w-5 h-5" />
+              <span>{showAll ? 'Show Fewer Projects' : 'See More Projects'}</span>
+              <ArrowUpRight className={`w-4 h-4 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform ${showAll ? 'rotate-90' : ''}`} />
             </button>
           </div>
         </div>
@@ -187,11 +183,11 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           </div>
         </div>
 
-        {/* Interactive 2-Item Carousel Grid */}
+        {/* Interactive Carousel / Grid (Pic 4) */}
         <div className="relative overflow-hidden min-h-[460px]">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeTab + currentIndex}
+              key={activeTab + currentIndex + (showAll ? 'all' : 'paginated')}
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -40 }}
@@ -349,21 +345,55 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           </AnimatePresence>
         </div>
 
-        {/* Carousel Pagination Dots */}
-        {filteredProjects.length > itemsPerPage && (
-          <div className="flex items-center justify-center gap-2 pt-8">
-            {Array.from({ length: Math.ceil(filteredProjects.length / itemsPerPage) }).map((_, dotIdx) => (
+        {/* Bottom Pagination Control Footer (Pic 2 & Pic 1 Style - Positioned Bottom Right) */}
+        {!showAll && filteredProjects.length > stepSize && (
+          <div className="pt-8 mt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+            {/* Bottom Left: Showing X to Y of Z projects */}
+            <div className="text-xs font-mono text-slate-400">
+              Showing <span className="font-bold text-white">{filteredProjects.length > 0 ? currentIndex + 1 : 0}</span> to <span className="font-bold text-white">{Math.min(currentIndex + stepSize, filteredProjects.length)}</span> of <span className="font-bold text-cyan-400">{filteredProjects.length}</span> projects
+            </div>
+
+            {/* Bottom Right: Previous, Page Pills, Next */}
+            <div className="flex items-center gap-2 shrink-0">
               <button
-                key={dotIdx}
-                onClick={() => setCurrentIndex(dotIdx * itemsPerPage)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  Math.floor(currentIndex / itemsPerPage) === dotIdx
-                    ? 'w-8 bg-[#9B8FCD] shadow-sm shadow-[#9B8FCD]/50'
-                    : 'w-2 bg-slate-800 hover:bg-slate-700'
-                }`}
-                aria-label={`Go to slide page ${dotIdx + 1}`}
-              />
-            ))}
+                onClick={handlePrev}
+                disabled={currentIndex === 0}
+                className="px-3.5 py-1.5 rounded-xl glass-card border border-slate-700/80 text-xs font-medium text-slate-300 hover:text-white hover:border-[#9B8FCD] disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1"
+                aria-label="Previous Projects"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                <span>Previous</span>
+              </button>
+
+              {/* Page Number Pills */}
+              {Array.from({ length: totalPages }).map((_, idx) => {
+                const pageNum = idx + 1;
+                const isActivePage = Math.floor(currentIndex / stepSize) === idx;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentIndex(idx * stepSize)}
+                    className={`w-8 h-8 rounded-xl text-xs font-bold transition-all flex items-center justify-center ${
+                      isActivePage
+                        ? 'bg-[#0091ff] text-white shadow-md shadow-cyan-500/30 scale-105'
+                        : 'glass-card border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+
+              <button
+                onClick={handleNext}
+                disabled={currentIndex + stepSize >= filteredProjects.length}
+                className="px-3.5 py-1.5 rounded-xl glass-card border border-slate-700/80 text-xs font-medium text-slate-300 hover:text-white hover:border-[#9B8FCD] disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1"
+                aria-label="Next Projects"
+              >
+                <span>Next</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         )}
       </motion.div>
