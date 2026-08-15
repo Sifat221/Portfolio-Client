@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Github, CheckCircle2, Sparkles, Smartphone } from 'lucide-react';
+import { X, ExternalLink, Github, CheckCircle2, Sparkles, Smartphone, Layout } from 'lucide-react';
 import { IProject } from '../types/portfolio';
 
 interface ProjectModalProps {
@@ -138,8 +138,12 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                     rel="noopener noreferrer"
                     className="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-[#9B8FCD] transition-all flex items-center gap-2"
                   >
-                    <Github className="w-4 h-4 text-[#9B8FCD]" />
-                    <span>GitHub Code</span>
+                    {project.githubUrl.includes('figma.com') || (project.githubLabel && !project.githubLabel.toLowerCase().includes('github') && !project.githubLabel.toLowerCase().includes('code')) ? (
+                      <Layout className="w-4 h-4 text-cyan-400" />
+                    ) : (
+                      <Github className="w-4 h-4 text-[#9B8FCD]" />
+                    )}
+                    <span>{project.githubLabel || 'GitHub Code'}</span>
                   </a>
                 )}
                 {/* @ts-ignore */}
@@ -174,7 +178,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                     className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#9B8FCD] to-indigo-600 hover:from-[#8B7DBE] hover:to-indigo-500 shadow-md shadow-[#9B8FCD]/20 transition-all flex items-center gap-2"
                   >
                     <ExternalLink className="w-4 h-4" />
-                    <span>Live Preview</span>
+                    <span>{project.demoLabel || 'Live Preview'}</span>
                   </a>
                 )}
               </div>
