@@ -222,10 +222,22 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
       >
         {/* Section Header */}
         <div className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-card border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-bold font-mono mb-1">
-            <Wrench className="w-3.5 h-3.5 text-[#9B8FCD]" />
+          <motion.div
+            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center justify-center gap-2.5 px-4.5 py-1.5 rounded-full bg-[#9B8FCD]/10 border border-[#9B8FCD]/50 text-[#9B8FCD] text-xs font-mono font-bold tracking-wider uppercase shadow-md dark:shadow-[0_0_20px_rgba(155,143,205,0.3)] animate-pulse mb-1"
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+              className="shrink-0 flex items-center justify-center text-[#9B8FCD]"
+            >
+              <Wrench className="w-4 h-4" />
+            </motion.div>
             <span>Tech Stack & Capabilities</span>
-          </div>
+          </motion.div>
 
           <SplitText
             text="Core Mobile Expertise"

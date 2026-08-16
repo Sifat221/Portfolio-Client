@@ -59,10 +59,22 @@ export const Achievements: React.FC<TestimonialsAchievementsProps> = ({
             {/* Top Header & Slider Controls */}
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div className="space-y-2">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-amber-500/40 text-amber-400 text-xs font-mono font-bold shadow-sm">
-                  <Quote className="w-3.5 h-3.5 text-amber-400" />
+                <motion.div
+                  initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                  className="inline-flex items-center justify-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/50 text-amber-400 text-xs font-mono font-bold tracking-wider uppercase shadow-md dark:shadow-[0_0_20px_rgba(245,158,11,0.25)] animate-pulse"
+                >
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+                    className="shrink-0 flex items-center justify-center text-amber-400"
+                  >
+                    <Quote className="w-3.5 h-3.5" />
+                  </motion.div>
                   <span>Client & Peer Endorsements</span>
-                </div>
+                </motion.div>
 
                 <div className="py-1">
                   <SplitText
@@ -191,10 +203,22 @@ export const Achievements: React.FC<TestimonialsAchievementsProps> = ({
           <div className="lg:col-span-5 bg-[#1A2335]/90 p-6 sm:p-8 rounded-3xl border border-slate-700/60 shadow-2xl space-y-5 relative overflow-hidden backdrop-blur-xl">
             {/* Header */}
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-[#9B8FCD]/40 text-[#9B8FCD] text-xs font-mono font-bold shadow-sm">
-                <Trophy className="w-3.5 h-3.5 text-[#9B8FCD]" />
+              <motion.div
+                initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center justify-center gap-2.5 px-4.5 py-1.5 rounded-full bg-[#9B8FCD]/10 border border-[#9B8FCD]/50 text-[#9B8FCD] text-xs font-mono font-bold tracking-wider uppercase shadow-md dark:shadow-[0_0_20px_rgba(155,143,205,0.3)] animate-pulse"
+              >
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+                  className="shrink-0 flex items-center justify-center text-[#9B8FCD]"
+                >
+                  <Trophy className="w-3.5 h-3.5" />
+                </motion.div>
                 <span>Milestones & Recognition</span>
-              </div>
+              </motion.div>
 
               <div className="py-1">
                 <SplitText

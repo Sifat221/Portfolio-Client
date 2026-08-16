@@ -155,10 +155,22 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               </button>
             )}
 
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+            <motion.div
+              initial={{ opacity: 0, y: 15, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center justify-center gap-2.5 px-4.5 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/70 border border-cyan-400/60 dark:border-cyan-500/50 text-cyan-700 dark:text-cyan-300 text-xs font-mono font-bold tracking-wider uppercase shadow-md dark:shadow-[0_0_20px_rgba(6,182,212,0.3)] animate-pulse"
+            >
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+                className="shrink-0 flex items-center justify-center text-cyan-600 dark:text-cyan-400"
+              >
+                <Sparkles className="w-4 h-4" />
+              </motion.div>
               <span>{headerBadgeText}</span>
-            </div>
+            </motion.div>
           </div>
         </div>
 
