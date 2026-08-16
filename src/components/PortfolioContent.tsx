@@ -65,14 +65,14 @@ export const PortfolioContent: React.FC = () => {
     <div className="min-h-screen bg-[#090D16] text-slate-100 selection:bg-[#9B8FCD] selection:text-white transition-colors duration-300">
       <SEOHead personal={personal} />
 
-      {/* Refined Elegant WebGL Splash Cursor Backdrop */}
+      {/* Goldilocks Sweet Spot WebGL Splash Cursor Backdrop */}
       <SplashCursor
-        DENSITY_DISSIPATION={5.2}
-        VELOCITY_DISSIPATION={3.0}
-        PRESSURE={0.08}
-        CURL={2}
-        SPLAT_RADIUS={0.12}
-        SPLAT_FORCE={3200}
+        DENSITY_DISSIPATION={4.4}
+        VELOCITY_DISSIPATION={2.5}
+        PRESSURE={0.09}
+        CURL={2.5}
+        SPLAT_RADIUS={0.15}
+        SPLAT_FORCE={4200}
         COLOR_UPDATE_SPEED={10}
         SHADING
         RAINBOW_MODE={false}
