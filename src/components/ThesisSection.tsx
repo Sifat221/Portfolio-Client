@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Atom, Sparkles, CheckCircle2, GitBranch, TrendingUp, BarChart3 } from 'lucide-react';
 import { IThesis } from '../types/portfolio';
+import SplitText from './SplitText';
 
 interface ThesisSectionProps {
   thesisList?: IThesis[];
@@ -12,18 +13,6 @@ export const ThesisSection: React.FC<ThesisSectionProps> = ({ thesisList = [] })
 
   if (!currentThesis) {
     return null;
-  }
-
-  // Parse title cleanly to avoid duplicate "Pipeline" words
-  const rawTitle = currentThesis.title || 'Machine Learning Pipeline';
-  let mainPart = rawTitle;
-  let pipelinePart = '';
-
-  if (/pipeline/i.test(rawTitle)) {
-    mainPart = rawTitle.replace(/pipeline/i, '').trim();
-    pipelinePart = 'Pipeline';
-  } else {
-    mainPart = rawTitle;
   }
 
   // Default colorful gradients for classifier benchmark bars
@@ -44,48 +33,48 @@ export const ThesisSection: React.FC<ThesisSectionProps> = ({ thesisList = [] })
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10">
         {/* Section Header (Centered) */}
         <div className="flex flex-col items-center justify-center text-center space-y-4 max-w-3xl mx-auto">
-          {/* Top Badge (Centered) */}
+          {/* Top Badge (Image 1: Animated badge with glowing pulse border & spinning atom icon) */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-400/50 dark:border-cyan-500/40 text-cyan-700 dark:text-cyan-300 text-xs font-mono font-bold tracking-wider uppercase shadow-sm dark:shadow-[0_0_15px_rgba(6,182,212,0.2)]"
+            className="inline-flex items-center justify-center gap-2.5 px-4.5 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/70 border border-cyan-400/60 dark:border-cyan-500/50 text-cyan-700 dark:text-cyan-300 text-xs font-mono font-bold tracking-wider uppercase shadow-md dark:shadow-[0_0_20px_rgba(6,182,212,0.3)] animate-pulse"
           >
-            <Atom className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0" />
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+              className="shrink-0 flex items-center justify-center"
+            >
+              <Atom className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+            </motion.div>
             <span>{currentThesis.badge || 'RESEARCH & BACHELOR THESIS'}</span>
           </motion.div>
 
-          {/* Section Animated Heading (Centered, with Pipeline in electric blue, NO pipe | symbol) */}
-          <motion.h2
-            initial={{ opacity: 0, y: 30, scale: 0.96 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-3xl sm:text-5xl font-extrabold tracking-tight font-serif text-center flex flex-wrap items-center justify-center gap-x-3 gap-y-1"
-          >
-            <span className="text-slate-900 dark:text-white transition-colors duration-300">
-              {mainPart || 'Machine Learning'}
-            </span>
-            {pipelinePart && (
-              <motion.span
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-sky-500 dark:text-sky-400 font-extrabold"
-              >
-                {pipelinePart}
-              </motion.span>
-            )}
-          </motion.h2>
+          {/* Section Heading (Image 2: Character-by-character SplitText animation matching all other headers) */}
+          <div className="w-full flex items-center justify-center text-center py-1">
+            <SplitText
+              text={currentThesis.title || 'Machine Learning Pipeline'}
+              highlightText="Pipeline"
+              highlightClass="text-sky-500 dark:text-sky-400 font-extrabold"
+              className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight font-serif text-center"
+              delay={40}
+              duration={1.1}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 35 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.05}
+              textAlign="center"
+            />
+          </div>
 
           {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.25 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
             className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl text-center"
           >
             {currentThesis.subtitle ||
