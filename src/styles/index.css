@@ -500,3 +500,25 @@ html.light .sm-toggle {
   border-color: rgba(203, 213, 225, 0.8) !important;
   color: #0F172A !important;
 }
+
+/* Mobile & iOS Safari Touch Optimization */
+@supports (-webkit-touch-callout: none) {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Prevent iOS Safari input auto-zoom on mobile devices (< 640px) */
+@media screen and (max-width: 639px) {
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="url"],
+  input[type="tel"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
