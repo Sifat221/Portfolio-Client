@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUp, Github, Linkedin, Facebook, MessageCircle, Mail, Phone, MapPin, Download, Heart, ExternalLink, Send } from 'lucide-react';
+import { ArrowUp, Github, Linkedin, Facebook, MessageCircle, Mail, Phone, MapPin, Download, Heart, ExternalLink, Send, Globe, Play } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { LineSidebar } from './LineSidebar';
 import { downloadResume } from '../utils/download';
@@ -135,101 +135,56 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
             </h3>
 
             <div className="space-y-2">
-              {/* GitHub */}
-              {personal.github && (
-                <a
-                  href={personal.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Github className="w-4 h-4 text-[#9B8FCD] group-hover:scale-110 transition-transform" />
-                    <span>GitHub</span>
-                  </div>
-                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-                </a>
-              )}
+              {(personal.socialLinks && personal.socialLinks.length > 0
+                ? personal.socialLinks
+                : [
+                    { id: '1', name: 'GitHub', url: personal.github, icon: 'github' },
+                    { id: '2', name: 'LinkedIn', url: personal.linkedin, icon: 'linkedin' },
+                    { id: '3', name: 'Facebook', url: personal.facebook, icon: 'facebook' },
+                    { id: '4', name: 'WhatsApp', url: personal.whatsapp, icon: 'whatsapp' },
+                    { id: '5', name: 'Telegram', url: personal.telegram, icon: 'telegram' },
+                    { id: '6', name: 'Behance', url: personal.behance, icon: 'behance' },
+                  ]
+              )
+                .filter((item): item is { id: string; name: string; url: string; icon?: string } => Boolean(item.url && item.url.trim() !== ''))
+                .map((social) => {
+                  const rawUrl = social.url;
+                  const formattedUrl = rawUrl.startsWith('http') || rawUrl.startsWith('mailto:')
+                    ? rawUrl
+                    : social.icon === 'whatsapp' || rawUrl.startsWith('+')
+                    ? `https://wa.me/${rawUrl.replace(/[^0-9]/g, '')}`
+                    : social.icon === 'telegram'
+                    ? `https://t.me/${rawUrl.replace('@', '')}`
+                    : `https://${rawUrl}`;
 
-              {/* LinkedIn */}
-              {personal.linkedin && (
-                <a
-                  href={personal.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Linkedin className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
-                    <span>LinkedIn</span>
-                  </div>
-                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-                </a>
-              )}
+                  let iconEl = <Globe className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />;
+                  if (social.icon === 'github') iconEl = <Github className="w-4 h-4 text-[#9B8FCD] group-hover:scale-110 transition-transform" />;
+                  else if (social.icon === 'linkedin') iconEl = <Linkedin className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />;
+                  else if (social.icon === 'facebook') iconEl = <Facebook className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform" />;
+                  else if (social.icon === 'whatsapp') iconEl = <MessageCircle className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />;
+                  else if (social.icon === 'telegram') iconEl = <Send className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />;
+                  else if (social.icon === 'behance') iconEl = <span className="text-[11px] font-bold font-mono text-cyan-300 group-hover:scale-110 transition-transform">Bē</span>;
+                  else if (social.icon === 'mail') iconEl = <Mail className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />;
+                  else if (social.icon === 'phone') iconEl = <Phone className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />;
+                  else if (social.icon === 'youtube') iconEl = <Play className="w-4 h-4 text-rose-500 group-hover:scale-110 transition-transform" />;
+                  else if (social.icon === 'twitter') iconEl = <span className="text-[11px] font-bold font-mono text-cyan-400 group-hover:scale-110 transition-transform">𝕏</span>;
 
-              {/* Facebook */}
-              {personal.facebook && (
-                <a
-                  href={personal.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Facebook className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform" />
-                    <span>Facebook</span>
-                  </div>
-                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-                </a>
-              )}
-
-              {/* WhatsApp */}
-              {personal.whatsapp && (
-                <a
-                  href={personal.whatsapp.startsWith('http') ? personal.whatsapp : `https://wa.me/${personal.whatsapp.replace(/[^0-9]/g, '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <MessageCircle className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-                    <span>WhatsApp</span>
-                  </div>
-                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-                </a>
-              )}
-
-              {/* Telegram */}
-              {personal.telegram && (
-                <a
-                  href={personal.telegram.startsWith('http') ? personal.telegram : `https://t.me/${personal.telegram.replace('@', '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Send className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
-                    <span>Telegram</span>
-                  </div>
-                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-                </a>
-              )}
-
-              {/* Behance */}
-              {personal.behance && (
-                <a
-                  href={personal.behance}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-[11px] font-bold font-mono text-cyan-300 group-hover:scale-110 transition-transform">Bē</span>
-                    <span>Behance</span>
-                  </div>
-                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-                </a>
-              )}
+                  return (
+                    <a
+                      key={social.id || social.name}
+                      href={formattedUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        {iconEl}
+                        <span>{social.name}</span>
+                      </div>
+                      <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
+                    </a>
+                  );
+                })}
 
               {/* Download Resume */}
               <button

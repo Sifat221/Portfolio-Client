@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Sparkles, MessageCircle, Linkedin, Facebook, FileText, Phone, MessageSquare } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Sparkles, MessageCircle, Linkedin, Facebook, FileText, Phone, MessageSquare, Globe, Play } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { sendContactMessage } from '../services/api';
 import { playSuccessSound } from '../utils/sound';
@@ -203,105 +203,65 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
                 </div>
               )}
 
-              {/* GitHub */}
-              {personal.github && (
-                <a
-                  href={personal.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#0D1526]/90 hover:bg-[#111C33] p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all flex items-center gap-4 group shadow-lg"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0 group-hover:scale-105 transition-transform">
-                    <Github className="w-5 h-5" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider font-bold">GITHUB PROFILE</p>
-                    <p className="text-xs sm:text-sm font-bold text-white group-hover:text-cyan-400 transition-colors truncate">
-                      {personal.github.replace(/^https?:\/\/(www\.)?/, '')}
-                    </p>
-                  </div>
-                </a>
-              )}
+              {/* Dynamic Contact Channels (Rendered from Admin Panel) */}
+              {(personal.socialLinks && personal.socialLinks.length > 0
+                ? personal.socialLinks
+                : [
+                    { id: '1', name: 'GitHub Profile', url: personal.github, icon: 'github' },
+                    { id: '2', name: 'LinkedIn Profile', url: personal.linkedin, icon: 'linkedin' },
+                    { id: '3', name: 'Facebook Profile', url: personal.facebook, icon: 'facebook' },
+                    { id: '4', name: 'WhatsApp Direct Chat', url: personal.whatsapp, icon: 'whatsapp' },
+                    { id: '5', name: 'Telegram Chat', url: personal.telegram, icon: 'telegram' },
+                    { id: '6', name: 'Behance Portfolio', url: personal.behance, icon: 'behance' },
+                  ]
+              )
+                .filter((item): item is { id: string; name: string; url: string; icon?: string } => Boolean(item.url && item.url.trim() !== ''))
+                .map((social) => {
+                  const rawUrl = social.url;
+                  const formattedUrl = rawUrl.startsWith('http') || rawUrl.startsWith('mailto:')
+                    ? rawUrl
+                    : social.icon === 'whatsapp' || rawUrl.startsWith('+')
+                    ? `https://wa.me/${rawUrl.replace(/[^0-9]/g, '')}`
+                    : social.icon === 'telegram'
+                    ? `https://t.me/${rawUrl.replace('@', '')}`
+                    : `https://${rawUrl}`;
 
-              {/* Facebook */}
-              {personal.facebook && (
-                <a
-                  href={personal.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#0D1526]/90 hover:bg-[#111C33] p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-blue-500/50 transition-all flex items-center gap-4 group shadow-lg"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0 group-hover:scale-105 transition-transform">
-                    <Facebook className="w-5 h-5" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider font-bold">FACEBOOK PROFILE</p>
-                    <p className="text-xs sm:text-sm font-bold text-white group-hover:text-blue-400 transition-colors truncate">
-                      {personal.facebook.replace(/^https?:\/\/(www\.)?/, '')}
-                    </p>
-                  </div>
-                </a>
-              )}
+                  let iconEl = <Globe className="w-5 h-5 text-cyan-400" />;
+                  if (social.icon === 'github') iconEl = <Github className="w-5 h-5 text-cyan-400" />;
+                  else if (social.icon === 'linkedin') iconEl = <Linkedin className="w-5 h-5 text-sky-400" />;
+                  else if (social.icon === 'facebook') iconEl = <Facebook className="w-5 h-5 text-blue-400" />;
+                  else if (social.icon === 'whatsapp') iconEl = <MessageCircle className="w-5 h-5 text-emerald-400" />;
+                  else if (social.icon === 'telegram') iconEl = <Send className="w-5 h-5 text-cyan-400" />;
+                  else if (social.icon === 'behance') iconEl = <span className="font-extrabold font-mono text-cyan-300 text-sm">Bē</span>;
+                  else if (social.icon === 'mail') iconEl = <Mail className="w-5 h-5 text-cyan-400" />;
+                  else if (social.icon === 'phone') iconEl = <Phone className="w-5 h-5 text-emerald-400" />;
+                  else if (social.icon === 'youtube') iconEl = <Play className="w-5 h-5 text-rose-400" />;
+                  else if (social.icon === 'twitter') iconEl = <span className="font-extrabold font-mono text-cyan-400 text-sm">𝕏</span>;
 
-              {/* WhatsApp */}
-              {personal.whatsapp && (
-                <a
-                  href={personal.whatsapp.startsWith('http') ? personal.whatsapp : `https://wa.me/${personal.whatsapp.replace(/[^0-9]/g, '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#0D1526]/90 hover:bg-[#111C33] p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-all flex items-center gap-4 group shadow-lg"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 group-hover:scale-105 transition-transform">
-                    <MessageCircle className="w-5 h-5" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider font-bold">WHATSAPP DIRECT CHAT</p>
-                    <p className="text-xs sm:text-sm font-bold text-white group-hover:text-emerald-400 transition-colors truncate">
-                      {personal.whatsapp}
-                    </p>
-                  </div>
-                </a>
-              )}
+                  const displayVal = social.url.replace(/^https?:\/\/(www\.)?/, '').replace(/^(t\.me\/)/, '@');
 
-              {/* Telegram */}
-              {personal.telegram && (
-                <a
-                  href={personal.telegram.startsWith('http') ? personal.telegram : `https://t.me/${personal.telegram.replace('@', '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#0D1526]/90 hover:bg-[#111C33] p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all flex items-center gap-4 group shadow-lg"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0 group-hover:scale-105 transition-transform">
-                    <Send className="w-5 h-5" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider font-bold">TELEGRAM CHAT</p>
-                    <p className="text-xs sm:text-sm font-bold text-white group-hover:text-cyan-400 transition-colors truncate">
-                      {personal.telegram.replace(/^https?:\/\/(t\.me\/)?/, '@')}
-                    </p>
-                  </div>
-                </a>
-              )}
-
-              {/* Behance */}
-              {personal.behance && (
-                <a
-                  href={personal.behance}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#0D1526]/90 hover:bg-[#111C33] p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-cyan-400/50 transition-all flex items-center gap-4 group shadow-lg"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-300 font-extrabold font-mono text-sm shrink-0 group-hover:scale-105 transition-transform">
-                    Bē
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider font-bold">BEHANCE PORTFOLIO</p>
-                    <p className="text-xs sm:text-sm font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
-                      {personal.behance.replace(/^https?:\/\/(www\.)?/, '')}
-                    </p>
-                  </div>
-                </a>
-              )}
+                  return (
+                    <a
+                      key={social.id || social.name}
+                      href={formattedUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#0D1526]/90 hover:bg-[#111C33] p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all flex items-center gap-4 group shadow-lg"
+                    >
+                      <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0 group-hover:scale-105 transition-transform">
+                        {iconEl}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider font-bold">
+                          {social.name}
+                        </p>
+                        <p className="text-xs sm:text-sm font-bold text-white group-hover:text-cyan-400 transition-colors truncate">
+                          {displayVal}
+                        </p>
+                      </div>
+                    </a>
+                  );
+                })}
             </div>
           </div>
 

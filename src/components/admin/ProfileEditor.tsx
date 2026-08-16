@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Save, User, Mail, Phone, MapPin, Briefcase, Globe, FileText, Sparkles, Send } from 'lucide-react';
-import { IPersonalProfile } from '../../types/portfolio';
+import { Save, User, Mail, Phone, MapPin, Briefcase, Globe, FileText, Sparkles, Send, Plus, Trash2, Link } from 'lucide-react';
+import { IPersonalProfile, ISocialLink } from '../../types/portfolio';
 import { FileUploader } from './FileUploader';
 import { uploadFile, updatePersonalProfile } from '../../services/api';
 
@@ -20,6 +20,44 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
 
   const handleChange = (key: keyof IPersonalProfile, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  // Helper to ensure socialLinks is always synced with legacy fields if empty
+  const activeSocialLinks: ISocialLink[] =
+    form.socialLinks && form.socialLinks.length > 0
+      ? form.socialLinks
+      : [
+          { id: '1', name: 'GitHub', url: form.github || 'https://github.com/Sifat221', icon: 'github' },
+          { id: '2', name: 'LinkedIn', url: form.linkedin || 'https://www.linkedin.com/in/sifat-khan-540a86351/', icon: 'linkedin' },
+          { id: '3', name: 'Facebook', url: form.facebook || 'https://facebook.com/sifatk4an.joy', icon: 'facebook' },
+          { id: '4', name: 'WhatsApp', url: form.whatsapp || '+8801313997323', icon: 'whatsapp' },
+          { id: '5', name: 'Telegram', url: form.telegram || 'https://t.me/sifatkhan', icon: 'telegram' },
+          { id: '6', name: 'Behance', url: form.behance || '', icon: 'behance' },
+        ];
+
+  const handleAddSocialLink = () => {
+    const newLink: ISocialLink = {
+      id: Date.now().toString(),
+      name: 'New Social Link',
+      url: '',
+      icon: 'globe',
+    };
+    setForm((prev) => ({
+      ...prev,
+      socialLinks: [...(prev.socialLinks || activeSocialLinks), newLink],
+    }));
+  };
+
+  const handleUpdateSocialLink = (id: string, key: keyof ISocialLink, value: string) => {
+    const updated = (form.socialLinks || activeSocialLinks).map((item) =>
+      item.id === id ? { ...item, [key]: value } : item
+    );
+    setForm((prev) => ({ ...prev, socialLinks: updated }));
+  };
+
+  const handleRemoveSocialLink = (id: string) => {
+    const updated = (form.socialLinks || activeSocialLinks).filter((item) => item.id !== id);
+    setForm((prev) => ({ ...prev, socialLinks: updated }));
   };
 
   const handlePhotoUpload = async (file: File) => {
@@ -70,9 +108,13 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
     e.preventDefault();
     setIsSaving(true);
     try {
-      await updatePersonalProfile(form);
-      onSave(form);
-      showToast('success', 'Profile updated successfully!');
+      const finalForm = {
+        ...form,
+        socialLinks: form.socialLinks || activeSocialLinks,
+      };
+      await updatePersonalProfile(finalForm);
+      onSave(finalForm);
+      showToast('success', 'Profile & Social Links updated successfully!');
     } catch {
       showToast('error', 'Failed to update profile.');
     } finally {
@@ -114,7 +156,6 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
       )}
 
       {/* Upload Section */}
-      {/* Row 1: Profile Avatar (circular) + Banner Photo (rectangular) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FileUploader
           accept="image/png,image/jpeg,image/webp"
@@ -134,7 +175,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
         />
       </div>
 
-      {/* Row 2: CV Upload */}
+      {/* CV Upload */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FileUploader
           accept=".pdf"
@@ -144,7 +185,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
         />
       </div>
 
-      {/* ================= DEDICATED HERO STATUS BADGE CONTROL ================= */}
+      {/* HERO STATUS BADGE CONTROL */}
       <div className="p-5 bg-slate-900/90 border-2 border-[#9B8FCD]/50 rounded-2xl shadow-xl space-y-4 relative overflow-hidden">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-2.5">
@@ -164,7 +205,6 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
             </div>
           </div>
 
-          {/* Toggle Switch */}
           <label className="flex items-center gap-3 cursor-pointer select-none">
             <span className="text-xs font-mono font-bold text-slate-300">
               {form.showBadge !== false ? 'Badge Visible' : 'Badge Hidden'}
@@ -181,7 +221,6 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
           </label>
         </div>
 
-        {/* Inputs & Live Preview */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end pt-2">
           <div className="space-y-1.5">
             <label className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -196,7 +235,6 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
             />
           </div>
 
-          {/* Live Preview Box */}
           <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 space-y-1.5">
             <span className="text-[10px] font-mono text-slate-400 font-bold uppercase tracking-wider block">
               Live Badge Preview on Homepage
@@ -215,6 +253,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
         </div>
       </div>
 
+      {/* BASIC PROFILE INFO */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {textField('name', 'Full Name', <User className="w-3 h-3" />, 'Your full name')}
         {textField('title', 'Job Title / Subtitle', <Briefcase className="w-3 h-3" />, 'e.g. Flutter & AI Engineering Specialist')}
@@ -222,12 +261,105 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
         {textField('phone', 'Phone', <Phone className="w-3 h-3" />, '+880...')}
         {textField('location', 'Location', <MapPin className="w-3 h-3" />, 'City, Country')}
         {textField('availability', 'Availability Status', <FileText className="w-3 h-3" />, 'Available for...')}
-        {textField('github', 'GitHub Profile URL', <Globe className="w-3 h-3" />, 'https://github.com/...')}
-        {textField('linkedin', 'LinkedIn Profile URL', <Globe className="w-3 h-3" />, 'https://linkedin.com/in/...')}
-        {textField('facebook', 'Facebook Profile URL', <Globe className="w-3 h-3" />, 'https://facebook.com/...')}
-        {textField('whatsapp', 'WhatsApp Phone / Link', <Phone className="w-3 h-3" />, '+880...')}
-        {textField('telegram', 'Telegram Username / Link', <Send className="w-3 h-3" />, 'https://t.me/...')}
-        {textField('behance', 'Behance Profile URL', <Globe className="w-3 h-3" />, 'https://behance.net/...')}
+      </div>
+
+      {/* ================= DYNAMIC SOCIAL & CONTACT CHANNELS MANAGER ================= */}
+      <div className="p-6 bg-slate-900/90 border border-cyan-500/40 rounded-2xl shadow-xl space-y-5">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h4 className="text-base font-extrabold text-white tracking-wide flex items-center gap-2">
+              <Link className="w-5 h-5 text-cyan-400" />
+              Dynamic Social & Contact Channels Manager
+            </h4>
+            <p className="text-xs text-slate-400 font-mono mt-0.5">
+              Edit labels/names (e.g. WhatsApp, Telegram, Mail), edit URLs, or add ANY new custom social platforms! Empty URLs will automatically hide on the website.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleAddSocialLink}
+            className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-cyan-600 hover:bg-cyan-500 border border-cyan-400 shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2 cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Add New Social / Link</span>
+          </button>
+        </div>
+
+        {/* Dynamic Social Links List */}
+        <div className="space-y-3.5 pt-2">
+          {(form.socialLinks || activeSocialLinks).map((item, index) => (
+            <div
+              key={item.id || index}
+              className="p-4 rounded-xl bg-slate-950 border border-slate-800 hover:border-cyan-500/40 transition-colors grid grid-cols-1 sm:grid-cols-12 gap-3 items-center"
+            >
+              {/* Field 1: Name / Title */}
+              <div className="sm:col-span-3 space-y-1">
+                <label className="text-[10px] font-mono text-slate-400 font-bold uppercase block">
+                  Name / Label
+                </label>
+                <input
+                  type="text"
+                  value={item.name}
+                  onChange={(e) => handleUpdateSocialLink(item.id, 'name', e.target.value)}
+                  placeholder="e.g. WhatsApp, Telegram, YouTube"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs placeholder-slate-500 focus:border-cyan-400 outline-none"
+                />
+              </div>
+
+              {/* Field 2: Icon Type */}
+              <div className="sm:col-span-3 space-y-1">
+                <label className="text-[10px] font-mono text-slate-400 font-bold uppercase block">
+                  Icon
+                </label>
+                <select
+                  value={item.icon || 'globe'}
+                  onChange={(e) => handleUpdateSocialLink(item.id, 'icon', e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-cyan-300 text-xs font-mono focus:border-cyan-400 outline-none"
+                >
+                  <option value="github">GitHub</option>
+                  <option value="linkedin">LinkedIn</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="whatsapp">WhatsApp</option>
+                  <option value="telegram">Telegram</option>
+                  <option value="behance">Behance (Bē)</option>
+                  <option value="mail">Mail / Email</option>
+                  <option value="phone">Phone</option>
+                  <option value="youtube">YouTube</option>
+                  <option value="twitter">Twitter / X</option>
+                  <option value="discord">Discord</option>
+                  <option value="globe">Globe / Custom Link</option>
+                </select>
+              </div>
+
+              {/* Field 3: URL / Value */}
+              <div className="sm:col-span-5 space-y-1">
+                <label className="text-[10px] font-mono text-slate-400 font-bold uppercase block">
+                  URL / Phone / Handle
+                </label>
+                <input
+                  type="text"
+                  value={item.url}
+                  onChange={(e) => handleUpdateSocialLink(item.id, 'url', e.target.value)}
+                  placeholder="https://... or +880..."
+                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs placeholder-slate-500 focus:border-cyan-400 outline-none"
+                />
+              </div>
+
+              {/* Field 4: Delete Action */}
+              <div className="sm:col-span-1 flex justify-end pt-4 sm:pt-0">
+                <button
+                  type="button"
+                  onClick={() => handleRemoveSocialLink(item.id)}
+                  className="p-2 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-all cursor-pointer"
+                  title="Remove this link"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Bio */}
@@ -250,7 +382,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
         <button
           type="submit"
           disabled={isSaving}
-          className="px-8 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-[#9B8FCD] to-indigo-600 shadow-lg shadow-[#9B8FCD]/30 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-[#9B8FCD] to-indigo-600 shadow-lg shadow-[#9B8FCD]/30 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {isSaving ? (
             <>
@@ -260,7 +392,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
           ) : (
             <>
               <Save className="w-4 h-4" />
-              Save Profile
+              Save Profile & Social Links
             </>
           )}
         </button>
@@ -268,3 +400,5 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
     </form>
   );
 };
+
+export default ProfileEditor;

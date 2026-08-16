@@ -44,6 +44,13 @@ export const defaultPersonal: IPersonalProfile = {
   bannerPhoto: "/Profile.jpg",
   badgeText: "Flutter & AI Engineering Specialist",
   showBadge: true,
+  socialLinks: [
+    { id: '1', name: 'GitHub', url: 'https://github.com/Sifat221', icon: 'github' },
+    { id: '2', name: 'LinkedIn', url: 'https://www.linkedin.com/in/sifat-khan-540a86351/', icon: 'linkedin' },
+    { id: '3', name: 'Facebook', url: 'https://facebook.com/sifatk4an.joy', icon: 'facebook' },
+    { id: '4', name: 'WhatsApp', url: '+8801313997323', icon: 'whatsapp' },
+    { id: '5', name: 'Telegram', url: 'https://t.me/sifatkhan', icon: 'telegram' },
+  ],
 };
 
 export const defaultProjects: IProject[] = [

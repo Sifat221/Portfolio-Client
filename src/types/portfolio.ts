@@ -1,3 +1,10 @@
+export interface ISocialLink {
+  id: string;
+  name: string;
+  url: string;
+  icon?: string;
+}
+
 export interface IPersonalProfile {
   name: string;
   title: string;
@@ -18,6 +25,7 @@ export interface IPersonalProfile {
   whatsapp?: string;
   badgeText?: string;
   showBadge?: boolean;
+  socialLinks?: ISocialLink[];
 }
 
 export interface IProject {

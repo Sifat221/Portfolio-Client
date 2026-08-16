@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle, Sparkles, Smartphone, Code2, Play, Pause, Clock, Send } from 'lucide-react';
+import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle, Sparkles, Smartphone, Code2, Play, Pause, Clock, Send, Globe } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import SplitText from './SplitText';
 import { LightRays } from './LightRays';
@@ -400,47 +400,54 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 <span>Download Resume</span>
               </button>
 
-              {/* Social Media Link Buttons (Dynamically rendered only if provided in Admin) */}
+              {/* Social Media Link Buttons (Dynamically rendered from Admin Panel) */}
               <div className="flex flex-wrap items-center gap-2.5 sm:pl-2 pt-2 sm:pt-0">
-                {[
-                  { key: 'github', label: 'GitHub Profile', url: personal.github, icon: <Github className="w-4 h-4 text-[#9B8FCD]" />, hoverBorder: 'hover:border-[#9B8FCD]' },
-                  { key: 'linkedin', label: 'LinkedIn Profile', url: personal.linkedin, icon: <Linkedin className="w-4 h-4 text-sky-400" />, hoverBorder: 'hover:border-sky-400' },
-                  { key: 'facebook', label: 'Facebook Profile', url: personal.facebook, icon: <Facebook className="w-4 h-4 text-blue-500" />, hoverBorder: 'hover:border-blue-500' },
-                  {
-                    key: 'whatsapp',
-                    label: 'WhatsApp Direct Chat',
-                    url: personal.whatsapp ? (personal.whatsapp.startsWith('http') ? personal.whatsapp : `https://wa.me/${personal.whatsapp.replace(/[^0-9]/g, '')}`) : '',
-                    icon: <MessageCircle className="w-4 h-4 text-emerald-400" />,
-                    hoverBorder: 'hover:border-emerald-400',
-                  },
-                  {
-                    key: 'telegram',
-                    label: 'Telegram Chat',
-                    url: personal.telegram ? (personal.telegram.startsWith('http') ? personal.telegram : `https://t.me/${personal.telegram.replace('@', '')}`) : '',
-                    icon: <Send className="w-4 h-4 text-cyan-400" />,
-                    hoverBorder: 'hover:border-cyan-400',
-                  },
-                  {
-                    key: 'behance',
-                    label: 'Behance Portfolio',
-                    url: personal.behance,
-                    icon: <span className="text-[11px] font-bold font-mono tracking-tighter text-cyan-300">Bē</span>,
-                    hoverBorder: 'hover:border-cyan-400',
-                  },
-                ]
-                  .filter((item) => item.url && item.url.trim() !== '')
-                  .map((social) => (
-                    <a
-                      key={social.key}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white ${social.hoverBorder} hover:scale-110 transition-all shadow-md flex items-center justify-center`}
-                      aria-label={social.label}
-                    >
-                      {social.icon}
-                    </a>
-                  ))}
+                {(personal.socialLinks && personal.socialLinks.length > 0
+                  ? personal.socialLinks
+                  : [
+                      { id: '1', name: 'GitHub', url: personal.github, icon: 'github' },
+                      { id: '2', name: 'LinkedIn', url: personal.linkedin, icon: 'linkedin' },
+                      { id: '3', name: 'Facebook', url: personal.facebook, icon: 'facebook' },
+                      { id: '4', name: 'WhatsApp', url: personal.whatsapp, icon: 'whatsapp' },
+                      { id: '5', name: 'Telegram', url: personal.telegram, icon: 'telegram' },
+                      { id: '6', name: 'Behance', url: personal.behance, icon: 'behance' },
+                    ]
+                )
+                  .filter((item): item is { id: string; name: string; url: string; icon?: string } => Boolean(item.url && item.url.trim() !== ''))
+                  .map((social) => {
+                    const rawUrl = social.url;
+                    const formattedUrl = rawUrl.startsWith('http') || rawUrl.startsWith('mailto:')
+                      ? rawUrl
+                      : social.icon === 'whatsapp' || rawUrl.startsWith('+')
+                      ? `https://wa.me/${rawUrl.replace(/[^0-9]/g, '')}`
+                      : social.icon === 'telegram'
+                      ? `https://t.me/${rawUrl.replace('@', '')}`
+                      : `https://${rawUrl}`;
+
+                    let iconEl = <Globe className="w-4 h-4 text-cyan-400" />;
+                    if (social.icon === 'github') iconEl = <Github className="w-4 h-4 text-[#9B8FCD]" />;
+                    else if (social.icon === 'linkedin') iconEl = <Linkedin className="w-4 h-4 text-sky-400" />;
+                    else if (social.icon === 'facebook') iconEl = <Facebook className="w-4 h-4 text-blue-500" />;
+                    else if (social.icon === 'whatsapp') iconEl = <MessageCircle className="w-4 h-4 text-emerald-400" />;
+                    else if (social.icon === 'telegram') iconEl = <Send className="w-4 h-4 text-cyan-400" />;
+                    else if (social.icon === 'behance') iconEl = <span className="text-[11px] font-bold font-mono tracking-tighter text-cyan-300">Bē</span>;
+                    else if (social.icon === 'youtube') iconEl = <Play className="w-4 h-4 text-rose-500" />;
+                    else if (social.icon === 'twitter') iconEl = <span className="text-[11px] font-bold font-mono text-cyan-400">𝕏</span>;
+
+                    return (
+                      <a
+                        key={social.id || social.name}
+                        href={formattedUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-cyan-400 hover:scale-110 transition-all shadow-md flex items-center justify-center"
+                        aria-label={social.name}
+                        title={social.name}
+                      >
+                        {iconEl}
+                      </a>
+                    );
+                  })}
               </div>
             </motion.div>
           </motion.div>
