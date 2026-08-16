@@ -86,6 +86,31 @@ export interface IAchievement {
   year?: string;
 }
 
+export interface IBenchmark {
+  model: string;
+  accuracy: number;
+  color?: string;
+}
+
+export interface IThesis {
+  id: string;
+  badge?: string;
+  title: string;
+  subtitle?: string;
+  projectBadge?: string;
+  gradeBadge?: string;
+  projectTitle: string;
+  description: string;
+  highlights: string[];
+  techStack: string[];
+  repoUrl?: string;
+  repoLabel?: string;
+  paperUrl?: string;
+  peakAccuracy: string;
+  peakModel: string;
+  benchmarks: IBenchmark[];
+}
+
 export interface ITestimonial {
   id?: string;
   client: string;
@@ -125,6 +150,7 @@ export interface IContactMessage {
 export type SectionName =
   | 'personal'
   | 'projects'
+  | 'thesis'
   | 'skills'
   | 'experience'
   | 'education'
@@ -137,6 +163,7 @@ export type SectionName =
 export type SectionDataMap = {
   personal: IPersonalProfile;
   projects: IProject;
+  thesis: IThesis;
   skills: ISkill;
   experience: IExperience;
   education: IEducation;

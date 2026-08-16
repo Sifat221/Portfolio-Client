@@ -7,6 +7,7 @@ import { IPersonalProfile } from '../../types/portfolio';
 import {
   usePersonalProfile,
   useProjects,
+  useThesis,
   useSkills,
   useExperience,
   useEducation,
@@ -18,6 +19,7 @@ import {
 import {
   defaultPersonal,
   defaultProjects,
+  defaultThesis,
   defaultSkills,
   defaultExperience,
   defaultEducation,
@@ -36,6 +38,7 @@ export const AdminPage: React.FC = () => {
 
   const { data: personal = defaultPersonal } = usePersonalProfile();
   const { data: projects = defaultProjects } = useProjects();
+  const { data: thesisList = defaultThesis } = useThesis();
   const { data: skills = defaultSkills } = useSkills();
   const { data: experience = defaultExperience } = useExperience();
   const { data: education = defaultEducation } = useEducation();
@@ -83,6 +86,7 @@ export const AdminPage: React.FC = () => {
       <AdminDashboard
         personal={personal}
         projects={projects}
+        thesisList={thesisList}
         skills={skills}
         experience={experience}
         education={education}

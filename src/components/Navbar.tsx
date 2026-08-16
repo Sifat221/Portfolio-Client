@@ -27,12 +27,13 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
     { name: 'Skills', href: '#skills' },
     { name: 'Education', href: '#education' },
     { name: 'Projects', href: '#projects' },
+    { name: 'Thesis', href: '#thesis' },
     { name: 'Experience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
   ];
 
   useEffect(() => {
-    const sections = ['about', 'skills', 'education', 'projects', 'experience', 'contact'];
+    const sections = ['about', 'skills', 'education', 'projects', 'thesis', 'experience', 'contact'];
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);

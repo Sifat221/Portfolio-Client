@@ -2,6 +2,8 @@ import axios from 'axios';
 import {
   IPersonalProfile,
   IProject,
+  IThesis,
+  IBenchmark,
   ISkill,
   IExperience,
   IEducation,
@@ -174,6 +176,36 @@ export const defaultProjects: IProject[] = [
     imageUrl: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=800",
     isFeatured: true,
     category: "Design"
+  }
+];
+
+export const defaultThesis: IThesis[] = [
+  {
+    id: "thesis_1",
+    badge: "RESEARCH & BACHELOR THESIS",
+    title: "Machine Learning Pipeline",
+    subtitle: "Applied predictive analytics and class-balancing techniques to model human opinion dynamics.",
+    projectBadge: "DIU CSE THESIS PROJECT",
+    gradeBadge: "Publication Grade",
+    projectTitle: "Social Media Influence on Youth Opinion Change in Bangladesh",
+    description: "Designed a machine learning pipeline for opinion change prediction using SMOTE and feature engineering. Achieved 84.4% accuracy with an optimized Random Forest model on 317 survey responses.",
+    highlights: [
+      "Engineered synthetic oversampling using SMOTE to handle multi-class survey dataset imbalance.",
+      "Processed 317 survey samples capturing youth opinion metrics across Bangladesh.",
+      "Hyperparameter optimization produced an optimal peak accuracy score of 84.4%."
+    ],
+    techStack: ["Python", "Scikit-learn", "Pandas", "NumPy", "Matplotlib", "Flask"],
+    repoUrl: "https://github.com/Sifat221",
+    repoLabel: "Client Repo",
+    peakAccuracy: "84.4%",
+    peakModel: "Optimized Random Forest",
+    benchmarks: [
+      { model: "Random Forest", accuracy: 84.4, color: "from-cyan-500 to-sky-400" },
+      { model: "XGBoost", accuracy: 78.0, color: "from-fuchsia-500 to-pink-400" },
+      { model: "LightGBM", accuracy: 76.0, color: "from-teal-500 to-emerald-400" },
+      { model: "SVM", accuracy: 73.0, color: "from-orange-500 to-amber-400" },
+      { model: "Logistic Reg.", accuracy: 70.0, color: "from-indigo-500 to-purple-400" }
+    ]
   }
 ];
 
@@ -539,6 +571,37 @@ export async function getProjects(): Promise<IProject[]> {
     console.warn("localStorage quota warning:", e);
   }
   return defaultProjects;
+}
+
+export async function getThesis(): Promise<IThesis[]> {
+  const saved = localStorage.getItem('portfolio_thesis');
+  if (saved !== null) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn("Failed to parse stored thesis", e);
+    }
+  }
+
+  try {
+    const response = await api.get('/thesis');
+    if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
+      localStorage.setItem('portfolio_thesis', JSON.stringify(response.data.data));
+      return response.data.data;
+    }
+  } catch (err) {
+    console.warn("API Call /thesis fallback active:", err);
+  }
+
+  try {
+    localStorage.setItem('portfolio_thesis', JSON.stringify(defaultThesis));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  return defaultThesis;
 }
 
 export async function getSkills(): Promise<ISkill[]> {
@@ -935,6 +998,85 @@ export async function deleteProject(id: string): Promise<boolean> {
     await deleteEntity('/projects', id);
   } catch (e) {
     console.warn("Backend /projects delete error:", e);
+  }
+  return true;
+}
+
+// Thesis CRUD
+export async function createThesis(data: Partial<IThesis>): Promise<IThesis> {
+  const current = await getThesis();
+  const newThesis: IThesis = {
+    id: data.id || `thesis_${Date.now()}`,
+    badge: data.badge || "RESEARCH & BACHELOR THESIS",
+    title: data.title || "Machine Learning Pipeline",
+    subtitle: data.subtitle || "Applied predictive analytics and class-balancing techniques to model human opinion dynamics.",
+    projectBadge: data.projectBadge || "DIU CSE THESIS PROJECT",
+    gradeBadge: data.gradeBadge || "Publication Grade",
+    projectTitle: data.projectTitle || "Social Media Influence on Youth Opinion Change in Bangladesh",
+    description: data.description || "Designed a machine learning pipeline...",
+    highlights: data.highlights || [
+      "Engineered synthetic oversampling using SMOTE to handle multi-class survey dataset imbalance.",
+      "Processed 317 survey samples capturing youth opinion metrics across Bangladesh.",
+      "Hyperparameter optimization produced an optimal peak accuracy score of 84.4%."
+    ],
+    techStack: data.techStack || ["Python", "Scikit-learn", "Pandas", "NumPy", "Matplotlib", "Flask"],
+    repoUrl: data.repoUrl || "https://github.com/Sifat221",
+    repoLabel: data.repoLabel || "Client Repo",
+    peakAccuracy: data.peakAccuracy || "84.4%",
+    peakModel: data.peakModel || "Optimized Random Forest",
+    benchmarks: data.benchmarks || [
+      { model: "Random Forest", accuracy: 84.4, color: "from-cyan-500 to-sky-400" },
+      { model: "XGBoost", accuracy: 78.0, color: "from-fuchsia-500 to-pink-400" },
+      { model: "LightGBM", accuracy: 76.0, color: "from-teal-500 to-emerald-400" },
+      { model: "SVM", accuracy: 73.0, color: "from-orange-500 to-amber-400" },
+      { model: "Logistic Reg.", accuracy: 70.0, color: "from-indigo-500 to-purple-400" }
+    ]
+  };
+  const updated = [newThesis, ...current];
+  try {
+    localStorage.setItem('portfolio_thesis', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await createEntity<IThesis>('/thesis', data);
+    return res;
+  } catch (e) {
+    console.warn("Backend /thesis error:", e);
+  }
+  return newThesis;
+}
+
+export async function updateThesis(id: string, data: Partial<IThesis>): Promise<IThesis> {
+  const current = await getThesis();
+  const updated = current.map((t) => (t.id === id ? { ...t, ...data } : t));
+  try {
+    localStorage.setItem('portfolio_thesis', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    const res = await updateEntity<IThesis>('/thesis', id, data);
+    return res;
+  } catch (e) {
+    console.warn("Backend /thesis error:", e);
+  }
+  const found = updated.find((t) => t.id === id);
+  return found || (data as IThesis);
+}
+
+export async function deleteThesis(id: string): Promise<boolean> {
+  const current = await getThesis();
+  const updated = current.filter((t, idx) => String(t.id || `thesis_${idx}`) !== String(id) && String(idx) !== String(id));
+  try {
+    localStorage.setItem('portfolio_thesis', JSON.stringify(updated));
+  } catch (e) {
+    console.warn("localStorage quota warning:", e);
+  }
+  try {
+    await deleteEntity('/thesis', id);
+  } catch (e) {
+    console.warn("Backend /thesis delete error:", e);
   }
   return true;
 }

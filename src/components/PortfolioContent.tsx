@@ -3,6 +3,7 @@ import { Navbar } from './Navbar';
 import { Hero } from './Hero';
 import { Skills } from './Skills';
 import { Projects } from './Projects';
+import { ThesisSection } from './ThesisSection';
 import { ExperienceTimeline } from './ExperienceTimeline';
 import { EducationCertifications } from './EducationCertifications';
 import { Achievements } from './Achievements';
@@ -17,6 +18,7 @@ import { useJsonLdSchema } from '../hooks/useJsonLdSchema';
 import {
   usePersonalProfile,
   useProjects,
+  useThesis,
   useSkills,
   useExperience,
   useEducation,
@@ -29,6 +31,7 @@ import {
 import {
   defaultPersonal,
   defaultProjects,
+  defaultThesis,
   defaultSkills,
   defaultExperience,
   defaultEducation,
@@ -41,6 +44,7 @@ import {
 export const PortfolioContent: React.FC = () => {
   const { data: personal = defaultPersonal, isLoading: isPersonalLoading } = usePersonalProfile();
   const { data: projects = defaultProjects, isLoading: isProjectsLoading } = useProjects();
+  const { data: thesisList = defaultThesis } = useThesis();
   const { data: skills = defaultSkills } = useSkills();
   const { data: experience = defaultExperience } = useExperience();
   const { data: education = defaultEducation } = useEducation();
@@ -83,6 +87,7 @@ export const PortfolioContent: React.FC = () => {
         <Hero personal={personal} />
         <Skills skills={skills} />
         <Projects projects={projects} />
+        <ThesisSection thesisList={thesisList} />
         <ExperienceTimeline experience={experience} />
         <EducationCertifications education={education} certifications={certifications} galleryPhotos={galleryPhotos} />
         <Achievements testimonials={testimonials} achievements={achievements} />

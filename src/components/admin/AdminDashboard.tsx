@@ -23,12 +23,14 @@ import {
   Layout,
   Brain,
   Code,
+  Atom,
 } from 'lucide-react';
-import { IPersonalProfile, IProject, ISkill, IExperience, IEducation, ICertification, IAchievement, IGalleryPhoto, IContactMessage } from '../../types/portfolio';
+import { IPersonalProfile, IProject, IThesis, ISkill, IExperience, IEducation, ICertification, IAchievement, IGalleryPhoto, IContactMessage } from '../../types/portfolio';
 import { ProfileEditor } from './ProfileEditor';
 import { AdminFormModal } from './AdminFormModal';
 import {
   createProject, updateProject, deleteProject,
+  createThesis, updateThesis, deleteThesis,
   createSkill, updateSkill, deleteSkill,
   createExperience, updateExperience, deleteExperience,
   createEducation, updateEducation, deleteEducation,
@@ -42,6 +44,7 @@ import { Image as ImageIcon, Mail } from 'lucide-react';
 interface AdminDashboardProps {
   personal: IPersonalProfile;
   projects: IProject[];
+  thesisList?: IThesis[];
   skills: ISkill[];
   experience: IExperience[];
   education: IEducation[];
@@ -57,6 +60,7 @@ interface AdminDashboardProps {
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   personal,
   projects,
+  thesisList = [],
   skills,
   experience,
   education,
@@ -69,13 +73,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onRefreshData,
 }) => {
   const [activeTab, setActiveTab] = useState<
-    'profile' | 'messages' | 'projects' | 'skills' | 'experience' | 'education' | 'certifications' | 'achievements' | 'gallery'
+    'profile' | 'messages' | 'projects' | 'thesis' | 'skills' | 'experience' | 'education' | 'certifications' | 'achievements' | 'gallery'
   >('profile');
 
   // Modal State for Add/Edit
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
-    section: 'projects' | 'skills' | 'experience' | 'education' | 'certifications' | 'achievements' | 'gallery';
+    section: 'projects' | 'thesis' | 'skills' | 'experience' | 'education' | 'certifications' | 'achievements' | 'gallery';
     item?: any;
   }>({
     isOpen: false,
@@ -114,6 +118,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     if (!window.confirm('Are you sure you want to delete this item?')) return;
     try {
       if (section === 'projects') await deleteProject(id);
+      else if (section === 'thesis') await deleteThesis(id);
       else if (section === 'skills') await deleteSkill(id);
       else if (section === 'experience') await deleteExperience(id);
       else if (section === 'education') await deleteEducation(id);
@@ -136,6 +141,29 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       if (section === 'projects') {
         if (isEdit) await updateProject(modalState.item.id, data);
         else await createProject(data);
+      } else if (section === 'thesis') {
+        const formattedData = { ...data };
+        if (typeof formattedData.benchmarks === 'string') {
+          const items = formattedData.benchmarks.split(',').map((item: string) => {
+            const parts = item.split(':');
+            return {
+              model: parts[0]?.trim() || 'Model',
+              accuracy: parseFloat(parts[1]?.trim() || '0') || 0
+            };
+          }).filter((b: any) => b.model);
+          formattedData.benchmarks = items;
+        } else if (!Array.isArray(formattedData.benchmarks)) {
+          formattedData.benchmarks = [
+            { model: "Random Forest", accuracy: 84.4, color: "from-cyan-500 to-sky-400" },
+            { model: "XGBoost", accuracy: 78.0, color: "from-fuchsia-500 to-pink-400" },
+            { model: "LightGBM", accuracy: 76.0, color: "from-teal-500 to-emerald-400" },
+            { model: "SVM", accuracy: 73.0, color: "from-orange-500 to-amber-400" },
+            { model: "Logistic Reg.", accuracy: 70.0, color: "from-indigo-500 to-purple-400" }
+          ];
+        }
+
+        if (isEdit) await updateThesis(modalState.item.id, formattedData);
+        else await createThesis(formattedData);
       } else if (section === 'skills') {
         if (isEdit) await updateSkill(modalState.item.id, data);
         else await createSkill(data);
@@ -184,6 +212,26 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             { key: 'androidUrl', label: 'Android App URL / APK Download Link', type: 'text' as const },
             { key: 'iosUrl', label: 'iOS App Store / TestFlight Link', type: 'text' as const },
             { key: 'imageUrl', label: 'Project Cover Image (Drag & Drop File or URL)', type: 'image' as const },
+          ],
+        };
+      case 'thesis':
+        return {
+          title: modalState.item?.id ? 'Edit Thesis Project' : 'Add New Thesis Project',
+          fields: [
+            { key: 'badge', label: 'Top Section Badge (e.g. RESEARCH & BACHELOR THESIS)', type: 'text' as const, required: true },
+            { key: 'title', label: 'Section Heading (e.g. Machine Learning Pipeline)', type: 'text' as const, required: true },
+            { key: 'subtitle', label: 'Section Subtitle', type: 'textarea' as const },
+            { key: 'projectBadge', label: 'Project Category Badge (e.g. DIU CSE THESIS PROJECT)', type: 'text' as const, required: true },
+            { key: 'gradeBadge', label: 'Grade / Status Badge (e.g. Publication Grade)', type: 'text' as const },
+            { key: 'projectTitle', label: 'Thesis Project Title', type: 'text' as const, required: true },
+            { key: 'description', label: 'Thesis Description', type: 'textarea' as const, required: true },
+            { key: 'highlights', label: 'Key Highlights (comma separated)', type: 'array' as const, required: true },
+            { key: 'techStack', label: 'Tech Stack (comma separated)', type: 'array' as const, required: true },
+            { key: 'repoUrl', label: 'Client Repo / Link URL', type: 'text' as const },
+            { key: 'repoLabel', label: 'Repo Button Label (e.g. Client Repo)', type: 'text' as const },
+            { key: 'peakAccuracy', label: 'Peak Accuracy Score (e.g. 84.4%)', type: 'text' as const, required: true },
+            { key: 'peakModel', label: 'Peak Model Name (e.g. Optimized Random Forest)', type: 'text' as const, required: true },
+            { key: 'benchmarks', label: 'Classifier Benchmarks (Comma separated model:accuracy e.g: Random Forest: 84.4, XGBoost: 78.0, LightGBM: 76.0, SVM: 73.0, Logistic Reg.: 70.0)', type: 'textarea' as const },
           ],
         };
       case 'skills':
@@ -338,6 +386,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               { id: 'messages', label: 'Inbox Messages', icon: <Mail className="w-4 h-4" />, count: contactMessages.filter(m => !m.isRead).length },
               { id: 'gallery', label: 'Memorable Gallery', icon: <ImageIcon className="w-4 h-4" />, count: galleryPhotos.length },
               { id: 'projects', label: 'Projects', icon: <FolderPlus className="w-4 h-4" />, count: projects.length },
+              { id: 'thesis', label: 'Thesis Section', icon: <Atom className="w-4 h-4" />, count: thesisList.length },
               { id: 'skills', label: 'Skills', icon: <Wrench className="w-4 h-4" />, count: skills.length },
               { id: 'experience', label: 'Experience', icon: <Briefcase className="w-4 h-4" />, count: experience.length },
               { id: 'education', label: 'Education', icon: <GraduationCap className="w-4 h-4" />, count: education.length },
@@ -664,7 +713,140 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
             )}
 
-            {activeTab !== 'profile' && activeTab !== 'messages' && activeTab !== 'projects' && (
+            {activeTab === 'thesis' && (
+              <div className="space-y-6">
+                {/* Header Card */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900/80 p-5 rounded-3xl border border-slate-800 shadow-lg">
+                  <div className="space-y-1">
+                    <h3 className="text-base font-bold text-white font-mono flex items-center gap-2">
+                      <Atom className="w-5 h-5 text-cyan-400" /> Manage Thesis Section & Research Publications
+                    </h3>
+                    <p className="text-xs text-slate-400">
+                      Control everything in the <span className="text-cyan-300 font-bold">Thesis</span> section (2nd picture): title, description, highlights, tech stack, accuracy, and benchmark charts.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => handleOpenAdd('thesis')}
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>+ Add New Thesis</span>
+                  </button>
+                </div>
+
+                {/* Thesis List */}
+                <div className="space-y-4">
+                  {thesisList.length === 0 ? (
+                    <div className="p-8 text-center bg-slate-900/40 rounded-3xl border border-slate-800 text-slate-400 space-y-3">
+                      <Atom className="w-8 h-8 text-slate-600 mx-auto" />
+                      <p className="text-sm font-medium">No thesis project added yet.</p>
+                      <button
+                        onClick={() => handleOpenAdd('thesis')}
+                        className="px-4 py-2 rounded-xl text-xs font-bold text-cyan-300 bg-cyan-950/60 border border-cyan-500/40 hover:bg-cyan-900/50 transition-all inline-flex items-center gap-1.5"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Create Default Thesis</span>
+                      </button>
+                    </div>
+                  ) : (
+                    thesisList.map((thesisItem, idx) => {
+                      const bmText = Array.isArray(thesisItem.benchmarks)
+                        ? thesisItem.benchmarks.map(b => `${b.model}: ${b.accuracy}`).join(', ')
+                        : String(thesisItem.benchmarks || '');
+
+                      const rawForEdit = {
+                        ...thesisItem,
+                        benchmarks: bmText
+                      };
+
+                      return (
+                        <div
+                          key={thesisItem.id || idx}
+                          className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-md hover:border-cyan-500/40 transition-all space-y-4"
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-cyan-950/60 text-cyan-300 border border-cyan-500/40">
+                                {thesisItem.badge || 'RESEARCH & BACHELOR THESIS'}
+                              </span>
+                              <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-800 text-purple-300 border border-purple-500/30">
+                                {thesisItem.projectBadge || 'DIU CSE THESIS PROJECT'}
+                              </span>
+                              {thesisItem.gradeBadge && (
+                                <span className="px-3 py-1 rounded-full text-xs font-mono text-slate-300 bg-slate-800/80 border border-slate-700">
+                                  {thesisItem.gradeBadge}
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleOpenEdit('thesis', rawForEdit)}
+                                className="px-3 py-1.5 rounded-xl text-xs font-bold text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 transition-all flex items-center gap-1 cursor-pointer"
+                              >
+                                <Edit2 className="w-3.5 h-3.5" />
+                                <span>Edit</span>
+                              </button>
+                              <button
+                                onClick={() => handleDelete('thesis', thesisItem.id || String(idx))}
+                                className="px-3 py-1.5 rounded-xl text-xs font-bold text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-all flex items-center gap-1 cursor-pointer"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                                <span>Delete</span>
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Info Body */}
+                          <div className="space-y-2">
+                            <h4 className="text-lg font-bold text-white font-serif">
+                              {thesisItem.title} - <span className="text-cyan-400">{thesisItem.projectTitle}</span>
+                            </h4>
+                            {thesisItem.subtitle && (
+                              <p className="text-xs text-slate-400 font-mono italic">{thesisItem.subtitle}</p>
+                            )}
+                            <p className="text-xs text-slate-300 leading-relaxed">{thesisItem.description}</p>
+                          </div>
+
+                          {/* Highlights preview */}
+                          {thesisItem.highlights && thesisItem.highlights.length > 0 && (
+                            <div className="space-y-1">
+                              <span className="text-[11px] font-mono text-slate-400 font-bold uppercase">Highlights:</span>
+                              <ul className="list-disc list-inside text-xs text-slate-300 space-y-0.5 pl-1">
+                                {thesisItem.highlights.map((h, i) => (
+                                  <li key={i}>{h}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* Bottom Row stats & tech */}
+                          <div className="pt-3 border-t border-slate-800/60 flex flex-wrap items-center justify-between gap-3 text-xs">
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-slate-400 font-bold">Accuracy:</span>
+                              <span className="font-bold text-cyan-400 bg-cyan-950/40 px-2 py-0.5 rounded-md border border-cyan-800/40">
+                                {thesisItem.peakAccuracy} ({thesisItem.peakModel})
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              {thesisItem.techStack?.map(t => (
+                                <span key={t} className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-slate-800 text-slate-300 border border-slate-700">
+                                  {t}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {activeTab !== 'profile' && activeTab !== 'messages' && activeTab !== 'projects' && activeTab !== 'thesis' && (
               <div className="space-y-5">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-white font-mono capitalize">

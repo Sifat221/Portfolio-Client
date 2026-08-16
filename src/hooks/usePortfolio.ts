@@ -2,6 +2,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   getPersonalProfile,
   getProjects,
+  getThesis,
   getSkills,
   getExperience,
   getEducation,
@@ -27,6 +28,14 @@ export function useProjects() {
   return useQuery({
     queryKey: ['projects'],
     queryFn: getProjects,
+    staleTime: 0,
+  });
+}
+
+export function useThesis() {
+  return useQuery({
+    queryKey: ['thesis'],
+    queryFn: getThesis,
     staleTime: 0,
   });
 }
