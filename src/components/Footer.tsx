@@ -88,6 +88,9 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
                 <a href="#projects" className="hover:text-white transition-colors">Projects</a>
               </li>
               <li>
+                <a href="#thesis" className="hover:text-white transition-colors">Thesis & Research</a>
+              </li>
+              <li>
                 <a href="#experience" className="hover:text-white transition-colors">Experience</a>
               </li>
               <li>
