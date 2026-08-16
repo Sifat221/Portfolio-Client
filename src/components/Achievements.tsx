@@ -228,10 +228,10 @@ export const Achievements: React.FC<TestimonialsAchievementsProps> = ({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.08 }}
-                  className="bg-slate-900/90 hover:bg-slate-900 p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-cyan-400/50 transition-all duration-300 flex items-start gap-3.5 shadow-md group"
+                  className="bg-slate-900/90 hover:bg-slate-900/95 p-4 sm:p-4.5 rounded-2xl border border-slate-800/90 hover:border-cyan-400/60 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all duration-300 flex items-start gap-3.5 shadow-md group"
                 >
                   {/* Trophy Icon */}
-                  <div className="w-9 h-9 rounded-xl bg-[#9B8FCD]/20 border border-[#9B8FCD]/40 flex items-center justify-center text-[#9B8FCD] shrink-0 group-hover:scale-105 group-hover:bg-[#9B8FCD]/30 transition-all">
+                  <div className="w-9 h-9 rounded-xl bg-[#9B8FCD]/20 border border-[#9B8FCD]/40 flex items-center justify-center text-[#9B8FCD] shrink-0 group-hover:scale-110 group-hover:bg-[#9B8FCD]/30 group-hover:text-cyan-300 group-hover:border-cyan-400/50 transition-all">
                     <Trophy className="w-4.5 h-4.5" />
                   </div>
 
