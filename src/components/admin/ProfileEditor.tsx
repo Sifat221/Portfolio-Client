@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, User, Mail, Phone, MapPin, Briefcase, Globe, FileText, Sparkles } from 'lucide-react';
+import { Save, User, Mail, Phone, MapPin, Briefcase, Globe, FileText, Sparkles, Send } from 'lucide-react';
 import { IPersonalProfile } from '../../types/portfolio';
 import { FileUploader } from './FileUploader';
 import { uploadFile, updatePersonalProfile } from '../../services/api';
@@ -226,7 +226,8 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ personal, onSave }
         {textField('linkedin', 'LinkedIn Profile URL', <Globe className="w-3 h-3" />, 'https://linkedin.com/in/...')}
         {textField('facebook', 'Facebook Profile URL', <Globe className="w-3 h-3" />, 'https://facebook.com/...')}
         {textField('whatsapp', 'WhatsApp Phone / Link', <Phone className="w-3 h-3" />, '+880...')}
-        {textField('portfolio', 'Portfolio URL', <Globe className="w-3 h-3" />, 'https://...')}
+        {textField('telegram', 'Telegram Username / Link', <Send className="w-3 h-3" />, 'https://t.me/...')}
+        {textField('behance', 'Behance Profile URL', <Globe className="w-3 h-3" />, 'https://behance.net/...')}
       </div>
 
       {/* Bio */}

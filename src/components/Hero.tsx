@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle, Sparkles, Smartphone, Code2, Play, Pause, Clock } from 'lucide-react';
+import { Download, Feather, Palette, Compass, Cloud, ChevronLeft, ChevronRight, Github, Linkedin, Facebook, MessageCircle, Sparkles, Smartphone, Code2, Play, Pause, Clock, Send } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import SplitText from './SplitText';
 import { LightRays } from './LightRays';
@@ -400,47 +400,47 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                 <span>Download Resume</span>
               </button>
 
-              {/* Social Media Link Buttons */}
-              <div className="flex items-center gap-2.5 sm:pl-2 pt-2 sm:pt-0">
-                <a
-                  href={personal.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-[#9B8FCD] hover:scale-110 transition-all shadow-md"
-                  aria-label="GitHub Profile"
-                >
-                  <Github className="w-4 h-4 text-[#9B8FCD]" />
-                </a>
-
-                <a
-                  href={personal.linkedin || "https://www.linkedin.com/in/sifat-khan-540a86351/"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-sky-400 hover:scale-110 transition-all shadow-md"
-                  aria-label="LinkedIn Profile"
-                >
-                  <Linkedin className="w-4 h-4 text-sky-400" />
-                </a>
-
-                <a
-                  href={personal.facebook || "https://facebook.com/sifatk4an.joy"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-blue-500 hover:scale-110 transition-all shadow-md"
-                  aria-label="Facebook Profile"
-                >
-                  <Facebook className="w-4 h-4 text-blue-500" />
-                </a>
-
-                <a
-                  href="https://wa.me/8801313997323"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white hover:border-emerald-400 hover:scale-110 transition-all shadow-md"
-                  aria-label="WhatsApp Direct Chat"
-                >
-                  <MessageCircle className="w-4 h-4 text-emerald-400" />
-                </a>
+              {/* Social Media Link Buttons (Dynamically rendered only if provided in Admin) */}
+              <div className="flex flex-wrap items-center gap-2.5 sm:pl-2 pt-2 sm:pt-0">
+                {[
+                  { key: 'github', label: 'GitHub Profile', url: personal.github, icon: <Github className="w-4 h-4 text-[#9B8FCD]" />, hoverBorder: 'hover:border-[#9B8FCD]' },
+                  { key: 'linkedin', label: 'LinkedIn Profile', url: personal.linkedin, icon: <Linkedin className="w-4 h-4 text-sky-400" />, hoverBorder: 'hover:border-sky-400' },
+                  { key: 'facebook', label: 'Facebook Profile', url: personal.facebook, icon: <Facebook className="w-4 h-4 text-blue-500" />, hoverBorder: 'hover:border-blue-500' },
+                  {
+                    key: 'whatsapp',
+                    label: 'WhatsApp Direct Chat',
+                    url: personal.whatsapp ? (personal.whatsapp.startsWith('http') ? personal.whatsapp : `https://wa.me/${personal.whatsapp.replace(/[^0-9]/g, '')}`) : '',
+                    icon: <MessageCircle className="w-4 h-4 text-emerald-400" />,
+                    hoverBorder: 'hover:border-emerald-400',
+                  },
+                  {
+                    key: 'telegram',
+                    label: 'Telegram Chat',
+                    url: personal.telegram ? (personal.telegram.startsWith('http') ? personal.telegram : `https://t.me/${personal.telegram.replace('@', '')}`) : '',
+                    icon: <Send className="w-4 h-4 text-cyan-400" />,
+                    hoverBorder: 'hover:border-cyan-400',
+                  },
+                  {
+                    key: 'behance',
+                    label: 'Behance Portfolio',
+                    url: personal.behance,
+                    icon: <span className="text-[11px] font-bold font-mono tracking-tighter text-cyan-300">Bē</span>,
+                    hoverBorder: 'hover:border-cyan-400',
+                  },
+                ]
+                  .filter((item) => item.url && item.url.trim() !== '')
+                  .map((social) => (
+                    <a
+                      key={social.key}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`p-3 rounded-full glass-card border border-slate-700 text-slate-300 hover:text-white ${social.hoverBorder} hover:scale-110 transition-all shadow-md flex items-center justify-center`}
+                      aria-label={social.label}
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
               </div>
             </motion.div>
           </motion.div>

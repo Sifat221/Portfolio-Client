@@ -244,22 +244,64 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
               )}
 
               {/* WhatsApp */}
-              <a
-                href="https://wa.me/8801313997323"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#0D1526]/90 hover:bg-[#111C33] p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-all flex items-center gap-4 group shadow-lg"
-              >
-                <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 group-hover:scale-105 transition-transform">
-                  <MessageCircle className="w-5 h-5" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider font-bold">WHATSAPP DIRECT CHAT</p>
-                  <p className="text-xs sm:text-sm font-bold text-white group-hover:text-emerald-400 transition-colors truncate">
-                    +880 1313-997323
-                  </p>
-                </div>
-              </a>
+              {personal.whatsapp && (
+                <a
+                  href={personal.whatsapp.startsWith('http') ? personal.whatsapp : `https://wa.me/${personal.whatsapp.replace(/[^0-9]/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#0D1526]/90 hover:bg-[#111C33] p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-all flex items-center gap-4 group shadow-lg"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 group-hover:scale-105 transition-transform">
+                    <MessageCircle className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider font-bold">WHATSAPP DIRECT CHAT</p>
+                    <p className="text-xs sm:text-sm font-bold text-white group-hover:text-emerald-400 transition-colors truncate">
+                      {personal.whatsapp}
+                    </p>
+                  </div>
+                </a>
+              )}
+
+              {/* Telegram */}
+              {personal.telegram && (
+                <a
+                  href={personal.telegram.startsWith('http') ? personal.telegram : `https://t.me/${personal.telegram.replace('@', '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#0D1526]/90 hover:bg-[#111C33] p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all flex items-center gap-4 group shadow-lg"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0 group-hover:scale-105 transition-transform">
+                    <Send className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider font-bold">TELEGRAM CHAT</p>
+                    <p className="text-xs sm:text-sm font-bold text-white group-hover:text-cyan-400 transition-colors truncate">
+                      {personal.telegram.replace(/^https?:\/\/(t\.me\/)?/, '@')}
+                    </p>
+                  </div>
+                </a>
+              )}
+
+              {/* Behance */}
+              {personal.behance && (
+                <a
+                  href={personal.behance}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#0D1526]/90 hover:bg-[#111C33] p-4 sm:p-4.5 rounded-2xl border border-slate-800 hover:border-cyan-400/50 transition-all flex items-center gap-4 group shadow-lg"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-300 font-extrabold font-mono text-sm shrink-0 group-hover:scale-105 transition-transform">
+                    Bē
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider font-bold">BEHANCE PORTFOLIO</p>
+                    <p className="text-xs sm:text-sm font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
+                      {personal.behance.replace(/^https?:\/\/(www\.)?/, '')}
+                    </p>
+                  </div>
+                </a>
+              )}
             </div>
           </div>
 

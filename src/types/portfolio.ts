@@ -8,7 +8,9 @@ export interface IPersonalProfile {
   phone: string;
   resumeUrl: string;
   github: string;
-  portfolio: string;
+  portfolio?: string;
+  telegram?: string;
+  behance?: string;
   profilePhoto?: string;
   bannerPhoto?: string;
   linkedin?: string;

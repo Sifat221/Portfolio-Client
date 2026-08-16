@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUp, Github, Linkedin, Facebook, MessageCircle, Mail, Phone, MapPin, Download, Heart, ExternalLink } from 'lucide-react';
+import { ArrowUp, Github, Linkedin, Facebook, MessageCircle, Mail, Phone, MapPin, Download, Heart, ExternalLink, Send } from 'lucide-react';
 import { IPersonalProfile } from '../types/portfolio';
 import { LineSidebar } from './LineSidebar';
 import { downloadResume } from '../utils/download';
@@ -136,60 +136,100 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
 
             <div className="space-y-2">
               {/* GitHub */}
-              <a
-                href={personal.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Github className="w-4 h-4 text-[#9B8FCD] group-hover:scale-110 transition-transform" />
-                  <span>GitHub</span>
-                </div>
-                <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-              </a>
+              {personal.github && (
+                <a
+                  href={personal.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Github className="w-4 h-4 text-[#9B8FCD] group-hover:scale-110 transition-transform" />
+                    <span>GitHub</span>
+                  </div>
+                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
+                </a>
+              )}
 
               {/* LinkedIn */}
-              <a
-                href={personal.linkedin || "https://www.linkedin.com/in/sifat-khan-540a86351/"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Linkedin className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
-                  <span>LinkedIn</span>
-                </div>
-                <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-              </a>
+              {personal.linkedin && (
+                <a
+                  href={personal.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Linkedin className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
+                    <span>LinkedIn</span>
+                  </div>
+                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
+                </a>
+              )}
 
               {/* Facebook */}
-              <a
-                href={personal.facebook || "https://facebook.com/sifatk4an.joy"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Facebook className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform" />
-                  <span>Facebook</span>
-                </div>
-                <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-              </a>
+              {personal.facebook && (
+                <a
+                  href={personal.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Facebook className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform" />
+                    <span>Facebook</span>
+                  </div>
+                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
+                </a>
+              )}
 
               {/* WhatsApp */}
-              <a
-                href={`https://wa.me/${whatsappNumber}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
-              >
-                <div className="flex items-center gap-2.5">
-                  <MessageCircle className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-                  <span>WhatsApp</span>
-                </div>
-                <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
-              </a>
+              {personal.whatsapp && (
+                <a
+                  href={personal.whatsapp.startsWith('http') ? personal.whatsapp : `https://wa.me/${personal.whatsapp.replace(/[^0-9]/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <MessageCircle className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+                    <span>WhatsApp</span>
+                  </div>
+                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
+                </a>
+              )}
+
+              {/* Telegram */}
+              {personal.telegram && (
+                <a
+                  href={personal.telegram.startsWith('http') ? personal.telegram : `https://t.me/${personal.telegram.replace('@', '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Send className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
+                    <span>Telegram</span>
+                  </div>
+                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
+                </a>
+              )}
+
+              {/* Behance */}
+              {personal.behance && (
+                <a
+                  href={personal.behance}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono text-slate-200 bg-slate-900 border border-slate-800 hover:border-[#9B8FCD] transition-all group shadow-sm"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-[11px] font-bold font-mono text-cyan-300 group-hover:scale-110 transition-transform">Bē</span>
+                    <span>Behance</span>
+                  </div>
+                  <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
+                </a>
+              )}
 
               {/* Download Resume */}
               <button
