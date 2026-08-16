@@ -65,18 +65,18 @@ export const PortfolioContent: React.FC = () => {
     <div className="min-h-screen bg-[#090D16] text-slate-100 selection:bg-[#9B8FCD] selection:text-white transition-colors duration-300">
       <SEOHead personal={personal} />
 
-      {/* Interactive WebGL Splash Cursor Backdrop */}
+      {/* Refined Elegant WebGL Splash Cursor Backdrop */}
       <SplashCursor
-        DENSITY_DISSIPATION={3.5}
-        VELOCITY_DISSIPATION={2}
-        PRESSURE={0.1}
-        CURL={3}
-        SPLAT_RADIUS={0.2}
-        SPLAT_FORCE={6000}
+        DENSITY_DISSIPATION={5.2}
+        VELOCITY_DISSIPATION={3.0}
+        PRESSURE={0.08}
+        CURL={2}
+        SPLAT_RADIUS={0.12}
+        SPLAT_FORCE={3200}
         COLOR_UPDATE_SPEED={10}
         SHADING
         RAINBOW_MODE={false}
-        COLOR="#A855F7"
+        COLOR="#9B8FCD"
       />
 
       {/* Navigation Bar */}
