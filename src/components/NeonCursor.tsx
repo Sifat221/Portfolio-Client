@@ -3,12 +3,9 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import useCanvasCursor from '../hooks/useCanvasCursor';
 import '../styles/NeonCursor.css';
 
 export const NeonCursor: React.FC = () => {
-  useCanvasCursor();
-
   const [position, setPosition] = useState({
     x: -100,
     y: -100,
@@ -91,76 +88,70 @@ export const NeonCursor: React.FC = () => {
     };
   }, [handleMouseMove, handleMouseOver, handleMouseOut, handleMouseLeave]);
 
+  if (!isVisible) return null;
+
   return (
-    <>
-      {/* Canvas trail background layer */}
-      <canvas id="canvas" className="pointer-events-none fixed inset-0 z-40" />
+    <div className="neon-cursor-container">
+      {/* Main cursor dot */}
+      <motion.div
+        className="cursor-main"
+        animate={{
+          x: position.x - 6,
+          y: position.y - 6,
+          scale: isClicking ? 0.7 : isHovering ? 1.3 : 1,
+        }}
+        transition={{
+          type: 'spring',
+          damping: 25,
+          stiffness: 500,
+          mass: 0.2,
+        }}
+      />
 
-      {/* Neon Cursor UI Container */}
-      {isVisible && (
-        <div className="neon-cursor-container">
-          {/* Main cursor dot */}
-          <motion.div
-            className="cursor-main"
-            animate={{
-              x: position.x - 6,
-              y: position.y - 6,
-              scale: isClicking ? 0.7 : isHovering ? 1.3 : 1,
-            }}
-            transition={{
-              type: 'spring',
-              damping: 25,
-              stiffness: 500,
-              mass: 0.2,
-            }}
-          />
+      {/* Trailing circle */}
+      <motion.div
+        className="cursor-trail"
+        animate={{
+          x: position.x - 16,
+          y: position.y - 16,
+        }}
+        transition={{
+          type: 'spring',
+          damping: 30,
+          stiffness: 250,
+          mass: 0.5,
+        }}
+        initial={false}
+      >
+        <motion.div
+          style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+          animate={trailControls}
+          initial={{ scale: 1, borderColor: 'rgb(236, 101, 23)', borderWidth: '2px' }}
+        />
+      </motion.div>
 
-          {/* Trailing circle */}
-          <motion.div
-            className="cursor-trail"
-            animate={{
-              x: position.x - 16,
-              y: position.y - 16,
-            }}
-            transition={{
-              type: 'spring',
-              damping: 30,
-              stiffness: 250,
-              mass: 0.5,
-            }}
-            initial={false}
-          >
-            <motion.div
-              style={{ width: '100%', height: '100%', borderRadius: '50%' }}
-              animate={trailControls}
-              initial={{ scale: 1, borderColor: 'rgb(236, 101, 23)', borderWidth: '2px' }}
-            />
-          </motion.div>
-
-          {/* Outer glow */}
-          <motion.div
-            className="cursor-glow"
-            animate={{
-              x: position.x - 25,
-              y: position.y - 25,
-            }}
-            transition={{
-              type: 'spring',
-              damping: 35,
-              stiffness: 180,
-              mass: 0.8,
-            }}
-            initial={false}
-          >
-            <motion.div
-              style={{ width: '100%', height: '100%', borderRadius: '50%' }}
-              animate={glowControls}
-              initial={{ scale: 1, opacity: 0.4 }}
-            />
-          </motion.div>
-        </div>
-      )}
-    </>
+      {/* Outer glow */}
+      <motion.div
+        className="cursor-glow"
+        animate={{
+          x: position.x - 25,
+          y: position.y - 25,
+        }}
+        transition={{
+          type: 'spring',
+          damping: 35,
+          stiffness: 180,
+          mass: 0.8,
+        }}
+        initial={false}
+      >
+        <motion.div
+          style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+          animate={glowControls}
+          initial={{ scale: 1, opacity: 0.4 }}
+        />
+      </motion.div>
+    </div>
   );
 };
 
