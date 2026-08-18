@@ -3,17 +3,12 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import useCanvasCursor from '../hooks/useCanvasCursor';
 import '../styles/NeonCursor.css';
 
 export const NeonCursor: React.FC = () => {
-  useCanvasCursor();
-
   const [position, setPosition] = useState({
     x: -100,
     y: -100,
-    scale: 1,
-    opacity: 1,
   });
   const [isClicking, setIsClicking] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -21,11 +16,10 @@ export const NeonCursor: React.FC = () => {
   const glowControls = useAnimation();
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    setPosition((prev) => ({
-      ...prev,
+    setPosition({
       x: e.clientX,
       y: e.clientY,
-    }));
+    });
   }, []);
 
   const handleMouseDown = () => setIsClicking(true);
@@ -94,58 +88,60 @@ export const NeonCursor: React.FC = () => {
   }, [handleMouseMove, handleMouseOver, handleMouseOut]);
 
   return (
-    <>
-      <canvas id="canvas" />
-      <div className="neon-cursor-container">
-        {/* Main cursor dot */}
-        <motion.div
-          className="cursor-main"
-          animate={{
-            x: position.x - 8,
-            y: position.y - 8,
-            scale: isClicking ? 0.8 : isHovering ? 1.2 : 1,
-          }}
-          transition={{
-            type: 'spring',
-            damping: 20,
-            stiffness: 400,
-            mass: 0.5,
-          }}
-        />
+    <div className="neon-cursor-container">
+      {/* Main cursor dot */}
+      <motion.div
+        className="cursor-main"
+        animate={{
+          x: position.x - 10,
+          y: position.y - 10,
+          scale: isClicking ? 0.8 : isHovering ? 1.2 : 1,
+        }}
+        transition={{
+          type: 'spring',
+          damping: 20,
+          stiffness: 400,
+          mass: 0.5,
+        }}
+      />
 
-        {/* Trailing circle */}
-        <motion.div
-          className="cursor-trail"
-          animate={{
-            x: position.x - 18,
-            y: position.y - 18,
-          }}
-          transition={{
-            type: 'spring',
-            damping: 30,
-            stiffness: 200,
-            mass: 0.8,
-          }}
-          initial={false}
-        />
+      {/* Trailing circle */}
+      <motion.div
+        className="cursor-trail"
+        animate={{
+          x: position.x - 20,
+          y: position.y - 20,
+          scale: isHovering ? 1.5 : 1,
+          borderColor: isHovering ? 'rgb(255, 150, 50)' : 'rgb(236, 101, 23)',
+          borderWidth: isHovering ? '3px' : '2px',
+        }}
+        transition={{
+          type: 'spring',
+          damping: 30,
+          stiffness: 200,
+          mass: 0.8,
+        }}
+        initial={false}
+      />
 
-        {/* Outer glow */}
-        <motion.div
-          className="cursor-glow"
-          animate={{
-            x: position.x - 28,
-            y: position.y - 28,
-          }}
-          transition={{
-            type: 'spring',
-            damping: 40,
-            stiffness: 150,
-            mass: 1,
-          }}
-          initial={false}
-        />
-      </div>
-    </>
+      {/* Outer glow */}
+      <motion.div
+        className="cursor-glow"
+        animate={{
+          x: position.x - 30,
+          y: position.y - 30,
+          scale: isHovering ? 2 : 1,
+          opacity: isHovering ? 0.8 : 0.4,
+        }}
+        transition={{
+          type: 'spring',
+          damping: 40,
+          stiffness: 150,
+          mass: 1,
+        }}
+        initial={false}
+      />
+    </div>
   );
 };
 
