@@ -9,45 +9,48 @@
   overflow: hidden;
 }
 
+/* Main inner neon orange dot */
 .cursor-main {
   position: fixed;
   top: 0;
   left: 0;
-  width: 20px;
-  height: 20px;
-  background: #06b6d4;
+  width: 18px;
+  height: 18px;
+  background: #ff7012;
   border-radius: 50%;
   pointer-events: none;
   z-index: 10000;
-  box-shadow: 0 0 10px #06b6d4, 0 0 20px #06b6d4;
+  box-shadow: 0 0 10px #ff7012, 0 0 20px rgba(255, 112, 18, 0.8);
   will-change: transform;
 }
 
+/* Outer glowing neon orange ring */
 .cursor-trail {
   position: fixed;
   top: 0;
   left: 0;
-  width: 40px;
-  height: 40px;
-  border: 2px solid rgb(236, 101, 23);
+  width: 38px;
+  height: 38px;
+  border: 2px solid #ff7012;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
-  box-shadow: 0 0 12px rgba(236, 101, 23, 0.4);
+  box-shadow: 0 0 12px rgba(255, 112, 18, 0.6);
   will-change: transform;
 }
 
+/* Background soft warm orange halo/shadow */
 .cursor-glow {
   position: fixed;
   top: 0;
   left: 0;
-  width: 60px;
-  height: 60px;
-  background: radial-gradient(circle, rgba(155, 143, 205, 0.5) 0%, rgba(6, 182, 212, 0.2) 60%, transparent 80%);
+  width: 64px;
+  height: 64px;
+  background: radial-gradient(circle, rgba(255, 112, 18, 0.5) 0%, rgba(255, 112, 18, 0.18) 50%, transparent 75%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
-  filter: blur(4px);
+  filter: blur(8px);
   will-change: transform;
 }
 

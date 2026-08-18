@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 import '../styles/NeonCursor.css';
 
 export const NeonCursor: React.FC = () => {
@@ -12,8 +12,6 @@ export const NeonCursor: React.FC = () => {
   });
   const [isClicking, setIsClicking] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const trailControls = useAnimation();
-  const glowControls = useAnimation();
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     setPosition({
@@ -25,51 +23,27 @@ export const NeonCursor: React.FC = () => {
   const handleMouseDown = () => setIsClicking(true);
   const handleMouseUp = () => setIsClicking(false);
 
-  const handleMouseOver = useCallback(
-    (e: MouseEvent) => {
-      const target = e.target as HTMLElement | null;
-      if (
-        target &&
-        target.closest &&
-        target.closest('a, button, input, textarea, select, [data-hover="true"], [role="button"], .cursor-pointer')
-      ) {
-        setIsHovering(true);
-        void trailControls.start({
-          scale: 1.5,
-          borderColor: 'rgb(255, 150, 50)',
-          borderWidth: '3px',
-        });
-        void glowControls.start({
-          scale: 2,
-          opacity: 0.8,
-        });
-      }
-    },
-    [trailControls, glowControls]
-  );
+  const handleMouseOver = useCallback((e: MouseEvent) => {
+    const target = e.target as HTMLElement | null;
+    if (
+      target &&
+      target.closest &&
+      target.closest('a, button, input, textarea, select, [data-hover="true"], [role="button"], .cursor-pointer')
+    ) {
+      setIsHovering(true);
+    }
+  }, []);
 
-  const handleMouseOut = useCallback(
-    (e: MouseEvent) => {
-      const target = e.target as HTMLElement | null;
-      if (
-        target &&
-        target.closest &&
-        target.closest('a, button, input, textarea, select, [data-hover="true"], [role="button"], .cursor-pointer')
-      ) {
-        setIsHovering(false);
-        void trailControls.start({
-          scale: 1,
-          borderColor: 'rgb(236, 101, 23)',
-          borderWidth: '2px',
-        });
-        void glowControls.start({
-          scale: 1,
-          opacity: 0.4,
-        });
-      }
-    },
-    [trailControls, glowControls]
-  );
+  const handleMouseOut = useCallback((e: MouseEvent) => {
+    const target = e.target as HTMLElement | null;
+    if (
+      target &&
+      target.closest &&
+      target.closest('a, button, input, textarea, select, [data-hover="true"], [role="button"], .cursor-pointer')
+    ) {
+      setIsHovering(false);
+    }
+  }, []);
 
   useEffect(() => {
     window.addEventListener('mousemove', handleMouseMove);
@@ -89,57 +63,57 @@ export const NeonCursor: React.FC = () => {
 
   return (
     <div className="neon-cursor-container">
-      {/* Main cursor dot */}
+      {/* Background soft warm orange halo/shadow */}
+      <motion.div
+        className="cursor-glow"
+        animate={{
+          x: position.x - 32,
+          y: position.y - 32,
+          scale: isHovering ? 1.8 : 1,
+          opacity: isHovering ? 0.85 : 0.5,
+        }}
+        transition={{
+          type: 'spring',
+          damping: 35,
+          stiffness: 180,
+          mass: 0.9,
+        }}
+        initial={false}
+      />
+
+      {/* Outer glowing neon orange ring */}
+      <motion.div
+        className="cursor-trail"
+        animate={{
+          x: position.x - 19,
+          y: position.y - 19,
+          scale: isHovering ? 1.45 : 1,
+          borderColor: isHovering ? '#ff8c3a' : '#ff7012',
+          borderWidth: isHovering ? '2.5px' : '2px',
+        }}
+        transition={{
+          type: 'spring',
+          damping: 28,
+          stiffness: 240,
+          mass: 0.7,
+        }}
+        initial={false}
+      />
+
+      {/* Main inner neon orange dot */}
       <motion.div
         className="cursor-main"
         animate={{
-          x: position.x - 10,
-          y: position.y - 10,
-          scale: isClicking ? 0.8 : isHovering ? 1.2 : 1,
+          x: position.x - 9,
+          y: position.y - 9,
+          scale: isClicking ? 0.75 : isHovering ? 1.25 : 1,
         }}
         transition={{
           type: 'spring',
           damping: 20,
-          stiffness: 400,
-          mass: 0.5,
+          stiffness: 450,
+          mass: 0.4,
         }}
-      />
-
-      {/* Trailing circle */}
-      <motion.div
-        className="cursor-trail"
-        animate={{
-          x: position.x - 20,
-          y: position.y - 20,
-          scale: isHovering ? 1.5 : 1,
-          borderColor: isHovering ? 'rgb(255, 150, 50)' : 'rgb(236, 101, 23)',
-          borderWidth: isHovering ? '3px' : '2px',
-        }}
-        transition={{
-          type: 'spring',
-          damping: 30,
-          stiffness: 200,
-          mass: 0.8,
-        }}
-        initial={false}
-      />
-
-      {/* Outer glow */}
-      <motion.div
-        className="cursor-glow"
-        animate={{
-          x: position.x - 30,
-          y: position.y - 30,
-          scale: isHovering ? 2 : 1,
-          opacity: isHovering ? 0.8 : 0.4,
-        }}
-        transition={{
-          type: 'spring',
-          damping: 40,
-          stiffness: 150,
-          mass: 1,
-        }}
-        initial={false}
       />
     </div>
   );
