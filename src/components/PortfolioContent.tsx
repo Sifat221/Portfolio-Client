@@ -9,7 +9,7 @@ import { EducationCertifications } from './EducationCertifications';
 import { Achievements } from './Achievements';
 import { ContactSection } from './ContactSection';
 import { Footer } from './Footer';
-import NeonCursor from './NeonCursor';
+import TextIconCursor from './TextIconCursor';
 import { LoadingScreen } from './common/LoadingScreen';
 import { SEOHead } from './common/SEOHead';
 import { useGlobalSound } from '../hooks/useGlobalSound';
@@ -65,8 +65,8 @@ export const PortfolioContent: React.FC = () => {
     <div className="min-h-screen bg-[#090D16] text-slate-100 selection:bg-[#9B8FCD] selection:text-white transition-colors duration-300">
       <SEOHead personal={personal} />
 
-      {/* Neon Cursor with Ribbon Trail */}
-      <NeonCursor />
+      {/* Text & Icon Animated Cursor */}
+      <TextIconCursor />
 
       {/* Navigation Bar */}
       <Navbar personal={personal} />
