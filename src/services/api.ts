@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { db } from './firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import {
   IPersonalProfile,
   IProject,
@@ -14,6 +16,30 @@ import {
   IContactForm,
   IContactMessage
 } from '../types/portfolio';
+
+// Firestore Cloud Sync Helpers
+async function getFirestoreData<T>(sectionKey: string): Promise<T | null> {
+  try {
+    const docRef = doc(db, "portfolio", sectionKey);
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      return (data.payload !== undefined ? data.payload : data) as T;
+    }
+  } catch (err) {
+    console.warn(`Firestore read error [${sectionKey}]:`, err);
+  }
+  return null;
+}
+
+async function saveFirestoreData<T>(sectionKey: string, payload: T): Promise<void> {
+  try {
+    const docRef = doc(db, "portfolio", sectionKey);
+    await setDoc(docRef, { payload, updatedAt: new Date().toISOString() });
+  } catch (err) {
+    console.warn(`Firestore write error [${sectionKey}]:`, err);
+  }
+}
 
 const API_BASE_URL = 'https://portfolio-server-gamma-opal.vercel.app/api';
 
@@ -498,8 +524,9 @@ export async function loadEducationFromIDB(): Promise<IEducation[] | null> {
   }
 }
 
-// API Functions with automatic fallback
+// API Functions with automatic fallback & Firestore cloud synchronization
 export async function getPersonalProfile(): Promise<IPersonalProfile> {
+  const firestoreData = await getFirestoreData<IPersonalProfile>('personal');
   let localSaved: Partial<IPersonalProfile> = {};
   const saved = localStorage.getItem('portfolio_personal_profile');
   if (saved) {
@@ -522,13 +549,14 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
     console.warn("API Call /personal fallback active:", err);
   }
 
-  // Priority order: defaultPersonal < serverData < localSaved < idbSaved < inMemoryPersonalProfile
+  // Priority order: defaultPersonal < serverData < localSaved < idbSaved < inMemoryPersonalProfile < firestoreData
   const combined = {
     ...defaultPersonal,
     ...serverData,
     ...localSaved,
     ...(idbSaved || {}),
     ...(inMemoryPersonalProfile || {}),
+    ...(firestoreData || {}),
   };
 
   if (!combined.title || combined.title === "Flutter & AI Engineer" || combined.title === "Flutter Developer") {
@@ -548,15 +576,28 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
     console.warn("localStorage quota warning:", e);
   }
 
+  if (!firestoreData) {
+    saveFirestoreData('personal', combined);
+  }
+
   return combined;
 }
 
 export async function getProjects(): Promise<IProject[]> {
+  const firestoreData = await getFirestoreData<IProject[]>('projects');
+  if (firestoreData && Array.isArray(firestoreData) && firestoreData.length > 0) {
+    try {
+      localStorage.setItem('portfolio_projects', JSON.stringify(firestoreData));
+    } catch (e) {}
+    return firestoreData;
+  }
+
   const saved = localStorage.getItem('portfolio_projects');
   if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        saveFirestoreData('projects', parsed);
         return parsed;
       }
     } catch (e) {
@@ -568,6 +609,7 @@ export async function getProjects(): Promise<IProject[]> {
     const response = await api.get('/projects');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
       localStorage.setItem('portfolio_projects', JSON.stringify(response.data.data));
+      saveFirestoreData('projects', response.data.data);
       return response.data.data;
     }
   } catch (err) {
@@ -579,15 +621,25 @@ export async function getProjects(): Promise<IProject[]> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  saveFirestoreData('projects', defaultProjects);
   return defaultProjects;
 }
 
 export async function getThesis(): Promise<IThesis[]> {
+  const firestoreData = await getFirestoreData<IThesis[]>('thesis');
+  if (firestoreData && Array.isArray(firestoreData) && firestoreData.length > 0) {
+    try {
+      localStorage.setItem('portfolio_thesis', JSON.stringify(firestoreData));
+    } catch (e) {}
+    return firestoreData;
+  }
+
   const saved = localStorage.getItem('portfolio_thesis');
   if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        saveFirestoreData('thesis', parsed);
         return parsed;
       }
     } catch (e) {
@@ -599,6 +651,7 @@ export async function getThesis(): Promise<IThesis[]> {
     const response = await api.get('/thesis');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
       localStorage.setItem('portfolio_thesis', JSON.stringify(response.data.data));
+      saveFirestoreData('thesis', response.data.data);
       return response.data.data;
     }
   } catch (err) {
@@ -610,15 +663,25 @@ export async function getThesis(): Promise<IThesis[]> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  saveFirestoreData('thesis', defaultThesis);
   return defaultThesis;
 }
 
 export async function getSkills(): Promise<ISkill[]> {
+  const firestoreData = await getFirestoreData<ISkill[]>('skills');
+  if (firestoreData && Array.isArray(firestoreData) && firestoreData.length > 0) {
+    try {
+      localStorage.setItem('portfolio_skills', JSON.stringify(firestoreData));
+    } catch (e) {}
+    return firestoreData;
+  }
+
   const saved = localStorage.getItem('portfolio_skills');
   if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        saveFirestoreData('skills', parsed);
         return parsed;
       }
     } catch (e) {
@@ -634,6 +697,7 @@ export async function getSkills(): Promise<ISkill[]> {
       response.data.data.length >= 10
     ) {
       localStorage.setItem('portfolio_skills', JSON.stringify(response.data.data));
+      saveFirestoreData('skills', response.data.data);
       return response.data.data;
     }
   } catch (err) {
@@ -645,15 +709,25 @@ export async function getSkills(): Promise<ISkill[]> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  saveFirestoreData('skills', defaultSkills);
   return defaultSkills;
 }
 
 export async function getExperience(): Promise<IExperience[]> {
+  const firestoreData = await getFirestoreData<IExperience[]>('experience');
+  if (firestoreData && Array.isArray(firestoreData) && firestoreData.length > 0) {
+    try {
+      localStorage.setItem('portfolio_experience', JSON.stringify(firestoreData));
+    } catch (e) {}
+    return firestoreData;
+  }
+
   const saved = localStorage.getItem('portfolio_experience');
   if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        saveFirestoreData('experience', parsed);
         return parsed;
       }
     } catch (e) {
@@ -665,6 +739,7 @@ export async function getExperience(): Promise<IExperience[]> {
     const response = await api.get('/experience');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
       localStorage.setItem('portfolio_experience', JSON.stringify(response.data.data));
+      saveFirestoreData('experience', response.data.data);
       return response.data.data;
     }
   } catch (err) {
@@ -676,10 +751,20 @@ export async function getExperience(): Promise<IExperience[]> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  saveFirestoreData('experience', defaultExperience);
   return defaultExperience;
 }
 
 export async function getEducation(): Promise<IEducation[]> {
+  const firestoreData = await getFirestoreData<IEducation[]>('education');
+  if (firestoreData && Array.isArray(firestoreData) && firestoreData.length > 0) {
+    inMemoryEducation = firestoreData;
+    try {
+      localStorage.setItem('portfolio_education', JSON.stringify(firestoreData));
+    } catch (e) {}
+    return firestoreData;
+  }
+
   if (inMemoryEducation) {
     return inMemoryEducation;
   }
@@ -688,8 +773,9 @@ export async function getEducation(): Promise<IEducation[]> {
   if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
         inMemoryEducation = parsed;
+        saveFirestoreData('education', parsed);
         return parsed;
       }
     } catch (e) {
@@ -705,6 +791,7 @@ export async function getEducation(): Promise<IEducation[]> {
     } catch (e) {
       console.warn("localStorage sync quota warning:", e);
     }
+    saveFirestoreData('education', idbSaved);
     return idbSaved;
   }
 
@@ -713,6 +800,7 @@ export async function getEducation(): Promise<IEducation[]> {
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
       localStorage.setItem('portfolio_education', JSON.stringify(response.data.data));
       await saveEducationToIDB(response.data.data);
+      saveFirestoreData('education', response.data.data);
       return response.data.data;
     }
   } catch (err) {
@@ -724,16 +812,28 @@ export async function getEducation(): Promise<IEducation[]> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  saveFirestoreData('education', defaultEducation);
   return defaultEducation;
 }
 
 export async function getCertifications(): Promise<ICertification[]> {
+  const firestoreData = await getFirestoreData<ICertification[]>('certifications');
+  if (firestoreData && Array.isArray(firestoreData) && firestoreData.length > 0) {
+    const list = firestoreData.map((c: any, idx: number) => ({ ...c, id: c.id || `cert_${idx}` }));
+    try {
+      localStorage.setItem('portfolio_certifications', JSON.stringify(list));
+    } catch (e) {}
+    return list;
+  }
+
   const saved = localStorage.getItem('portfolio_certifications');
   if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
-        return parsed.map((c: any, idx: number) => ({ ...c, id: c.id || `cert_${idx}` }));
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const list = parsed.map((c: any, idx: number) => ({ ...c, id: c.id || `cert_${idx}` }));
+        saveFirestoreData('certifications', list);
+        return list;
       }
     } catch (e) {
       console.warn("Failed to parse stored certifications data", e);
@@ -745,6 +845,7 @@ export async function getCertifications(): Promise<ICertification[]> {
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
       const list = response.data.data.map((c: any, idx: number) => ({ ...c, id: c.id || `cert_${idx}` }));
       localStorage.setItem('portfolio_certifications', JSON.stringify(list));
+      saveFirestoreData('certifications', list);
       return list;
     }
   } catch (err) {
@@ -757,15 +858,25 @@ export async function getCertifications(): Promise<ICertification[]> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  saveFirestoreData('certifications', defaultWithIds);
   return defaultWithIds;
 }
 
 export async function getAchievements(): Promise<IAchievement[]> {
+  const firestoreData = await getFirestoreData<IAchievement[]>('achievements');
+  if (firestoreData && Array.isArray(firestoreData) && firestoreData.length > 0) {
+    try {
+      localStorage.setItem('portfolio_achievements', JSON.stringify(firestoreData));
+    } catch (e) {}
+    return firestoreData;
+  }
+
   const saved = localStorage.getItem('portfolio_achievements');
   if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        saveFirestoreData('achievements', parsed);
         return parsed;
       }
     } catch (e) {
@@ -777,6 +888,7 @@ export async function getAchievements(): Promise<IAchievement[]> {
     const response = await api.get('/achievements');
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
       localStorage.setItem('portfolio_achievements', JSON.stringify(response.data.data));
+      saveFirestoreData('achievements', response.data.data);
       return response.data.data;
     }
   } catch (err) {
@@ -788,6 +900,7 @@ export async function getAchievements(): Promise<IAchievement[]> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  saveFirestoreData('achievements', defaultAchievements);
   return defaultAchievements;
 }
 
@@ -808,11 +921,20 @@ export async function getTestimonials(): Promise<ITestimonial[]> {
 }
 
 export async function getContactMessages(): Promise<IContactMessage[]> {
+  const firestoreData = await getFirestoreData<IContactMessage[]>('messages');
+  if (firestoreData && Array.isArray(firestoreData)) {
+    try {
+      localStorage.setItem('portfolio_contact_messages', JSON.stringify(firestoreData));
+    } catch (e) {}
+    return firestoreData;
+  }
+
   const saved = localStorage.getItem('portfolio_contact_messages');
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed)) {
+        saveFirestoreData('messages', parsed);
         return parsed;
       }
     } catch (e) {
@@ -826,6 +948,7 @@ export async function markContactMessageRead(id: string): Promise<boolean> {
   const messages = await getContactMessages();
   const updated = messages.map((m) => (m.id === id ? { ...m, isRead: true } : m));
   localStorage.setItem('portfolio_contact_messages', JSON.stringify(updated));
+  await saveFirestoreData('messages', updated);
   return true;
 }
 
@@ -833,13 +956,14 @@ export async function deleteContactMessage(id: string): Promise<boolean> {
   const messages = await getContactMessages();
   const updated = messages.filter((m) => m.id !== id);
   localStorage.setItem('portfolio_contact_messages', JSON.stringify(updated));
+  await saveFirestoreData('messages', updated);
   return true;
 }
 
 export async function sendContactMessage(formData: IContactForm): Promise<{ success: boolean; message: string }> {
   const adminEmail = "sifatkhanjoy996@gmail.com";
 
-  // 1. ALWAYS store the message locally in Admin Control Center Messages Inbox
+  // 1. ALWAYS store the message locally in Admin Control Center Messages Inbox & Firestore
   const newMsg: IContactMessage = {
     id: `msg_${Date.now()}`,
     name: formData.name,
@@ -857,8 +981,9 @@ export async function sendContactMessage(formData: IContactForm): Promise<{ succ
     const existing = await getContactMessages();
     const updated = [newMsg, ...existing];
     localStorage.setItem('portfolio_contact_messages', JSON.stringify(updated));
+    await saveFirestoreData('messages', updated);
   } catch (e) {
-    console.warn("Failed to save contact message to localStorage", e);
+    console.warn("Failed to save contact message to localStorage/Firestore", e);
   }
 
   // 2. Send via FormSubmit service directly to sifatkhanjoy996@gmail.com
@@ -968,6 +1093,7 @@ export async function createProject(data: Partial<IProject>): Promise<IProject> 
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('projects', updated);
   try {
     const res = await createEntity<IProject>('/projects', data);
     return res;
@@ -985,6 +1111,7 @@ export async function updateProject(id: string, data: Partial<IProject>): Promis
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('projects', updated);
   try {
     const res = await updateEntity<IProject>('/projects', id, data);
     return res;
@@ -1003,6 +1130,7 @@ export async function deleteProject(id: string): Promise<boolean> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('projects', updated);
   try {
     await deleteEntity('/projects', id);
   } catch (e) {
@@ -1047,6 +1175,7 @@ export async function createThesis(data: Partial<IThesis>): Promise<IThesis> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('thesis', updated);
   try {
     const res = await createEntity<IThesis>('/thesis', data);
     return res;
@@ -1064,6 +1193,7 @@ export async function updateThesis(id: string, data: Partial<IThesis>): Promise<
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('thesis', updated);
   try {
     const res = await updateEntity<IThesis>('/thesis', id, data);
     return res;
@@ -1082,6 +1212,7 @@ export async function deleteThesis(id: string): Promise<boolean> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('thesis', updated);
   try {
     await deleteEntity('/thesis', id);
   } catch (e) {
@@ -1106,6 +1237,7 @@ export async function createSkill(data: Partial<ISkill>): Promise<ISkill> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('skills', updated);
   try {
     const res = await createEntity<ISkill>('/skills', data);
     if (res && res.id) return res;
@@ -1123,6 +1255,7 @@ export async function updateSkill(id: string, data: Partial<ISkill>): Promise<IS
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('skills', updated);
   try {
     const res = await updateEntity<ISkill>('/skills', id, data);
     if (res && res.id) return res;
@@ -1141,6 +1274,7 @@ export async function deleteSkill(id: string): Promise<boolean> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('skills', updated);
   try {
     await deleteEntity('/skills', id);
   } catch (e) {
@@ -1169,6 +1303,7 @@ export async function createExperience(data: Partial<IExperience>): Promise<IExp
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('experience', updated);
   try {
     const res = await createEntity<IExperience>('/experience', data);
     if (res && res.id) return res;
@@ -1186,6 +1321,7 @@ export async function updateExperience(id: string, data: Partial<IExperience>): 
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('experience', updated);
   try {
     const res = await updateEntity<IExperience>('/experience', id, data);
     if (res && res.id) return res;
@@ -1204,6 +1340,7 @@ export async function deleteExperience(id: string): Promise<boolean> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('experience', updated);
   try {
     await deleteEntity('/experience', id);
   } catch (e) {
@@ -1233,6 +1370,7 @@ export async function createEducation(data: Partial<IEducation>): Promise<IEduca
     console.warn("localStorage quota warning:", e);
   }
   await saveEducationToIDB(updated);
+  await saveFirestoreData('education', updated);
 
   try {
     await createEntity<IEducation>('/education', data);
@@ -1252,6 +1390,7 @@ export async function updateEducation(id: string, data: Partial<IEducation>): Pr
     console.warn("localStorage quota warning:", e);
   }
   await saveEducationToIDB(updated);
+  await saveFirestoreData('education', updated);
 
   try {
     await updateEntity<IEducation>('/education', id, data);
@@ -1272,6 +1411,7 @@ export async function deleteEducation(id: string): Promise<boolean> {
     console.warn("localStorage quota warning:", e);
   }
   await saveEducationToIDB(updated);
+  await saveFirestoreData('education', updated);
 
   try {
     await deleteEntity('/education', id);
@@ -1298,6 +1438,7 @@ export async function createCertification(data: Partial<ICertification>): Promis
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('certifications', updated);
 
   try {
     const res = await createEntity<ICertification>('/certifications', data);
@@ -1316,6 +1457,7 @@ export async function updateCertification(id: string, data: Partial<ICertificati
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('certifications', updated);
 
   try {
     const res = await updateEntity<ICertification>('/certifications', id, data);
@@ -1335,6 +1477,7 @@ export async function deleteCertification(id: string): Promise<boolean> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('certifications', updated);
 
   try {
     await deleteEntity('/certifications', id);
@@ -1360,6 +1503,7 @@ export async function createAchievement(data: Partial<IAchievement>): Promise<IA
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('achievements', updated);
   try {
     const res = await createEntity<IAchievement>('/achievements', data);
     if (res && res.id) return res;
@@ -1377,6 +1521,7 @@ export async function updateAchievement(id: string, data: Partial<IAchievement>)
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('achievements', updated);
   try {
     const res = await updateEntity<IAchievement>('/achievements', id, data);
     if (res && res.id) return res;
@@ -1395,6 +1540,7 @@ export async function deleteAchievement(id: string): Promise<boolean> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('achievements', updated);
   try {
     await deleteEntity('/achievements', id);
   } catch (e) {
@@ -1410,12 +1556,23 @@ export const deleteTestimonial = (id: string) => deleteEntity('/testimonials', i
 
 // Gallery Photos CRUD
 export async function getGalleryPhotos(): Promise<IGalleryPhoto[]> {
+  const firestoreData = await getFirestoreData<IGalleryPhoto[]>('gallery');
+  if (firestoreData && Array.isArray(firestoreData) && firestoreData.length > 0) {
+    const list = firestoreData.map((p: any, idx: number) => ({ ...p, id: p.id || `photo_${idx}` }));
+    try {
+      localStorage.setItem('portfolio_gallery_photos', JSON.stringify(list));
+    } catch (e) {}
+    return list;
+  }
+
   const saved = localStorage.getItem('portfolio_gallery_photos');
   if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
-        return parsed.map((p: any, idx: number) => ({ ...p, id: p.id || `photo_${idx}` }));
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const list = parsed.map((p: any, idx: number) => ({ ...p, id: p.id || `photo_${idx}` }));
+        saveFirestoreData('gallery', list);
+        return list;
       }
     } catch (e) {
       console.warn("Failed to parse stored gallery photos", e);
@@ -1427,13 +1584,16 @@ export async function getGalleryPhotos(): Promise<IGalleryPhoto[]> {
     if (response.data?.success && Array.isArray(response.data?.data) && response.data.data.length > 0) {
       const list = response.data.data.map((p: any, idx: number) => ({ ...p, id: p.id || `photo_${idx}` }));
       localStorage.setItem('portfolio_gallery_photos', JSON.stringify(list));
+      saveFirestoreData('gallery', list);
       return list;
     }
   } catch (err) {
     console.warn("API Call /gallery fallback active:", err);
   }
 
-  return defaultGalleryPhotos.map((p: any, idx: number) => ({ ...p, id: p.id || `photo_${idx}` }));
+  const defaultList = defaultGalleryPhotos.map((p: any, idx: number) => ({ ...p, id: p.id || `photo_${idx}` }));
+  saveFirestoreData('gallery', defaultList);
+  return defaultList;
 }
 
 export async function createGalleryPhoto(data: Partial<IGalleryPhoto>): Promise<IGalleryPhoto> {
@@ -1450,6 +1610,7 @@ export async function createGalleryPhoto(data: Partial<IGalleryPhoto>): Promise<
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('gallery', updated);
   return newPhoto;
 }
 
@@ -1461,6 +1622,7 @@ export async function updateGalleryPhoto(id: string, data: Partial<IGalleryPhoto
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('gallery', updated);
   const found = updated.find((p) => p.id === id);
   return found || (data as IGalleryPhoto);
 }
@@ -1473,6 +1635,7 @@ export async function deleteGalleryPhoto(id: string): Promise<boolean> {
   } catch (e) {
     console.warn("localStorage quota warning:", e);
   }
+  await saveFirestoreData('gallery', updated);
   return true;
 }
 
@@ -1489,6 +1652,7 @@ export async function updatePersonalProfile(data: Partial<IPersonalProfile>): Pr
   }
 
   await saveProfileToIDB(updated);
+  await saveFirestoreData('personal', updated);
 
   try {
     const response = await api.put('/personal', updated);
@@ -1496,6 +1660,7 @@ export async function updatePersonalProfile(data: Partial<IPersonalProfile>): Pr
       const serverResult = { ...updated, ...response.data.data };
       inMemoryPersonalProfile = serverResult;
       await saveProfileToIDB(serverResult);
+      await saveFirestoreData('personal', serverResult);
       return serverResult;
     }
   } catch (err) {
