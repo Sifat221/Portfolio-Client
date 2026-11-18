@@ -315,13 +315,13 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                     captionText={project.title}
                   >
                     <ElectricBorder
-                      color="#7df9ff"
-                      speed={1}
-                      chaos={0.5}
-                      spread={0.6}
-                      strands={3}
-                      thickness={1.5}
-                      borderRadius={24}
+                      color="#52f7a0"
+                      speed={3}
+                      chaos={1.25}
+                      spread={1.5}
+                      strands={4}
+                      thickness={1.6}
+                      borderRadius={22}
                       className="h-full w-full"
                     >
                       <div className="project-card-container rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">
