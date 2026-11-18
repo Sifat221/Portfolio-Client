@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './Navbar';
 import { Hero } from './Hero';
 import { Skills } from './Skills';
@@ -10,6 +10,7 @@ import { Achievements } from './Achievements';
 import { ContactSection } from './ContactSection';
 import { Footer } from './Footer';
 import NeonCursor from './NeonCursor';
+import { LoadingScreen } from './common/LoadingScreen';
 import { SEOHead } from './common/SEOHead';
 import { useJsonLdSchema } from '../hooks/useJsonLdSchema';
 
@@ -40,6 +41,16 @@ import {
 } from '../services/api';
 
 export const PortfolioContent: React.FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    // Show intro loading animation for 1.4s on initial site visit, then reveal portfolio
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1400);
+    return () => clearTimeout(timer);
+  }, []);
+
   const { data: personal = defaultPersonal } = usePersonalProfile();
   const { data: projects = defaultProjects } = useProjects();
   const { data: thesisList = defaultThesis } = useThesis();
@@ -53,6 +64,10 @@ export const PortfolioContent: React.FC = () => {
 
   // Attach side effects (useGlobalSound is mounted once in App.tsx)
   useJsonLdSchema(personal);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="min-h-screen min-h-[100dvh] bg-[#090D16] text-slate-100 selection:bg-[#9B8FCD] selection:text-white transition-colors duration-300">
