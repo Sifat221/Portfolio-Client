@@ -136,8 +136,8 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, margin: '-80px' }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
+        viewport={{ once: true, amount: 'some' }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
       >
         {/* 1. Badge & Back Button Row */}
@@ -231,35 +231,37 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
 
         {/* 4. Tab Navigation Bar (Left) + See More Projects Button (Right - Moved down to tab row) */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 mb-10 gap-4">
-          <div className="flex items-center gap-8 overflow-x-auto min-w-max pb-3">
-            {tabs.map((tab) => {
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabChange(tab.id)}
-                  className={`relative flex items-center gap-2 font-bold text-sm transition-all duration-200 py-1 ${
-                    isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                  role="tab"
-                  aria-selected={isActive}
-                >
-                  <span className={isActive ? 'text-[#9B8FCD]' : 'text-slate-500'}>
-                    {tab.icon}
-                  </span>
-                  <span>{tab.label}</span>
+          <div className="w-full sm:w-auto overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-6 sm:gap-8 min-w-max pb-3">
+              {tabs.map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleTabChange(tab.id)}
+                    className={`relative flex items-center gap-2 font-bold text-sm transition-all duration-200 py-1 whitespace-nowrap ${
+                      isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'
+                    }`}
+                    role="tab"
+                    aria-selected={isActive}
+                  >
+                    <span className={isActive ? 'text-[#9B8FCD]' : 'text-slate-500'}>
+                      {tab.icon}
+                    </span>
+                    <span>{tab.label}</span>
 
-                  {/* Active Sliding Tab Indicator */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeProjectTab"
-                      className="absolute -bottom-3 left-0 right-0 h-0.5 bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400 rounded-full shadow-sm shadow-[#9B8FCD]"
-                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                    />
-                  )}
-                </button>
-              );
-            })}
+                    {/* Active Sliding Tab Indicator */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeProjectTab"
+                        className="absolute -bottom-3 left-0 right-0 h-0.5 bg-gradient-to-r from-[#9B8FCD] via-indigo-400 to-cyan-400 rounded-full shadow-sm shadow-[#9B8FCD]"
+                        transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* See More Projects Action Button (Moved down aligned with tab line) */}
@@ -324,6 +326,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                         <img
                           src={project.imageUrl || "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800"}
                           alt={project.title}
+                          loading="lazy"
                           className="w-full h-full object-cover object-center group-hover/card:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-transparent to-transparent opacity-60 pointer-events-none z-10"></div>

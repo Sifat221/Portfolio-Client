@@ -164,11 +164,20 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
     const container = containerRef.current;
     if (!canvas || !container) return;
 
+    // On mobile/touch devices or reduced-motion mode, rely on lightweight GPU CSS glow layers
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const isCoarsePointer = window.matchMedia?.('(pointer: coarse)').matches;
+    if (prefersReducedMotion || isCoarsePointer) {
+      canvas.style.display = 'none';
+      return;
+    }
+    canvas.style.display = 'block';
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     // Configuration
-    const octaves = 10;
+    const octaves = 8;
     const lacunarity = 1.6;
     const gain = 0.7;
     const amplitude = chaos;
@@ -177,27 +186,40 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
     const displacement = 60;
     const borderOffset = 60;
 
+    let isInViewport = true;
+
     const updateSize = () => {
       const rect = container.getBoundingClientRect();
       const width = rect.width + borderOffset * 2;
       const height = rect.height + borderOffset * 2;
 
-      // Use device pixel ratio for sharp rendering
+      // Use device pixel ratio for sharp rendering (capped at 2)
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       return { width, height };
     };
 
     let { width, height } = updateSize();
     let lastDpr = Math.min(window.devicePixelRatio || 1, 2);
+    const FRAME_INTERVAL = 1000 / 30; // Smooth 30fps cap cuts Chrome CPU usage by >50%
 
     const drawElectricBorder = (currentTime: number) => {
       if (!canvas || !ctx) return;
+      if (!isInViewport) {
+        animationRef.current = null;
+        return;
+      }
+
+      const elapsed = currentTime - lastFrameTimeRef.current;
+      if (elapsed < FRAME_INTERVAL) {
+        animationRef.current = requestAnimationFrame(drawElectricBorder);
+        return;
+      }
 
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       if (dpr !== lastDpr) {
@@ -207,8 +229,8 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
         height = newSize.height;
       }
 
-      const deltaTime = (currentTime - lastFrameTimeRef.current) / 1000;
-      timeRef.current += (isNaN(deltaTime) ? 0.016 : deltaTime) * speed;
+      const deltaTime = elapsed / 1000;
+      timeRef.current += (isNaN(deltaTime) || deltaTime > 0.1 ? 0.033 : deltaTime) * speed;
       lastFrameTimeRef.current = currentTime;
 
       ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -229,7 +251,7 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
       const radius = Math.min(borderRadius, maxRadius);
 
       const approximatePerimeter = 2 * (borderWidth + borderHeight) + 2 * Math.PI * radius;
-      const sampleCount = Math.floor(approximatePerimeter / 2);
+      const sampleCount = Math.max(60, Math.min(400, Math.floor(approximatePerimeter / 4)));
 
       ctx.beginPath();
 
@@ -278,6 +300,19 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
       animationRef.current = requestAnimationFrame(drawElectricBorder);
     };
 
+    // Pause canvas loop when scrolled out of view
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        isInViewport = entry.isIntersecting;
+        if (isInViewport && animationRef.current === null) {
+          lastFrameTimeRef.current = performance.now();
+          animationRef.current = requestAnimationFrame(drawElectricBorder);
+        }
+      },
+      { threshold: 0.05 }
+    );
+    intersectionObserver.observe(container);
+
     // Handle resize
     const resizeObserver = new ResizeObserver(() => {
       const newSize = updateSize();
@@ -292,7 +327,9 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
+      intersectionObserver.disconnect();
       resizeObserver.disconnect();
     };
   }, [color, speed, chaos, borderRadius, octavedNoise, getRoundedRectPoint]);

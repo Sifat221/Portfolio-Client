@@ -11,16 +11,30 @@ import {
   getTestimonials,
   getGalleryPhotos,
   getContactMessages,
-  sendContactMessage
+  sendContactMessage,
+  readCachedJSON,
+  defaultPersonal,
+  defaultProjects,
+  defaultThesis,
+  defaultSkills,
+  defaultExperience,
+  defaultEducation,
+  defaultCertifications,
+  defaultAchievements,
+  defaultTestimonials,
+  defaultGalleryPhotos,
 } from '../services/api';
 import { IContactForm } from '../types/portfolio';
 
-// TanStack Query Hooks for Portfolio Data
+const CACHE_STALE_TIME = 1000 * 60 * 5; // 5 minutes (Admin saves invalidate immediately)
+
+// TanStack Query Hooks with instant cached placeholderData for zero-wait initial paint
 export function usePersonalProfile() {
   return useQuery({
     queryKey: ['personalProfile'],
     queryFn: getPersonalProfile,
-    staleTime: 0,
+    staleTime: CACHE_STALE_TIME,
+    placeholderData: () => readCachedJSON('portfolio_personal_profile', defaultPersonal),
   });
 }
 
@@ -28,7 +42,8 @@ export function useProjects() {
   return useQuery({
     queryKey: ['projects'],
     queryFn: getProjects,
-    staleTime: 0,
+    staleTime: CACHE_STALE_TIME,
+    placeholderData: () => readCachedJSON('portfolio_projects', defaultProjects),
   });
 }
 
@@ -36,7 +51,8 @@ export function useThesis() {
   return useQuery({
     queryKey: ['thesis'],
     queryFn: getThesis,
-    staleTime: 0,
+    staleTime: CACHE_STALE_TIME,
+    placeholderData: () => readCachedJSON('portfolio_thesis', defaultThesis),
   });
 }
 
@@ -44,7 +60,8 @@ export function useSkills() {
   return useQuery({
     queryKey: ['skills'],
     queryFn: getSkills,
-    staleTime: 0,
+    staleTime: CACHE_STALE_TIME,
+    placeholderData: () => readCachedJSON('portfolio_skills', defaultSkills),
   });
 }
 
@@ -52,7 +69,8 @@ export function useExperience() {
   return useQuery({
     queryKey: ['experience'],
     queryFn: getExperience,
-    staleTime: 0,
+    staleTime: CACHE_STALE_TIME,
+    placeholderData: () => readCachedJSON('portfolio_experience', defaultExperience),
   });
 }
 
@@ -60,7 +78,8 @@ export function useEducation() {
   return useQuery({
     queryKey: ['education'],
     queryFn: getEducation,
-    staleTime: 0,
+    staleTime: CACHE_STALE_TIME,
+    placeholderData: () => readCachedJSON('portfolio_education', defaultEducation),
   });
 }
 
@@ -68,7 +87,8 @@ export function useCertifications() {
   return useQuery({
     queryKey: ['certifications'],
     queryFn: getCertifications,
-    staleTime: 0,
+    staleTime: CACHE_STALE_TIME,
+    placeholderData: () => readCachedJSON('portfolio_certifications', defaultCertifications),
   });
 }
 
@@ -76,7 +96,8 @@ export function useAchievements() {
   return useQuery({
     queryKey: ['achievements'],
     queryFn: getAchievements,
-    staleTime: 0,
+    staleTime: CACHE_STALE_TIME,
+    placeholderData: () => readCachedJSON('portfolio_achievements', defaultAchievements),
   });
 }
 
@@ -84,7 +105,8 @@ export function useTestimonials() {
   return useQuery({
     queryKey: ['testimonials'],
     queryFn: getTestimonials,
-    staleTime: 0,
+    staleTime: CACHE_STALE_TIME,
+    placeholderData: () => defaultTestimonials,
   });
 }
 
@@ -92,7 +114,8 @@ export function useGalleryPhotos() {
   return useQuery({
     queryKey: ['galleryPhotos'],
     queryFn: getGalleryPhotos,
-    staleTime: 0,
+    staleTime: CACHE_STALE_TIME,
+    placeholderData: () => readCachedJSON('portfolio_gallery_photos', defaultGalleryPhotos),
   });
 }
 

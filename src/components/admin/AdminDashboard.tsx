@@ -325,13 +325,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const currentModalConfig = getSectionModalConfig(modalState.section);
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#060912]/90 backdrop-blur-md overflow-y-auto flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-50 bg-[#060912]/90 backdrop-blur-md overflow-y-auto overscroll-contain flex items-center justify-center p-2 sm:p-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.96 }}
         transition={{ duration: 0.3 }}
-        className="w-full max-w-6xl bg-[#090D16] border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+        className="w-full max-w-6xl bg-[#090D16] border border-slate-700/80 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[94vh] max-h-[94dvh] sm:max-h-[90dvh]"
       >
         {/* Top Admin Header Bar */}
         <div className="px-6 py-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
@@ -379,8 +379,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
         {/* Dashboard Main Layout */}
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-          {/* Left Sidebar Navigation */}
-          <div className="w-full md:w-64 bg-slate-900/60 border-r border-slate-800 p-4 space-y-2 shrink-0 overflow-y-auto">
+          {/* Left Sidebar Navigation (Horizontal scrollable pill bar on mobile, vertical sidebar on md+) */}
+          <div className="w-full md:w-64 bg-slate-900/60 border-b md:border-b-0 md:border-r border-slate-800 p-3 md:p-4 flex md:flex-col gap-2 md:gap-0 md:space-y-2 shrink-0 overflow-x-auto md:overflow-y-auto no-scrollbar">
             {[
               { id: 'profile', label: 'Profile & Photos', icon: <User className="w-4 h-4" /> },
               { id: 'messages', label: 'Inbox Messages', icon: <Mail className="w-4 h-4" />, count: contactMessages.filter(m => !m.isRead).length },
@@ -398,7 +398,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold transition-all ${
+                  className={`shrink-0 md:w-full flex items-center justify-between gap-2 px-3.5 md:px-4 py-2.5 md:py-3 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
                     isActive
                       ? 'bg-gradient-to-r from-[#9B8FCD]/30 to-indigo-600/30 text-white border border-[#9B8FCD]/50 shadow-md'
                       : 'text-slate-400 hover:text-white hover:bg-slate-800/60'

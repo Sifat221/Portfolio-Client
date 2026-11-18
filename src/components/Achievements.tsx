@@ -42,10 +42,10 @@ export const Achievements: React.FC<TestimonialsAchievementsProps> = ({
       <div className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       <motion.div
-        initial={{ opacity: 0, y: 35 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, margin: '-80px' }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
+        viewport={{ once: true, amount: 'some' }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
       >
         {/* Grid layout with items-start for dynamic natural height (No awkward empty gaps) */}

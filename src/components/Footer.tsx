@@ -16,7 +16,7 @@ export const Footer: React.FC<FooterProps> = ({ personal }) => {
   const whatsappNumber = "8801313997323";
 
   return (
-    <footer className="bg-[#060912] border-t border-slate-800/80 text-slate-300 pt-16 pb-12">
+    <footer className="bg-[#060912] border-t border-slate-800/80 text-slate-300 pt-16 pb-[max(3rem,env(safe-area-inset-bottom))]">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Rich Multi-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-14 border-b border-slate-800/80 items-start">

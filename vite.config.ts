@@ -10,4 +10,20 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    target: 'es2020',
+    cssCodeSplit: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'query-vendor': ['@tanstack/react-query'],
+          'motion-vendor': ['framer-motion'],
+          'gsap-vendor': ['gsap'],
+          'firebase-vendor': ['firebase/app', 'firebase/firestore', 'firebase/analytics'],
+          'icons-vendor': ['lucide-react'],
+        },
+      },
+    },
+  },
 });

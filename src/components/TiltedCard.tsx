@@ -62,7 +62,7 @@ export default function TiltedCard({
   const [lastY, setLastY] = useState(0);
 
   function handleMouse(e: React.MouseEvent<HTMLDivElement>) {
-    if (!ref.current) return;
+    if (!ref.current || rotateAmplitude === 0) return;
 
     const rect = ref.current.getBoundingClientRect();
     const offsetX = e.clientX - rect.left - rect.width / 2;
@@ -83,6 +83,7 @@ export default function TiltedCard({
   }
 
   function handleMouseEnter() {
+    if (rotateAmplitude === 0 && scaleOnHover === 1) return;
     scale.set(scaleOnHover);
     opacity.set(1);
   }

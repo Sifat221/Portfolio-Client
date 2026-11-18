@@ -85,7 +85,7 @@ export const AdminFormModal: React.FC<AdminFormModalProps> = ({
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-xl max-h-[85vh] overflow-y-auto glass-panel rounded-3xl border border-slate-700/60 shadow-2xl p-6 z-10"
+          className="relative w-full max-w-xl max-h-[88vh] max-h-[88dvh] overflow-y-auto overscroll-contain glass-panel rounded-3xl border border-slate-700/60 shadow-2xl p-5 sm:p-6 z-10"
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-6">

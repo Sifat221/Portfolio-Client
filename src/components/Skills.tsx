@@ -216,8 +216,8 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, margin: '-80px' }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        viewport={{ once: true, amount: 'some' }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-10"
       >
         {/* Section Header */}
@@ -324,7 +324,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
         </div>
 
         {/* Sleek Horizontal Tab Navigation Bar */}
-        <div className="border-b border-slate-800/90 overflow-x-auto pb-1">
+        <div className="border-b border-slate-800/90 overflow-x-auto no-scrollbar pb-1">
           <div className="flex items-center gap-6 sm:gap-8 min-w-max pb-3">
             {categories.map((cat) => {
               const isActive = activeCategory === cat;
@@ -384,7 +384,8 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
             </div>
 
             {/* Main Stock Chart Area */}
-            <div className="relative pt-4">
+            <div className="relative pt-4 overflow-x-auto no-scrollbar">
+              <div className="min-w-[300px]">
               {/* Y-Axis Label & Grid Container */}
               <div className="relative h-[280px] sm:h-[320px] w-full border-b border-slate-700/80">
                 {/* Y-Axis Side Title */}
@@ -489,6 +490,7 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
                     {skill.name}
                   </button>
                 ))}
+              </div>
               </div>
             </div>
 

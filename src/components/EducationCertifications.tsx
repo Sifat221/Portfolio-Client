@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GraduationCap, Award, BookOpen, ExternalLink, Calendar, MapPin, Image as ImageIcon, Sparkles, ZoomIn, X } from 'lucide-react';
 import { IEducation, ICertification, IGalleryPhoto } from '../types/portfolio';
@@ -21,16 +21,25 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
   // Lightbox Modal state for expanding campus image on click
   const [activeModalImage, setActiveModalImage] = useState<{ url: string; title: string; subtitle: string } | null>(null);
 
+  useEffect(() => {
+    if (!activeModalImage) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActiveModalImage(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeModalImage]);
+
   return (
     <section id="education" className="py-24 relative bg-[#090D16] border-t border-slate-800/80">
       {/* Ambient Background Soft Glow */}
       <div className="absolute top-1/3 left-10 w-[500px] h-[500px] bg-[#9B8FCD]/10 rounded-full blur-[130px] pointer-events-none"></div>
 
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, margin: '-80px' }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
+        viewport={{ once: true, amount: 'some' }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-16"
       >
         {/* Section Header */}
@@ -87,7 +96,7 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                 key={edu.id || index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: true, amount: 'some' }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="glass-card p-6 sm:p-8 lg:p-10 rounded-3xl border border-slate-800/80 hover:border-[#9B8FCD]/50 transition-all duration-300 shadow-2xl relative overflow-hidden group"
               >
@@ -192,7 +201,7 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                 key={cert.id || index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: true, amount: 'some' }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="glass-card p-6 rounded-3xl border border-slate-800/80 hover:border-indigo-500/50 transition-all duration-300 flex flex-col justify-between space-y-4 shadow-xl group"
               >
@@ -267,7 +276,7 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                     key={photo.id || index}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true, amount: 'some' }}
                     transition={{ duration: 0.4, delay: index * 0.1 }}
                     onClick={() => setActiveModalImage({ url: photo.url, title: photo.title, subtitle: subtitle })}
                     className="glass-card bg-slate-50 dark:bg-[#0D1322] rounded-2xl border border-slate-200/80 dark:border-slate-800/90 hover:border-cyan-500/50 hover:shadow-xl transition-all duration-300 group cursor-pointer overflow-hidden flex flex-col justify-between"
@@ -277,6 +286,7 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
                       <img
                         src={photo.url}
                         alt={photo.title}
+                        loading="lazy"
                         className="w-full h-full object-cover filter grayscale contrast-105 brightness-95 group-hover:grayscale-0 group-hover:scale-105 group-hover:brightness-100 transition-all duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 dark:from-[#0D1322] via-transparent to-transparent opacity-80"></div>
@@ -315,7 +325,7 @@ export const EducationCertifications: React.FC<EducationCertificationsProps> = (
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-4xl bg-[#0B0F1C] border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+              className="w-full max-w-4xl bg-[#0B0F1C] border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] max-h-[90dvh]"
             >
               {/* Modal Header (Matching Image 2) */}
               <div className="px-6 py-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">

@@ -119,10 +119,20 @@ export const LightRays: React.FC<LightRaysProps> = ({
 
       if (!containerRef.current) return;
 
-      const renderer = new Renderer({
-        dpr: Math.min(window.devicePixelRatio, 2),
-        alpha: true,
-      });
+      const isMobileDevice = window.innerWidth < 768 || window.matchMedia?.('(pointer: coarse)').matches;
+      const maxDpr = isMobileDevice ? 1.25 : 2;
+
+      let renderer: Renderer;
+      try {
+        renderer = new Renderer({
+          dpr: Math.min(window.devicePixelRatio || 1, maxDpr),
+          alpha: true,
+        });
+      } catch (err) {
+        console.warn('WebGL unavailable on this device, skipping LightRays:', err);
+        return;
+      }
+      if (!renderer?.gl) return;
       rendererRef.current = renderer;
 
       const gl = renderer.gl;
@@ -142,7 +152,11 @@ void main() {
   gl_Position = vec4(position, 0.0, 1.0);
 }`;
 
-      const frag = `precision highp float;
+      const frag = `#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
 
 uniform float iTime;
 uniform vec2  iResolution;

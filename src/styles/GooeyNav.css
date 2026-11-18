@@ -43,14 +43,21 @@
 
 .gooey-nav-container nav ul {
   display: flex;
-  gap: 1.5em;
+  gap: 0.45rem;
   list-style: none;
-  padding: 0 1em;
+  padding: 0 0.5rem;
   margin: 0;
   position: relative;
   z-index: 3;
   color: white;
   text-shadow: 0 1px 1px hsl(205deg 30% 10% / 0.2);
+}
+
+@media (min-width: 1280px) {
+  .gooey-nav-container nav ul {
+    gap: 1.25rem;
+    padding: 0 1rem;
+  }
 }
 
 .gooey-nav-container nav ul li {

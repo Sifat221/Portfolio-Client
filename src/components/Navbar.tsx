@@ -25,15 +25,15 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
   const navLinks = [
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
-    { name: 'Education', href: '#education' },
     { name: 'Projects', href: '#projects' },
     { name: 'Thesis', href: '#thesis' },
     { name: 'Experience', href: '#experience' },
+    { name: 'Education', href: '#education' },
     { name: 'Contact', href: '#contact' },
   ];
 
   useEffect(() => {
-    const sections = ['about', 'skills', 'education', 'projects', 'thesis', 'experience', 'contact'];
+    const sections = ['about', 'skills', 'projects', 'thesis', 'experience', 'education', 'contact'];
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -48,22 +48,19 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu overlay is open
+  // Lock body scroll cleanly without breaking iOS drawer scrolling
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none';
     } else {
-      document.body.style.overflow = 'unset';
-      document.body.style.touchAction = 'unset';
+      document.body.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = 'unset';
-      document.body.style.touchAction = 'unset';
+      document.body.style.overflow = '';
     };
   }, [mobileMenuOpen]);
 
@@ -78,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
           exit={{ opacity: 0, y: -25 }}
           transition={{ duration: 0.22, ease: 'easeOut' }}
           style={{ zIndex: 99999 }}
-          className="fixed inset-0 w-screen h-screen bg-[#090D16]/98 backdrop-blur-2xl flex flex-col p-6 overflow-y-auto"
+          className="fixed inset-0 w-full h-screen h-[100dvh] bg-[#090D16]/98 backdrop-blur-2xl flex flex-col px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] overflow-y-auto overscroll-contain"
         >
           {/* Top Drawer Header matching Image 2 */}
           <div className="flex items-center justify-between pb-6 border-b border-slate-800/80">
@@ -192,7 +189,7 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 pt-safe ${
           scrolled
             ? 'glass-panel py-3 shadow-2xl border-b border-slate-800/90'
             : 'bg-[#090D16]/80 backdrop-blur-md py-4 border-b border-slate-800/40'
@@ -227,8 +224,8 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
               </div>
             </a>
 
-            {/* Center Navigation Bar (Desktop & Landscape Rotation) */}
-            <div className="hidden md:block">
+            {/* Center Navigation Bar (Desktop) */}
+            <div className="hidden lg:block">
               <GooeyNav
                 items={navLinks.map((link) => ({ label: link.name, href: link.href }))}
                 particleCount={20}
@@ -262,8 +259,8 @@ export const Navbar: React.FC<NavbarProps> = ({ personal }) => {
                 <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               </a>
 
-              {/* Mobile Menu Toggle Button (3 Horizontal Lines matching Image 1) */}
-              <div className="md:hidden flex items-center">
+              {/* Mobile & Tablet Menu Toggle Button */}
+              <div className="lg:hidden flex items-center">
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className="p-2.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-slate-200 hover:text-white hover:border-[#9B8FCD] shadow-lg active:scale-95 transition-all flex items-center justify-center cursor-pointer"

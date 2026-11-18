@@ -35,6 +35,11 @@ export const GooeyNav: React.FC<GooeyNavProps> = ({
   const textRef = useRef<HTMLSpanElement>(null);
   const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
 
+  // Keep desktop nav highlight synced with scroll-spy updates
+  useEffect(() => {
+    setActiveIndex(initialActiveIndex);
+  }, [initialActiveIndex]);
+
   const noise = (n = 1) => n / 2 - Math.random() * n;
 
   const getXY = (distance: number, pointIndex: number, totalPoints: number) => {

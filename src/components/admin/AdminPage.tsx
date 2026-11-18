@@ -66,7 +66,7 @@ export const AdminPage: React.FC = () => {
 
   if (!isAdminAuth) {
     return (
-      <div className="min-h-screen bg-[#090D16] flex flex-col items-center justify-center relative p-4">
+      <div className="min-h-screen min-h-[100dvh] bg-[#090D16] flex flex-col items-center justify-center relative p-4 pt-[max(4.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
         {/* Back to Home Link */}
         <Link
           to="/"
@@ -82,7 +82,7 @@ export const AdminPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#090D16] text-white">
+    <div className="min-h-screen min-h-[100dvh] bg-[#090D16] text-white">
       <AdminDashboard
         personal={personal}
         projects={projects}

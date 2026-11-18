@@ -84,10 +84,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ personal }) => {
       <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-purple-500/10 rounded-full blur-[140px] pointer-events-none" />
 
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, margin: '-80px' }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
+        viewport={{ once: true, amount: 'some' }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 space-y-16"
       >
         {/* Main Section Header (Centered - Matching Screenshot 2) */}

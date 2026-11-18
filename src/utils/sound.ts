@@ -12,7 +12,9 @@ const getAudioContext = () => {
     }
   }
   if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume();
+    audioCtx.resume().catch(() => {
+      // Ignore autoplay policy restriction on iOS/Android prior to user gesture
+    });
   }
   return audioCtx;
 };

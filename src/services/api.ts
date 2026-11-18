@@ -45,11 +45,27 @@ const API_BASE_URL = 'https://portfolio-server-gamma-opal.vercel.app/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
+  timeout: 3500,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+// Fast synchronous localStorage reader for zero-latency initial UI hydration
+export function readCachedJSON<T>(storageKey: string, fallback: T): T {
+  if (typeof window === 'undefined') return fallback;
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (!raw) return fallback;
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(fallback)) {
+      return Array.isArray(parsed) && parsed.length > 0 ? (parsed as T) : fallback;
+    }
+    return parsed ? ({ ...fallback, ...parsed } as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
 
 export const defaultPersonal: IPersonalProfile = {
   name: "Sifat Khan",
@@ -539,14 +555,17 @@ export async function getPersonalProfile(): Promise<IPersonalProfile> {
 
   const idbSaved = await loadProfileFromIDB();
 
+  // Only query slow fallback REST API when Firestore did not return live data
   let serverData: Partial<IPersonalProfile> = {};
-  try {
-    const response = await api.get('/personal');
-    if (response.data?.success && response.data?.data) {
-      serverData = response.data.data;
+  if (!firestoreData) {
+    try {
+      const response = await api.get('/personal');
+      if (response.data?.success && response.data?.data) {
+        serverData = response.data.data;
+      }
+    } catch (err) {
+      console.warn("API Call /personal fallback active:", err);
     }
-  } catch (err) {
-    console.warn("API Call /personal fallback active:", err);
   }
 
   // Priority order: defaultPersonal < serverData < localSaved < idbSaved < inMemoryPersonalProfile < firestoreData

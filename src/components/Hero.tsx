@@ -59,48 +59,125 @@ const TypewriterHeadline: React.FC<{ name: string }> = ({ name }) => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.15 }}
-      className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white flex items-center flex-wrap gap-x-3 gap-y-1 min-h-[52px] sm:min-h-[64px] lg:min-h-[76px]"
+      className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white flex items-center justify-center lg:justify-start flex-wrap gap-x-2.5 sm:gap-x-3 gap-y-1 min-h-[44px] sm:min-h-[64px] lg:min-h-[76px]"
     >
       <span className="text-white font-serif whitespace-nowrap">{prefixText}</span>
-      <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-cyan-300 font-extrabold whitespace-nowrap">
+      <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-cyan-300 font-extrabold break-words sm:whitespace-nowrap">
         {nameText}
       </span>
-      <span className="inline-block w-1 h-8 sm:h-10 lg:h-12 bg-cyan-400 rounded-full animate-pulse align-middle shadow-lg shadow-cyan-400/50 shrink-0 ml-0.5" />
+      <span className="inline-block w-1 h-7 sm:h-10 lg:h-12 bg-cyan-400 rounded-full animate-pulse align-middle shadow-lg shadow-cyan-400/50 shrink-0 ml-0.5" />
     </motion.h1>
   );
 };
 
-export const Hero: React.FC<HeroProps> = ({ personal }) => {
-  const totalBanners = 3;
-  const BANNER_DURATION = 30; // 30 seconds single banner duration
-  const [activeBannerIdx, setActiveBannerIdx] = useState(0);
+// Isolated 30-second Banner Timer Bar so 1-second ticks do NOT re-render the Hero WebGL/particles
+const BannerTimerControls: React.FC<{
+  totalBanners: number;
+  activeBannerIdx: number;
+  onSelectBanner: (idx: number) => void;
+  onPrevBanner: () => void;
+  onNextBanner: () => void;
+}> = React.memo(({ totalBanners, activeBannerIdx, onSelectBanner, onPrevBanner, onNextBanner }) => {
+  const BANNER_DURATION = 30;
   const [secondsLeft, setSecondsLeft] = useState<number>(BANNER_DURATION);
   const [isTimerPaused, setIsTimerPaused] = useState<boolean>(false);
 
-  // Reset countdown whenever active banner index changes
   useEffect(() => {
     setSecondsLeft(BANNER_DURATION);
   }, [activeBannerIdx]);
 
-  // 1-second interval timer counting down 30s banner duration
   useEffect(() => {
     if (isTimerPaused) return;
-
     const timer = setInterval(() => {
       setSecondsLeft((prev) => {
         if (prev <= 1) {
-          setActiveBannerIdx((current) => (current + 1) % totalBanners);
+          onNextBanner();
           return BANNER_DURATION;
         }
         return prev - 1;
       });
     }, 1000);
-
     return () => clearInterval(timer);
-  }, [totalBanners, isTimerPaused]);
+  }, [isTimerPaused, onNextBanner]);
 
-  const elapsedTime = BANNER_DURATION - secondsLeft;
-  const progressPercent = Math.min(100, Math.max(0, (elapsedTime / BANNER_DURATION) * 100));
+  const progressPercent = Math.min(100, Math.max(0, ((BANNER_DURATION - secondsLeft) / BANNER_DURATION) * 100));
+
+  return (
+    <div className="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="flex items-center gap-3.5 w-full sm:w-auto">
+        <button
+          onClick={() => setIsTimerPaused((p) => !p)}
+          className="px-4 py-2.5 rounded-full glass-card border border-[#9B8FCD]/40 hover:border-[#9B8FCD] text-white text-xs font-mono font-bold flex items-center gap-2.5 shadow-xl transition-all active:scale-95 group shrink-0"
+          title={isTimerPaused ? 'Resume 30s Auto-Switch' : 'Pause 30s Auto-Switch'}
+        >
+          {isTimerPaused ? (
+            <Play className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />
+          ) : (
+            <Pause className="w-3.5 h-3.5 text-[#9B8FCD]" />
+          )}
+          <span>{isTimerPaused ? 'Paused' : '30s Banner Timer'}</span>
+          <span className="text-[10px] text-[#9B8FCD] bg-slate-900 px-2.5 py-0.5 rounded-full border border-slate-800 font-bold font-mono">
+            {secondsLeft}s
+          </span>
+        </button>
+
+        <div className="flex-1 sm:w-56 h-2 bg-slate-800/90 rounded-full overflow-hidden border border-slate-700/60 relative">
+          <div
+            className="h-full bg-gradient-to-r from-[#9B8FCD] via-indigo-500 to-cyan-400 rounded-full transition-all duration-1000 ease-linear shadow-sm shadow-[#9B8FCD]"
+            style={{ width: `${progressPercent}%` }}
+          ></div>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <button
+          onClick={onPrevBanner}
+          className="p-3 rounded-full glass-card border border-slate-700 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
+          aria-label="Previous Banner Background"
+        >
+          <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+        </button>
+
+        <div className="flex items-center gap-1.5 px-2">
+          {Array.from({ length: totalBanners }).map((_, idx) => {
+            const isActive = activeBannerIdx === idx;
+            return (
+              <button
+                key={idx}
+                onClick={() => onSelectBanner(idx)}
+                className={`relative h-2.5 rounded-full transition-all duration-300 overflow-hidden ${
+                  isActive
+                    ? 'w-10 bg-slate-800 border border-[#9B8FCD]/60 shadow-md shadow-[#9B8FCD]'
+                    : 'w-2.5 bg-slate-800 hover:bg-slate-700'
+                }`}
+                aria-label={`Go to background theme ${idx + 1}`}
+              >
+                {isActive && (
+                  <div
+                    className="absolute inset-0 bg-[#9B8FCD] transition-all duration-1000 ease-linear"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          onClick={onNextBanner}
+          className="p-3 rounded-full glass-card border border-slate-700 text-[#9B8FCD] hover:border-[#9B8FCD] hover:text-white transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
+          aria-label="Next Banner Background"
+        >
+          <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+        </button>
+      </div>
+    </div>
+  );
+});
+
+export const Hero: React.FC<HeroProps> = ({ personal }) => {
+  const totalBanners = 3;
+  const [activeBannerIdx, setActiveBannerIdx] = useState(0);
 
   // Generate 25 subtle snowflakes for a clean, elegant winter backdrop
   const snowflakes = useMemo(() => {
@@ -123,9 +200,11 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
     });
   }, []);
 
-  // Generate 150 heavy rain storm particles for Banner 2
+  // Generate rain storm particles (lighter count on mobile Android/iOS for 60fps smoothness)
   const raindrops = useMemo(() => {
-    return Array.from({ length: 150 }).map((_, index) => {
+    const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
+    const count = isMobileScreen ? 45 : 130;
+    return Array.from({ length: count }).map((_, index) => {
       const left = Math.random() * 100;
       const duration = Math.random() * 0.7 + 0.6; // 0.6s to 1.3s fast rain fall
       const delay = Math.random() * 4;
@@ -143,13 +222,13 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
     });
   }, []);
 
-  const handlePrevBanner = () => {
+  const handlePrevBanner = React.useCallback(() => {
     setActiveBannerIdx((prev) => (prev - 1 + totalBanners) % totalBanners);
-  };
+  }, [totalBanners]);
 
-  const handleNextBanner = () => {
+  const handleNextBanner = React.useCallback(() => {
     setActiveBannerIdx((prev) => (prev + 1) % totalBanners);
-  };
+  }, [totalBanners]);
 
   return (
     <section id="about" className="relative pt-36 pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-[#090D16]">
@@ -247,6 +326,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               loop
               muted
               playsInline
+              preload="metadata"
               className="w-full h-full object-cover opacity-30 filter contrast-125 saturate-150"
             >
               <source src="/BANNER2.mp4" type="video/mp4" />
@@ -289,6 +369,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               loop
               muted
               playsInline
+              preload="metadata"
               className="w-full h-full object-cover opacity-35 filter contrast-125 saturate-150"
             >
               <source src="/BannerTwo.mp4" type="video/mp4" />
@@ -476,12 +557,12 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
                     const target = e.target as HTMLImageElement;
                     target.src = "/Profile.jpg";
                   }}
-                  className="w-full h-[460px] sm:h-[520px] object-cover object-top rounded-2xl hover:scale-105 transition-transform duration-700"
+                  className="w-full h-[360px] sm:h-[480px] lg:h-[520px] object-cover object-top rounded-2xl hover:scale-105 transition-transform duration-700"
                 />
               </div>
 
               {/* Floating Badge 1 */}
-              <div className="absolute top-8 right-0 sm:-right-6 z-20 glass-panel px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-[#9B8FCD]/40 shadow-2xl flex items-center gap-2.5 sm:gap-3 animate-float">
+              <div className="absolute top-6 right-2 sm:-right-4 lg:-right-6 z-20 glass-panel px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full border border-[#9B8FCD]/40 shadow-2xl flex items-center gap-2 sm:gap-3 animate-float">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#9B8FCD]/20 flex items-center justify-center text-[#9B8FCD]">
                   <Feather className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
@@ -489,7 +570,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               </div>
 
               {/* Floating Badge 2 */}
-              <div className="absolute top-1/2 right-2 sm:-right-10 z-20 glass-panel px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-indigo-500/40 shadow-2xl flex items-center gap-2.5 sm:gap-3 animate-float [animation-delay:2s]">
+              <div className="absolute top-1/2 right-2 sm:-right-4 lg:-right-10 z-20 glass-panel px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full border border-indigo-500/40 shadow-2xl flex items-center gap-2 sm:gap-3 animate-float [animation-delay:2s]">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
                   <Palette className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
@@ -497,7 +578,7 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
               </div>
 
               {/* Floating Badge 3 */}
-              <div className="absolute bottom-8 right-0 sm:-right-6 z-20 glass-panel px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-cyan-500/40 shadow-2xl flex items-center gap-2.5 sm:gap-3 animate-float [animation-delay:4s]">
+              <div className="absolute bottom-6 right-2 sm:-right-4 lg:-right-6 z-20 glass-panel px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full border border-cyan-500/40 shadow-2xl flex items-center gap-2 sm:gap-3 animate-float [animation-delay:4s]">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
                   <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
@@ -508,79 +589,13 @@ export const Hero: React.FC<HeroProps> = ({ personal }) => {
         </div>
 
         {/* ================= BANNER PROGRESS TIMER & ARROW CONTROLS ================= */}
-        <div className="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-          {/* 30-Second Live Countdown Progress Button & Animated Progress Bar */}
-          <div className="flex items-center gap-3.5 w-full sm:w-auto">
-            <button
-              onClick={() => setIsTimerPaused(!isTimerPaused)}
-              className="px-4 py-2.5 rounded-full glass-card border border-[#9B8FCD]/40 hover:border-[#9B8FCD] text-white text-xs font-mono font-bold flex items-center gap-2.5 shadow-xl transition-all active:scale-95 group shrink-0"
-              title={isTimerPaused ? "Resume 30s Auto-Switch" : "Pause 30s Auto-Switch"}
-            >
-              {isTimerPaused ? (
-                <Play className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />
-              ) : (
-                <Pause className="w-3.5 h-3.5 text-[#9B8FCD]" />
-              )}
-              <span>{isTimerPaused ? "Paused" : "30s Banner Timer"}</span>
-              <span className="text-[10px] text-[#9B8FCD] bg-slate-900 px-2.5 py-0.5 rounded-full border border-slate-800 font-bold font-mono">
-                {secondsLeft}s
-              </span>
-            </button>
-
-            {/* Glowing 30s Duration Progress Bar */}
-            <div className="flex-1 sm:w-56 h-2 bg-slate-800/90 rounded-full overflow-hidden border border-slate-700/60 relative">
-              <div
-                className="h-full bg-gradient-to-r from-[#9B8FCD] via-indigo-500 to-cyan-400 rounded-full transition-all duration-1000 ease-linear shadow-sm shadow-[#9B8FCD]"
-                style={{ width: `${progressPercent}%` }}
-              ></div>
-            </div>
-          </div>
-
-          {/* Banner Navigation Switcher Buttons */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handlePrevBanner}
-              className="p-3 rounded-full glass-card border border-slate-700 text-white hover:border-[#9B8FCD] hover:text-[#9B8FCD] transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
-              aria-label="Previous Banner Background"
-            >
-              <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-            </button>
-
-            {/* Active Indicator Dots with Mini Fill Progress */}
-            <div className="flex items-center gap-1.5 px-2">
-              {Array.from({ length: totalBanners }).map((_, idx) => {
-                const isActive = activeBannerIdx === idx;
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveBannerIdx(idx)}
-                    className={`relative h-2.5 rounded-full transition-all duration-300 overflow-hidden ${
-                      isActive
-                        ? 'w-10 bg-slate-800 border border-[#9B8FCD]/60 shadow-md shadow-[#9B8FCD]'
-                        : 'w-2.5 bg-slate-800 hover:bg-slate-700'
-                    }`}
-                    aria-label={`Go to background theme ${idx + 1}`}
-                  >
-                    {isActive && (
-                      <div
-                        className="absolute inset-0 bg-[#9B8FCD] transition-all duration-1000 ease-linear"
-                        style={{ width: `${progressPercent}%` }}
-                      />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            <button
-              onClick={handleNextBanner}
-              className="p-3 rounded-full glass-card border border-slate-700 text-[#9B8FCD] hover:border-[#9B8FCD] hover:text-white transition-all shadow-xl active:scale-95 flex items-center gap-1 group"
-              aria-label="Next Banner Background"
-            >
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          </div>
-        </div>
+        <BannerTimerControls
+          totalBanners={totalBanners}
+          activeBannerIdx={activeBannerIdx}
+          onSelectBanner={setActiveBannerIdx}
+          onPrevBanner={handlePrevBanner}
+          onNextBanner={handleNextBanner}
+        />
         {/* ========================================================================= */}
       </div>
     </section>

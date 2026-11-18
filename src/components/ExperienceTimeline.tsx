@@ -15,10 +15,10 @@ export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({ experien
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#9B8FCD]/10 rounded-full blur-[120px] pointer-events-none"></div>
 
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, margin: '-80px' }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
+        viewport={{ once: true, amount: 'some' }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
       >
         {/* Clean Header */}
@@ -68,7 +68,7 @@ export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({ experien
               key={exp.id || index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true, amount: 'some' }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="relative group"
             >
