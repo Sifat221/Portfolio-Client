@@ -307,20 +307,24 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                 </div>
               ) : (
                 visibleProjects.map((project) => (
-                <ElectricBorder
-                  key={project.id}
-                  color="#7df9ff"
-                  speed={1}
-                  chaos={0.12}
-                  borderRadius={24}
-                >
                   <TiltedCard
+                    key={project.id}
                     rotateAmplitude={isMobile ? 0 : 8}
                     scaleOnHover={isMobile ? 1 : 1.03}
                     showTooltip={false}
                     captionText={project.title}
                   >
-                    <div className="project-card-container rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">
+                    <ElectricBorder
+                      color="#7df9ff"
+                      speed={1}
+                      chaos={0.5}
+                      spread={0.6}
+                      strands={3}
+                      thickness={1.5}
+                      borderRadius={24}
+                      className="h-full w-full"
+                    >
+                      <div className="project-card-container rounded-3xl overflow-hidden flex flex-col group/card transition-all duration-300 h-full bg-[#080d19]">
                       {/* Full-bleed Image Banner Container */}
                       <div className="relative h-72 sm:h-[340px] md:h-[360px] overflow-hidden bg-slate-950">
                         <img
@@ -476,8 +480,8 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                         </div>
                       </div>
                     </div>
-                  </TiltedCard>
-                </ElectricBorder>
+                  </ElectricBorder>
+                </TiltedCard>
               )))}
             </motion.div>
           </AnimatePresence>
