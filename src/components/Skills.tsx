@@ -261,11 +261,11 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
         </div>
 
         {/* ===== Continuous Tech Logo Marquee Ticker ===== */}
-        <div className="relative overflow-hidden py-4">
+        <div className="relative overflow-hidden py-4 select-none">
           <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#141C2E] to-transparent z-10 pointer-events-none"></div>
           <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#141C2E] to-transparent z-10 pointer-events-none"></div>
 
-          <div className="flex animate-marquee-scroll">
+          <div className="flex w-max min-w-max flex-nowrap animate-marquee-scroll">
             {[
               { src: '/Tech_Icon/01_Dart.png', name: 'Dart', url: 'https://dart.dev' },
               { src: '/Tech_Icon/02_Java.png', name: 'Java', url: 'https://www.java.com' },
@@ -287,8 +287,8 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
               { src: '/Tech_Icon/18_Figma.png', name: 'Figma', url: 'https://www.figma.com' },
             ].map((logo, i) => (
               <a key={`a-${i}`} href={logo.url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 mx-5 flex flex-col items-center gap-1.5 group no-underline">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-slate-800/60 border border-slate-700/40 flex items-center justify-center p-2 group-hover:border-[#9B8FCD]/50 group-hover:scale-110 transition-all duration-200">
-                  <img src={logo.src} alt={logo.name} className="w-full h-full object-contain" loading="lazy" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-slate-800/60 border border-slate-700/40 flex items-center justify-center p-2 group-hover:border-[#9B8FCD]/60 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(155,143,205,0.35)] transition-all duration-200">
+                  <img src={logo.src} alt={logo.name} className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-105" loading="lazy" />
                 </div>
                 <span className="text-[10px] font-mono text-slate-500 group-hover:text-[#9B8FCD] transition-colors whitespace-nowrap">{logo.name}</span>
               </a>
@@ -314,8 +314,8 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
               { src: '/Tech_Icon/18_Figma.png', name: 'Figma', url: 'https://www.figma.com' },
             ].map((logo, i) => (
               <a key={`b-${i}`} href={logo.url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 mx-5 flex flex-col items-center gap-1.5 group no-underline">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-slate-800/60 border border-slate-700/40 flex items-center justify-center p-2 group-hover:border-[#9B8FCD]/50 group-hover:scale-110 transition-all duration-200">
-                  <img src={logo.src} alt={logo.name} className="w-full h-full object-contain" loading="lazy" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-slate-800/60 border border-slate-700/40 flex items-center justify-center p-2 group-hover:border-[#9B8FCD]/60 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(155,143,205,0.35)] transition-all duration-200">
+                  <img src={logo.src} alt={logo.name} className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-105" loading="lazy" />
                 </div>
                 <span className="text-[10px] font-mono text-slate-500 group-hover:text-[#9B8FCD] transition-colors whitespace-nowrap">{logo.name}</span>
               </a>
