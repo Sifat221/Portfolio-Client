@@ -59,8 +59,8 @@ export const ThesisSection: React.FC<ThesisSectionProps> = ({ thesisList = [] })
                 <SplitText
                   key={`${currentThesis.id || thesisIdx}-${currentThesis.title}`}
                   text={currentThesis.title || 'Machine Learning Pipeline'}
-                  highlightText="Pipeline"
-                  highlightClass="text-sky-500 dark:text-sky-400 font-extrabold"
+                  highlightText="Detection Pipeline"
+                  highlightClass="text-[#38bdf8] dark:text-[#38bdf8] font-extrabold"
                   className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight font-serif text-center"
                   delay={40}
                   duration={1.1}
