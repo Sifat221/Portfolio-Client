@@ -123,14 +123,26 @@ section {
 
 .animate-cloud-slow-1 {
   animation: cloudDriftLeft 20s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .animate-cloud-slow-2 {
   animation: cloudDriftRight 26s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .animate-cloud-slow-3 {
   animation: cloudDriftLeft 32s ease-in-out 4s infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.animate-wave-slow-1,
+.animate-wave-slow-2 {
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* Animated Snowfall Keyframes for Banner */
@@ -572,4 +584,21 @@ html.light .sm-toggle {
   select {
     font-size: 16px !important;
   }
+}
+
+/* Mobile & Android/iOS GPU performance optimizations */
+@media (max-width: 768px) {
+  .blur-\[110px\],
+  .blur-\[120px\],
+  .blur-\[130px\],
+  .blur-\[140px\] {
+    filter: blur(40px) !important;
+  }
+}
+
+/* Smooth GPU text & image rendering */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }

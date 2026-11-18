@@ -537,7 +537,7 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
     let time = Math.random() * 100;
     let raf = 0;
     let last = 0;
-    let visible = true;
+    let visible = false;
     let pageVisible = document.visibilityState !== 'hidden';
     let lost = false;
 
@@ -720,7 +720,11 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
       render(s, hover.power * (s.interactive ? 1 : 0));
 
       const busy = power > 0.002 || s.active || sparks.length > 0;
-      if (busy && visible && pageVisible) raf = requestAnimationFrame(frame);
+      if (busy && visible && pageVisible) {
+        raf = requestAnimationFrame(frame);
+      } else {
+        raf = 0;
+      }
     };
 
     const wake = () => {
@@ -746,11 +750,13 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
     };
 
     const onPointerMove = (event: PointerEvent) => {
+      if (!visible || !pageVisible || event.pointerType === 'touch') return;
       locate(event);
       if (pointer.near) wake();
     };
 
     const onPointerDown = (event: PointerEvent) => {
+      if (!visible || !pageVisible) return;
       locate(event);
       const s = settingsRef.current;
       if (!pointer.over || !s.interactive || !s.active || reduced) return;
@@ -788,13 +794,23 @@ export const ElectricBorder: React.FC<ElectricBorderProps> = ({
 
     const intersection = new IntersectionObserver(entries => {
       visible = entries.some(entry => entry.isIntersecting);
-      wake();
-    });
+      if (visible) {
+        wake();
+      } else {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    }, { threshold: 0.05 });
     intersection.observe(container);
 
     const onVisibility = () => {
       pageVisible = document.visibilityState !== 'hidden';
-      wake();
+      if (pageVisible && visible) {
+        wake();
+      } else {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
     };
     document.addEventListener('visibilitychange', onVisibility);
 
